@@ -6,11 +6,10 @@ import fs from "fs";
 class UserController {
     async create(req: Request, res: Response) {
         try {
-            const userBucket = `./storage/${req.body.ssn}/${req.file?.filename}`
             const newUser = new User();
 
-            const { ssn, phone, occupation, name, gender, licence, email } = req.body;
-            Object.assign(newUser, { ssn, photo: userBucket, occupation, name, phone, gender, licence, email });
+            const { email } = req.body;
+            Object.assign(newUser, { email });
 
             await new UserRepo().create(newUser.dataValues);
             res.status(200).json({
@@ -38,10 +37,14 @@ class UserController {
 
     async update(req: Request, res: Response) {
         try {
-            console.log(req.body)
+            let userBucket
+            if (req.file !== undefined) {
+                userBucket = `./storage/${req.body.ssn}/${req.file?.filename}`
+            }
+
             const updatedUser = new User();
-            const { ssn, phone, occupation, name, photo, gender, licence } = req.body;
-            Object.assign(updatedUser, { ssn, phone, occupation, name, photo, gender, licence });
+            const { email, ssn, phone, occupation, name, gender, licence } = req.body;
+            Object.assign(updatedUser, { email, ssn, phone, occupation, photo: userBucket, name, gender, licence });
 
             await new UserRepo().update(updatedUser);
             res.status(200).json({
@@ -57,13 +60,16 @@ class UserController {
     async getUserByEmail(req: Request, res: Response) {
         try {
             console.log(req.params);
-            console.log(req.body);
             const user = await new UserRepo().getByEmail(req.params.email);
-            const file = fs.readFileSync(user.photo);
+            let file;
+            try {
+                file = fs.readFileSync(user.photo);
+            } catch { }
+
             res.status(200).json({
                 message: "Got user successfully",
                 data: user,
-                photo: file.toString('base64')
+                photo: file === undefined ? null : file.toString('base64')
             })
         } catch (err) {
             res.status(500).json({

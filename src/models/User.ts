@@ -17,12 +17,6 @@ export class User extends Model {
     public static USER_GENDER = "user_gender" as string;
 
 
-    @Column({
-        type: DataType.STRING,
-        primaryKey: true,
-        field: User.USER_SSN
-    })
-    ssn!: string;
 
     @Column({
         type: DataType.STRING,
@@ -30,6 +24,13 @@ export class User extends Model {
         field: User.USER_EMAIL
     })
     email!: string;
+
+    @Column({
+        type: DataType.STRING,
+        field: User.USER_SSN
+    })
+    ssn!: string;
+
 
     @Column({
         type: DataType.STRING,

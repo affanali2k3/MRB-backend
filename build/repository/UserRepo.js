@@ -25,17 +25,20 @@ class UserRepo {
     update(user) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                console.log(user);
                 const updatedUser = yield User_1.User.findOne({
                     where: {
-                        ssn: user.ssn
+                        email: user.email
                     }
                 });
                 if (!updatedUser)
                     throw new Error("User not found");
+                updatedUser.email = user.email;
                 updatedUser.ssn = user.ssn;
-                updatedUser.phone = user.phone;
+                updatedUser.name = user.name;
+                updatedUser.licence = user.licence;
+                updatedUser.photo = user.photo;
                 updatedUser.occupation = user.occupation;
+                updatedUser.gender = user.gender;
                 updatedUser.save();
             }
             catch (err) {

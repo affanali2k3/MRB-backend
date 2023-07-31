@@ -21,18 +21,22 @@ export class UserRepo implements IUserRepo {
     }
     async update(user: User): Promise<void> {
         try {
-            console.log(user)
             const updatedUser = await User.findOne({
                 where: {
-                    ssn: user.ssn
+                    email: user.email
                 }
             })
 
+
             if (!updatedUser) throw new Error("User not found");
 
+            updatedUser.email = user.email;
             updatedUser.ssn = user.ssn;
-            updatedUser.phone = user.phone;
+            updatedUser.name = user.name;
+            updatedUser.licence = user.licence;
+            updatedUser.photo = user.photo;
             updatedUser.occupation = user.occupation;
+            updatedUser.gender = user.gender;
 
             updatedUser.save();
 

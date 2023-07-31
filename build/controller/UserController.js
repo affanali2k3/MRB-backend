@@ -17,13 +17,11 @@ const UserRepo_1 = require("../repository/UserRepo");
 const fs_1 = __importDefault(require("fs"));
 class UserController {
     create(req, res) {
-        var _a;
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const userBucket = `./storage/${req.body.ssn}/${(_a = req.file) === null || _a === void 0 ? void 0 : _a.filename}`;
                 const newUser = new User_1.User();
-                const { ssn, phone, occupation, name, gender, licence, email } = req.body;
-                Object.assign(newUser, { ssn, photo: userBucket, occupation, name, phone, gender, licence, email });
+                const { email } = req.body;
+                Object.assign(newUser, { email });
                 yield new UserRepo_1.UserRepo().create(newUser.dataValues);
                 res.status(200).json({
                     message: "User created successfully"
@@ -52,12 +50,16 @@ class UserController {
         });
     }
     update(req, res) {
+        var _a;
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                console.log(req.body);
+                let userBucket;
+                if (req.file !== undefined) {
+                    userBucket = `./storage/${req.body.ssn}/${(_a = req.file) === null || _a === void 0 ? void 0 : _a.filename}`;
+                }
                 const updatedUser = new User_1.User();
-                const { ssn, phone, occupation, name, photo, gender, licence } = req.body;
-                Object.assign(updatedUser, { ssn, phone, occupation, name, photo, gender, licence });
+                const { email, ssn, phone, occupation, name, gender, licence } = req.body;
+                Object.assign(updatedUser, { email, ssn, phone, occupation, photo: userBucket, name, gender, licence });
                 yield new UserRepo_1.UserRepo().update(updatedUser);
                 res.status(200).json({
                     message: "User updated successfully"
@@ -74,13 +76,16 @@ class UserController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 console.log(req.params);
-                console.log(req.body);
                 const user = yield new UserRepo_1.UserRepo().getByEmail(req.params.email);
-                const file = fs_1.default.readFileSync(user.photo);
+                let file;
+                try {
+                    file = fs_1.default.readFileSync(user.photo);
+                }
+                catch (_a) { }
                 res.status(200).json({
                     message: "Got user successfully",
                     data: user,
-                    photo: file.toString('base64')
+                    photo: file === undefined ? null : file.toString('base64')
                 });
             }
             catch (err) {

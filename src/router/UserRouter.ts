@@ -28,9 +28,9 @@ const upload = multer({ storage });
 
 class UserRoutes extends BaseRoutes {
     public routes(): void {
-        this.router.post("", upload.single('avatar'), UserController.create);
-        this.router.patch("/:id", validate(updateUserSchema), UserController.update)
-        this.router.delete("/:id", UserController.delete)
+        this.router.post("", UserController.create);
+        this.router.patch("/:email", upload.single('avatar'), UserController.update)
+        this.router.delete("/:email", UserController.delete)
         this.router.get("", UserController.getAllUsers)
         this.router.get("/:email", UserController.getUserByEmail)
     }

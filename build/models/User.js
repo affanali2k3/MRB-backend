@@ -27,18 +27,17 @@ __decorate([
     (0, sequelize_typescript_1.Column)({
         type: sequelize_typescript_1.DataType.STRING,
         primaryKey: true,
-        field: User_1.USER_SSN
-    }),
-    __metadata("design:type", String)
-], User.prototype, "ssn", void 0);
-__decorate([
-    (0, sequelize_typescript_1.Column)({
-        type: sequelize_typescript_1.DataType.STRING,
-        primaryKey: true,
         field: User_1.USER_EMAIL
     }),
     __metadata("design:type", String)
 ], User.prototype, "email", void 0);
+__decorate([
+    (0, sequelize_typescript_1.Column)({
+        type: sequelize_typescript_1.DataType.STRING,
+        field: User_1.USER_SSN
+    }),
+    __metadata("design:type", String)
+], User.prototype, "ssn", void 0);
 __decorate([
     (0, sequelize_typescript_1.Column)({
         type: sequelize_typescript_1.DataType.STRING,
