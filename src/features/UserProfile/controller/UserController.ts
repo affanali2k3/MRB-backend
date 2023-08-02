@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import { User } from "../models/User"
+import { User } from "../model/User";
 import { UserRepo } from "../repository/UserRepo";
 import fs from "fs";
 
@@ -37,14 +37,17 @@ class UserController {
 
     async update(req: Request, res: Response) {
         try {
+            console.log(req.body)
             let userBucket
             if (req.file !== undefined) {
                 userBucket = `./storage/${req.body.ssn}/${req.file?.filename}`
             }
 
             const updatedUser = new User();
-            const { email, ssn, phone, occupation, name, gender, licence } = req.body;
-            Object.assign(updatedUser, { email, ssn, phone, occupation, photo: userBucket, name, gender, licence });
+            const { address, licenceState, licenceNumber, yearLicenced, completedDeals, previousDeals, email, ssn, phone, occupation, name, gender, licence } = req.body;
+            Object.assign(updatedUser, { address, licenceState, licenceNumber, yearLicenced, completedDeals, previousDeals, email, ssn, phone, occupation, photo: userBucket, name, gender, licence });
+
+            console.log(updatedUser.dataValues);
 
             await new UserRepo().update(updatedUser);
             res.status(200).json({

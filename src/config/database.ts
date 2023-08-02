@@ -1,11 +1,11 @@
 import { Sequelize } from "sequelize-typescript";
 import * as dotenv from "dotenv";
-import { User } from "../models/User";
+import { User } from "../features/UserProfile/model/User";
+import { UserAssociates } from "../features/UserAssociates/model/UserAssociates";
 dotenv.config()
 
-class Database{
+class Database {
     public sequelize: Sequelize | undefined;
-
     private POSTGRES_DB = process.env.POSTGRES_DB as string;
     private POSTGRES_HOST = process.env.POSTGRES_HOST as string;
     private POSTGRES_PORT = process.env.POSTGRES_PORT as unknown as number;
@@ -13,11 +13,11 @@ class Database{
     private POSTGRES_PASSWORD = process.env.POSTGRES_PASSWORD as string;
 
 
-    constructor(){
+    constructor() {
         this.connectToPostgreSQL()
     }
 
-    private async connectToPostgreSQL(){
+    private async connectToPostgreSQL() {
         this.sequelize = new Sequelize({
             database: this.POSTGRES_DB,
             host: this.POSTGRES_HOST,
@@ -25,7 +25,7 @@ class Database{
             username: this.POSTGRES_USER,
             password: this.POSTGRES_PASSWORD,
             dialect: "postgres",
-            models: [User]
+            models: [User, UserAssociates]
         });
 
         this.sequelize.authenticate().then(() => {

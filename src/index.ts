@@ -1,6 +1,7 @@
 import express, { Application, Request, Response } from "express";
 import Database from "./config/database";
-import UserRouter from "./router/UserRouter";
+import UserRouter from "./features/UserProfile/router/UserRouter";
+import UserAssociatesRouter from "./features/UserAssociates/router/UserAssociatesRouter";
 
 class App {
     public app: Application;
@@ -27,6 +28,7 @@ class App {
             res.send("welcome home");
         });
         this.app.use("/api/v1/user", UserRouter);
+        this.app.use("/api/v1/associate", UserAssociatesRouter);
     }
 }
 

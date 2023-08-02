@@ -1,4 +1,4 @@
-import { User } from "../models/User";
+import { User } from "../model/User";
 
 
 interface IUserRepo {
@@ -37,6 +37,12 @@ export class UserRepo implements IUserRepo {
             updatedUser.photo = user.photo;
             updatedUser.occupation = user.occupation;
             updatedUser.gender = user.gender;
+            updatedUser.licenceNumber = user.licenceNumber;
+            updatedUser.licenceState = user.licenceState;
+            updatedUser.yearLicenced = user.yearLicenced;
+            updatedUser.address = user.address;
+            updatedUser.completedDeals = user.completedDeals;
+            updatedUser.previousDeals = user.previousDeals;
 
             updatedUser.save();
 

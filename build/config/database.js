@@ -34,7 +34,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const sequelize_typescript_1 = require("sequelize-typescript");
 const dotenv = __importStar(require("dotenv"));
-const User_1 = require("../models/User");
+const User_1 = require("../features/UserProfile/model/User");
+const UserAssociates_1 = require("../features/UserAssociates/model/UserAssociates");
 dotenv.config();
 class Database {
     constructor() {
@@ -54,7 +55,7 @@ class Database {
                 username: this.POSTGRES_USER,
                 password: this.POSTGRES_PASSWORD,
                 dialect: "postgres",
-                models: [User_1.User]
+                models: [User_1.User, UserAssociates_1.UserAssociates]
             });
             this.sequelize.authenticate().then(() => {
                 console.log("Postgres has been connected");

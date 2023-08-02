@@ -5,7 +5,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const database_1 = __importDefault(require("./config/database"));
-const UserRouter_1 = __importDefault(require("./router/UserRouter"));
+const UserRouter_1 = __importDefault(require("./features/UserProfile/router/UserRouter"));
+const UserAssociatesRouter_1 = __importDefault(require("./features/UserAssociates/router/UserAssociatesRouter"));
 class App {
     constructor() {
         this.app = (0, express_1.default)();
@@ -27,6 +28,7 @@ class App {
             res.send("welcome home");
         });
         this.app.use("/api/v1/user", UserRouter_1.default);
+        this.app.use("/api/v1/associate", UserAssociatesRouter_1.default);
     }
 }
 const port = 8080;

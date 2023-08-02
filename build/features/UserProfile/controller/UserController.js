@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const User_1 = require("../models/User");
+const User_1 = require("../model/User");
 const UserRepo_1 = require("../repository/UserRepo");
 const fs_1 = __importDefault(require("fs"));
 class UserController {

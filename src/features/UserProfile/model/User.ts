@@ -15,6 +15,12 @@ export class User extends Model {
     public static USER_PHONE = "user_phone" as string;
     public static USER_OCCUPATION = "user_occupation" as string;
     public static USER_GENDER = "user_gender" as string;
+    public static USER_ADDRESS = "user_address" as string;
+    public static USER_LICENCE_STATE = "user_licence_state" as string;
+    public static USER_LICENCE_NUMBER = "user_licence_number" as string;
+    public static USER_YEAR_LICENCED = "user_year_licenced" as string;
+    public static USER_COMPLETED_DEALS = "user_completed_deals" as string;
+    public static USER_PREVIOUS_DEALS = "user_previous_deals" as string;
 
 
 
@@ -43,6 +49,42 @@ export class User extends Model {
         field: User.USER_LICENSE
     })
     licence!: string;
+
+    @Column({
+        type: DataType.STRING,
+        field: User.USER_LICENCE_NUMBER
+    })
+    licenceNumber!: string;
+
+    @Column({
+        type: DataType.STRING,
+        field: User.USER_LICENCE_STATE
+    })
+    licenceState!: string;
+
+    @Column({
+        type: DataType.STRING,
+        field: User.USER_YEAR_LICENCED
+    })
+    yearLicenced!: string;
+
+    @Column({
+        type: DataType.STRING,
+        field: User.USER_ADDRESS
+    })
+    address!: string;
+
+    @Column({
+        type: DataType.STRING,
+        field: User.USER_COMPLETED_DEALS
+    })
+    completedDeals!: string;
+
+    @Column({
+        type: DataType.TEXT,
+        field: User.USER_PREVIOUS_DEALS
+    })
+    previousDeals!: string;
 
     @Column({
         type: DataType.STRING,

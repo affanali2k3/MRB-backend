@@ -1,9 +1,7 @@
-import BaseRoutes from "./base/BaseRouter";
+import BaseRoutes from "../../../router/base/BaseRouter";
 import UserController from "../controller/UserController"
-import validate from "../helper/validate";
 import multer from "multer";
 import fs from "fs";
-import { createUserSchema, updateUserSchema } from "../schema/UserSchema";
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
