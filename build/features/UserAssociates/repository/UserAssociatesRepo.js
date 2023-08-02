@@ -10,6 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserAssociatesRepo = void 0;
+const User_1 = require("../../UserProfile/model/User");
 const UserAssociates_1 = require("../model/UserAssociates");
 const sequelize_1 = require("sequelize"); // Import the error class
 class UserAssociatesRepo {
@@ -37,6 +38,74 @@ class UserAssociatesRepo {
                     throw new Error("There is no friend request");
                 association.status = "Accepted";
                 association.save();
+            }
+            catch (err) {
+                throw new Error(`${err}`);
+            }
+        });
+    }
+    declineRequest({ senderEmail, receiverEmail }) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const association = yield UserAssociates_1.UserAssociates.findOne({ where: { userEmail: senderEmail, associateEmail: receiverEmail } });
+                if (!association)
+                    throw new Error("There is no friend request");
+                association.status = "Rejected";
+                association.save();
+            }
+            catch (err) {
+                throw new Error(`${err}`);
+            }
+        });
+    }
+    cancelRequest({ senderEmail, receiverEmail }) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const association = yield UserAssociates_1.UserAssociates.findOne({ where: { userEmail: senderEmail, associateEmail: receiverEmail } });
+                if (!association)
+                    throw new Error("There is no friend request");
+                association.destroy();
+            }
+            catch (err) {
+                throw new Error(`${err}`);
+            }
+        });
+    }
+    getAllAssociates({ userEmail }) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const usersWithAcceptedAssociates = yield User_1.User.findAll({
+                    where: {
+                        user_email: {
+                            [sequelize_1.Op.in]: (0, sequelize_1.literal)(`(
+                      SELECT associate_email
+                      FROM user_associates
+                      WHERE user_email = '${userEmail}' AND association_status = 'Accepted'
+                      UNION
+                      SELECT user_email
+                      FROM user_associates
+                      WHERE associate_email = '${userEmail}' AND association_status = 'Accepted'
+                      )
+                    `),
+                        },
+                    },
+                });
+                return usersWithAcceptedAssociates;
+            }
+            catch (err) {
+                throw new Error(`${err}`);
+            }
+        });
+    }
+    removeAssociate({ userEmail, associateEmail }) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const userAssociates = yield UserAssociates_1.UserAssociates.findOne({
+                    where: sequelize_1.Sequelize.or({ userEmail: userEmail, associateEmail: associateEmail }, { userEmail: associateEmail, associateEmail: userEmail })
+                });
+                if (!userAssociates)
+                    throw new Error("There is no association");
+                userAssociates.destroy();
             }
             catch (err) {
                 throw new Error(`${err}`);

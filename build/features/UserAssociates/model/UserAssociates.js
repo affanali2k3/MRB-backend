@@ -21,15 +21,16 @@ UserAssociates.ASSOCIATION_STATUS = "association_status";
 __decorate([
     (0, sequelize_typescript_1.Column)({
         type: sequelize_typescript_1.DataType.STRING,
-        primaryKey: true,
-        field: UserAssociates_1.USER_EMAIL
+        field: UserAssociates_1.USER_EMAIL,
+        primaryKey: true
     }),
     __metadata("design:type", String)
 ], UserAssociates.prototype, "userEmail", void 0);
 __decorate([
     (0, sequelize_typescript_1.Column)({
         type: sequelize_typescript_1.DataType.STRING,
-        field: UserAssociates_1.ASSOCIATE_EMAIL
+        field: UserAssociates_1.ASSOCIATE_EMAIL,
+        primaryKey: true
     }),
     __metadata("design:type", String)
 ], UserAssociates.prototype, "associateEmail", void 0);

@@ -8,7 +8,11 @@ const BaseRouter_1 = __importDefault(require("../../../router/base/BaseRouter"))
 class UserAssociatesRouter extends BaseRouter_1.default {
     routes() {
         this.router.post("/send", UserAssociatesController_1.default.sendRequest);
-        this.router.post("/accept", UserAssociatesController_1.default.acceptRequest);
+        this.router.patch("/accept", UserAssociatesController_1.default.acceptRequest);
+        this.router.patch("/reject", UserAssociatesController_1.default.declineRequest);
+        this.router.delete("/cancel", UserAssociatesController_1.default.cancelRequest);
+        this.router.get("/getAll", UserAssociatesController_1.default.getAllAssociates);
+        this.router.delete("/remove", UserAssociatesController_1.default.removeAssociate);
     }
 }
 exports.default = new UserAssociatesRouter().router;

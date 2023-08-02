@@ -14,14 +14,16 @@ export class UserAssociates extends Model {
 
     @Column({
         type: DataType.STRING,
-        primaryKey: true,
-        field: UserAssociates.USER_EMAIL
+        field: UserAssociates.USER_EMAIL,
+        primaryKey: true
     })
     userEmail!: string;
 
     @Column({
         type: DataType.STRING,
-        field: UserAssociates.ASSOCIATE_EMAIL
+        field: UserAssociates.ASSOCIATE_EMAIL,
+        primaryKey: true
+
     })
     associateEmail!: string;
 

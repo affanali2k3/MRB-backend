@@ -35,11 +35,53 @@ class UserAssociatesController {
             }
         });
     }
-    declineRequest() {
-        return __awaiter(this, void 0, void 0, function* () { });
+    declineRequest(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const reqBody = req.body;
+                yield new UserAssociatesRepo_1.UserAssociatesRepo().declineRequest({ senderEmail: reqBody.senderEmail, receiverEmail: reqBody.receiverEmail });
+                res.status(200).json({ message: `Request declined succesfully` });
+            }
+            catch (err) {
+                res.status(500).send({ message: `Failed to decline request ${err}` });
+            }
+        });
     }
-    cancelRequest() {
-        return __awaiter(this, void 0, void 0, function* () { });
+    cancelRequest(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const reqBody = req.body;
+                yield new UserAssociatesRepo_1.UserAssociatesRepo().cancelRequest({ senderEmail: reqBody.senderEmail, receiverEmail: reqBody.receiverEmail });
+                res.status(200).json({ message: `Request cancelled succesfully` });
+            }
+            catch (err) {
+                res.status(500).send({ message: `Failed to cancel request ${err}` });
+            }
+        });
+    }
+    getAllAssociates(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const reqBody = req.body;
+                const associates = yield new UserAssociatesRepo_1.UserAssociatesRepo().getAllAssociates({ userEmail: reqBody.userEmail });
+                res.status(200).json({ message: `Got associates succesfully`, data: associates });
+            }
+            catch (err) {
+                res.status(500).send({ message: `Failed to get associates ${err}` });
+            }
+        });
+    }
+    removeAssociate(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const reqBody = req.body;
+                yield new UserAssociatesRepo_1.UserAssociatesRepo().removeAssociate({ userEmail: reqBody.userEmail, associateEmail: reqBody.associateEmail });
+                res.status(200).json({ message: `Removed associate succesfully` });
+            }
+            catch (err) {
+                res.status(500).send({ message: `Failed to remove associate ${err}` });
+            }
+        });
     }
 }
 exports.default = new UserAssociatesController;

@@ -1,5 +1,6 @@
+import { User } from "../../UserProfile/model/User";
 import { UserAssociates } from "../model/UserAssociates";
-import { UniqueConstraintError } from "sequelize"; // Import the error class
+import { Op, Sequelize, UniqueConstraintError, literal } from "sequelize"; // Import the error class
 
 
 interface IUserAssociatesRepo {
@@ -7,9 +8,13 @@ interface IUserAssociatesRepo {
 
     acceptRequest({ senderEmail, receiverEmail }: { senderEmail: string, receiverEmail: string }): Promise<void>;
 
-    // declineRequest(senderEmail: string, receiverEmail: string): Promise<void>;
+    declineRequest({ senderEmail, receiverEmail }: { senderEmail: string, receiverEmail: string }): Promise<void>;
 
-    // cancelRequest(senderEmail: string, receiverEmail: string): Promise<void>;
+    cancelRequest({ senderEmail, receiverEmail }: { senderEmail: string, receiverEmail: string }): Promise<void>;
+
+    getAllAssociates({ userEmail }: { userEmail: string }): Promise<User[]>;
+
+    removeAssociate({ userEmail, associateEmail }: { userEmail: string, associateEmail: string }): Promise<void>;
 }
 
 export class UserAssociatesRepo implements IUserAssociatesRepo {
@@ -42,21 +47,72 @@ export class UserAssociatesRepo implements IUserAssociatesRepo {
             throw new Error(`${err}`);
         }
     }
-    // declineRequest(senderEmail: string, receiverEmail: string): Promise<void> {
-    //     try {
+    async declineRequest({ senderEmail, receiverEmail }: { senderEmail: string, receiverEmail: string }): Promise<void> {
+        try {
+            const association = await UserAssociates.findOne({ where: { userEmail: senderEmail, associateEmail: receiverEmail } });
 
-    //     } catch (err) {
+            if (!association) throw new Error("There is no friend request");
 
-    //         throw new Error(`Failed to decline request: ${err}`);
-    //     }
-    // }
-    // cancelRequest(senderEmail: string, receiverEmail: string): Promise<void> {
-    //     try {
+            association.status = "Rejected";
 
-    //     } catch (err) {
+            association.save();
+        } catch (err) {
 
-    //         throw new Error(`Failed to cancel request: ${err}`);
-    //     }
-    // }
+            throw new Error(`${err}`);
+        }
+    }
+    async cancelRequest({ senderEmail, receiverEmail }: { senderEmail: string, receiverEmail: string }): Promise<void> {
+        try {
+            const association = await UserAssociates.findOne({ where: { userEmail: senderEmail, associateEmail: receiverEmail } });
+
+            if (!association) throw new Error("There is no friend request");
+
+            association.destroy();
+        } catch (err) {
+
+            throw new Error(`${err}`);
+        }
+    }
+
+    async getAllAssociates({ userEmail }: { userEmail: string }) {
+        try {
+            const usersWithAcceptedAssociates = await User.findAll({
+                where: {
+                    user_email: {
+                        [Op.in]: literal(`(
+                      SELECT associate_email
+                      FROM user_associates
+                      WHERE user_email = '${userEmail}' AND association_status = 'Accepted'
+                      UNION
+                      SELECT user_email
+                      FROM user_associates
+                      WHERE associate_email = '${userEmail}' AND association_status = 'Accepted'
+                      )
+                    `),
+                    },
+                },
+            });
+            return usersWithAcceptedAssociates;
+
+        } catch (err) {
+            throw new Error(`${err}`);
+        }
+    }
+
+    async removeAssociate({ userEmail, associateEmail }: { userEmail: string, associateEmail: string }) {
+        try {
+            const userAssociates: UserAssociates | null = await UserAssociates.findOne({
+                where: Sequelize.or({ userEmail: userEmail, associateEmail: associateEmail },
+                    { userEmail: associateEmail, associateEmail: userEmail })
+            });
+
+            if (!userAssociates) throw new Error("There is no association");
+
+            userAssociates.destroy();
+        } catch (err) {
+            throw new Error(`${err}`);
+        }
+    }
+
 
 }
