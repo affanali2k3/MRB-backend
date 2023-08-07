@@ -2,6 +2,7 @@ import { Sequelize } from "sequelize-typescript";
 import * as dotenv from "dotenv";
 import { User } from "../features/UserProfile/model/User";
 import { UserAssociates } from "../features/UserAssociates/model/UserAssociates";
+import { Message } from "../features/Chat/model/MessageModel";
 dotenv.config()
 
 class Database {
@@ -25,7 +26,7 @@ class Database {
             username: this.POSTGRES_USER,
             password: this.POSTGRES_PASSWORD,
             dialect: "postgres",
-            models: [User, UserAssociates]
+            models: [User, UserAssociates, Message]
         });
 
         this.sequelize.authenticate().then(() => {

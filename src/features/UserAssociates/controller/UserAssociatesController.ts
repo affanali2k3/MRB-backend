@@ -1,6 +1,7 @@
 import { Request, Response } from "express"
 import { UserAssociatesRepo } from "../repository/UserAssociatesRepo";
 import { User } from "../../UserProfile/model/User";
+import { UserAssociates } from "../model/UserAssociates";
 
 interface RequestBody {
     senderEmail: string;
@@ -56,9 +57,9 @@ class UserAssociatesController {
 
     async getAllAssociates(req: Request, res: Response) {
         try {
-            const reqBody: AssociateBody = req.body;
+            const userEmail: string = req.params.userEmail;
 
-            const associates: User[] = await new UserAssociatesRepo().getAllAssociates({ userEmail: reqBody.userEmail });
+            const associates: User[] = await new UserAssociatesRepo().getAllAssociates({ userEmail: userEmail });
             res.status(200).json({ message: `Got associates succesfully`, data: associates });
         } catch (err) {
 
@@ -72,6 +73,19 @@ class UserAssociatesController {
 
             await new UserAssociatesRepo().removeAssociate({ userEmail: reqBody.userEmail, associateEmail: reqBody.associateEmail });
             res.status(200).json({ message: `Removed associate succesfully` });
+        } catch (err) {
+
+            res.status(500).send({ message: `Failed to remove associate ${err}` });
+        }
+    }
+
+    async checkRequestStatusWithUser(req: Request, res: Response) {
+        try {
+            const reqBody: AssociateBody = req.body;
+
+            const userAssociate: UserAssociates | null = await new UserAssociatesRepo()
+                .checkRequestStatusWithUser({ userEmail: reqBody.userEmail, associateEmail: reqBody.associateEmail });
+            res.status(200).json({ message: 'Got status successfully', data: userAssociate });
         } catch (err) {
 
             res.status(500).send({ message: `Failed to remove associate ${err}` });

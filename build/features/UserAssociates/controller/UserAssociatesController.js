@@ -62,8 +62,8 @@ class UserAssociatesController {
     getAllAssociates(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const reqBody = req.body;
-                const associates = yield new UserAssociatesRepo_1.UserAssociatesRepo().getAllAssociates({ userEmail: reqBody.userEmail });
+                const userEmail = req.params.userEmail;
+                const associates = yield new UserAssociatesRepo_1.UserAssociatesRepo().getAllAssociates({ userEmail: userEmail });
                 res.status(200).json({ message: `Got associates succesfully`, data: associates });
             }
             catch (err) {
@@ -77,6 +77,19 @@ class UserAssociatesController {
                 const reqBody = req.body;
                 yield new UserAssociatesRepo_1.UserAssociatesRepo().removeAssociate({ userEmail: reqBody.userEmail, associateEmail: reqBody.associateEmail });
                 res.status(200).json({ message: `Removed associate succesfully` });
+            }
+            catch (err) {
+                res.status(500).send({ message: `Failed to remove associate ${err}` });
+            }
+        });
+    }
+    checkRequestStatusWithUser(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const reqBody = req.body;
+                const userAssociate = yield new UserAssociatesRepo_1.UserAssociatesRepo()
+                    .checkRequestStatusWithUser({ userEmail: reqBody.userEmail, associateEmail: reqBody.associateEmail });
+                res.status(200).json({ message: 'Got status successfully', data: userAssociate });
             }
             catch (err) {
                 res.status(500).send({ message: `Failed to remove associate ${err}` });

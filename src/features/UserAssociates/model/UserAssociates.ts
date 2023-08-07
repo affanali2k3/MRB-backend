@@ -1,4 +1,5 @@
-import { Model, Table, Column, DataType } from "sequelize-typescript";
+import { Model, Table, Column, DataType, ForeignKey } from "sequelize-typescript";
+import { User } from "../../UserProfile/model/User";
 
 
 @Table({
@@ -12,10 +13,11 @@ export class UserAssociates extends Model {
     public static ASSOCIATION_STATUS = "association_status" as string;
 
 
+    @ForeignKey(() => User)
     @Column({
         type: DataType.STRING,
         field: UserAssociates.USER_EMAIL,
-        primaryKey: true
+        primaryKey: true,
     })
     userEmail!: string;
 

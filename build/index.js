@@ -1,18 +1,35 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
+const http_1 = __importDefault(require("http"));
+const socket_io_1 = require("socket.io");
 const database_1 = __importDefault(require("./config/database"));
 const UserRouter_1 = __importDefault(require("./features/UserProfile/router/UserRouter"));
 const UserAssociatesRouter_1 = __importDefault(require("./features/UserAssociates/router/UserAssociatesRouter"));
+const SearchRouter_1 = __importDefault(require("./features/Search/router/SearchRouter"));
+const ChatRouter_1 = __importDefault(require("./features/Chat/router/ChatRouter"));
 class App {
     constructor() {
         this.app = (0, express_1.default)();
+        this.server = http_1.default.createServer(this.app);
+        this.io = new socket_io_1.Server(this.server);
         this.databaseSync();
         this.plugins();
         this.routes();
+        this.activeClientsOnSocket = new Map();
+        this.setupSocketIO();
     }
     plugins() {
         this.app.use(express_1.default.json());
@@ -29,10 +46,30 @@ class App {
         });
         this.app.use("/api/v1/user", UserRouter_1.default);
         this.app.use("/api/v1/associate", UserAssociatesRouter_1.default);
+        this.app.use("/api/v1/search", SearchRouter_1.default);
+        this.app.use("/api/v1/chat", ChatRouter_1.default);
+    }
+    setupSocketIO() {
+        this.io.on("connection", (socket) => {
+            console.log("A user connected");
+            this.activeClientsOnSocket.set(socket.id, '');
+            socket.on("disconnect", () => {
+                console.log("A user disconnected");
+            });
+            socket.on('user-connected', (email) => {
+                this.activeClientsOnSocket.set(email, socket.id);
+            });
+            socket.on("message", ({ message, senderEmail, receiverEmail }) => __awaiter(this, void 0, void 0, function* () {
+                console.log("Message received:", message);
+                console.log("Sender email:", senderEmail);
+                console.log("Receiver Email:", receiverEmail);
+                // this.io.emit("chat message", msg);
+            }));
+        });
     }
 }
 const port = 8080;
-const app = new App().app;
-app.listen(port, () => {
+const server = new App().server;
+server.listen(port, () => {
     console.log("✅ Server started successfully!");
 });

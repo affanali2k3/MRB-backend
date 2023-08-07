@@ -112,5 +112,20 @@ class UserAssociatesRepo {
             }
         });
     }
+    checkRequestStatusWithUser({ userEmail, associateEmail }) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const userAssociates = yield UserAssociates_1.UserAssociates.findOne({
+                    where: sequelize_1.Sequelize.or({ userEmail: userEmail, associateEmail: associateEmail }, { userEmail: associateEmail, associateEmail: userEmail })
+                });
+                if (!userAssociates)
+                    return null;
+                return userAssociates;
+            }
+            catch (err) {
+                throw new Error(`${err}`);
+            }
+        });
+    }
 }
 exports.UserAssociatesRepo = UserAssociatesRepo;

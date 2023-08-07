@@ -37,7 +37,7 @@ class UserController {
 
     async update(req: Request, res: Response) {
         try {
-            console.log(req.body)
+            console.log(req.file)
             let userBucket
             if (req.file !== undefined) {
                 userBucket = `./storage/${req.body.ssn}/${req.file?.filename}`

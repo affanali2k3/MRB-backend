@@ -53,7 +53,7 @@ class UserController {
         var _a;
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                console.log(req.body);
+                console.log(req.file);
                 let userBucket;
                 if (req.file !== undefined) {
                     userBucket = `./storage/${req.body.ssn}/${(_a = req.file) === null || _a === void 0 ? void 0 : _a.filename}`;

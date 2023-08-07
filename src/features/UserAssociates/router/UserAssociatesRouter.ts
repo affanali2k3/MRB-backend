@@ -7,8 +7,9 @@ class UserAssociatesRouter extends BaseRoutes {
         this.router.patch("/accept", UserAssociatesController.acceptRequest)
         this.router.patch("/reject", UserAssociatesController.declineRequest)
         this.router.delete("/cancel", UserAssociatesController.cancelRequest)
-        this.router.get("/getAll", UserAssociatesController.getAllAssociates)
+        this.router.get("/getAll/:userEmail", UserAssociatesController.getAllAssociates)
         this.router.delete("/remove", UserAssociatesController.removeAssociate)
+        this.router.post("/status", UserAssociatesController.checkRequestStatusWithUser)
     }
 }
 

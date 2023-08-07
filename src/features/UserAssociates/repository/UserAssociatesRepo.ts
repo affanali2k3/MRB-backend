@@ -15,6 +15,8 @@ interface IUserAssociatesRepo {
     getAllAssociates({ userEmail }: { userEmail: string }): Promise<User[]>;
 
     removeAssociate({ userEmail, associateEmail }: { userEmail: string, associateEmail: string }): Promise<void>;
+
+    checkRequestStatusWithUser({ userEmail, associateEmail }: { userEmail: string, associateEmail: string }): Promise<UserAssociates | null>;
 }
 
 export class UserAssociatesRepo implements IUserAssociatesRepo {
@@ -35,6 +37,7 @@ export class UserAssociatesRepo implements IUserAssociatesRepo {
     }
     async acceptRequest({ senderEmail, receiverEmail }: { senderEmail: string, receiverEmail: string }): Promise<void> {
         try {
+
             const association = await UserAssociates.findOne({ where: { userEmail: senderEmail, associateEmail: receiverEmail } });
 
             if (!association) throw new Error("There is no friend request");
@@ -109,6 +112,21 @@ export class UserAssociatesRepo implements IUserAssociatesRepo {
             if (!userAssociates) throw new Error("There is no association");
 
             userAssociates.destroy();
+        } catch (err) {
+            throw new Error(`${err}`);
+        }
+    }
+
+    async checkRequestStatusWithUser({ userEmail, associateEmail }: { userEmail: string, associateEmail: string }) {
+        try {
+            const userAssociates: UserAssociates | null = await UserAssociates.findOne({
+                where: Sequelize.or({ userEmail: userEmail, associateEmail: associateEmail },
+                    { userEmail: associateEmail, associateEmail: userEmail })
+            });
+
+            if (!userAssociates) return null;
+
+            return userAssociates;
         } catch (err) {
             throw new Error(`${err}`);
         }

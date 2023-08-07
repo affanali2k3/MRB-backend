@@ -8,43 +8,33 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var UserAssociates_1;
+var Chat_1;
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UserAssociates = void 0;
+exports.Chat = void 0;
 const sequelize_typescript_1 = require("sequelize-typescript");
-const User_1 = require("../../UserProfile/model/User");
-let UserAssociates = exports.UserAssociates = UserAssociates_1 = class UserAssociates extends sequelize_typescript_1.Model {
+let Chat = exports.Chat = Chat_1 = class Chat extends sequelize_typescript_1.Model {
 };
-UserAssociates.USER_ASSOCIATES_TABLE_NAME = "user_associates";
-UserAssociates.USER_EMAIL = "user_email";
-UserAssociates.ASSOCIATE_EMAIL = "associate_email";
-UserAssociates.ASSOCIATION_STATUS = "association_status";
+Chat.CHAT_TABLE_NAME = "chat";
+Chat.USER1_EMAIL = "user1_email";
+Chat.USER2_EMAIL = "user2_email";
 __decorate([
-    (0, sequelize_typescript_1.ForeignKey)(() => User_1.User),
     (0, sequelize_typescript_1.Column)({
         type: sequelize_typescript_1.DataType.STRING,
-        field: UserAssociates_1.USER_EMAIL,
+        field: Chat_1.USER1_EMAIL,
         primaryKey: true,
     }),
     __metadata("design:type", String)
-], UserAssociates.prototype, "userEmail", void 0);
+], Chat.prototype, "user1Email", void 0);
 __decorate([
     (0, sequelize_typescript_1.Column)({
         type: sequelize_typescript_1.DataType.STRING,
-        field: UserAssociates_1.ASSOCIATE_EMAIL,
+        field: Chat_1.USER2_EMAIL,
         primaryKey: true
     }),
     __metadata("design:type", String)
-], UserAssociates.prototype, "associateEmail", void 0);
-__decorate([
-    (0, sequelize_typescript_1.Column)({
-        type: sequelize_typescript_1.DataType.STRING,
-        field: UserAssociates_1.ASSOCIATION_STATUS
-    }),
-    __metadata("design:type", String)
-], UserAssociates.prototype, "status", void 0);
-exports.UserAssociates = UserAssociates = UserAssociates_1 = __decorate([
+], Chat.prototype, "user2Email", void 0);
+exports.Chat = Chat = Chat_1 = __decorate([
     (0, sequelize_typescript_1.Table)({
-        tableName: UserAssociates_1.USER_ASSOCIATES_TABLE_NAME
+        tableName: Chat_1.CHAT_TABLE_NAME
     })
-], UserAssociates);
+], Chat);

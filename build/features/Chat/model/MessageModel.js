@@ -8,43 +8,49 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var UserAssociates_1;
+var Message_1;
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UserAssociates = void 0;
+exports.Message = void 0;
 const sequelize_typescript_1 = require("sequelize-typescript");
-const User_1 = require("../../UserProfile/model/User");
-let UserAssociates = exports.UserAssociates = UserAssociates_1 = class UserAssociates extends sequelize_typescript_1.Model {
+let Message = exports.Message = Message_1 = class Message extends sequelize_typescript_1.Model {
 };
-UserAssociates.USER_ASSOCIATES_TABLE_NAME = "user_associates";
-UserAssociates.USER_EMAIL = "user_email";
-UserAssociates.ASSOCIATE_EMAIL = "associate_email";
-UserAssociates.ASSOCIATION_STATUS = "association_status";
-__decorate([
-    (0, sequelize_typescript_1.ForeignKey)(() => User_1.User),
-    (0, sequelize_typescript_1.Column)({
-        type: sequelize_typescript_1.DataType.STRING,
-        field: UserAssociates_1.USER_EMAIL,
-        primaryKey: true,
-    }),
-    __metadata("design:type", String)
-], UserAssociates.prototype, "userEmail", void 0);
+Message.MESSAGE_TABLE_NAME = 'chat';
+Message.MESSAGE_ID = 'message_id';
+Message.SENDER_EMAIL = 'sender_email';
+Message.RECEIVER_EMAIL = 'receiver_email';
+Message.MESSAGE = 'message';
 __decorate([
     (0, sequelize_typescript_1.Column)({
-        type: sequelize_typescript_1.DataType.STRING,
-        field: UserAssociates_1.ASSOCIATE_EMAIL,
+        type: sequelize_typescript_1.DataType.INTEGER,
+        field: Message_1.MESSAGE_ID,
+        autoIncrement: true,
         primaryKey: true
     }),
-    __metadata("design:type", String)
-], UserAssociates.prototype, "associateEmail", void 0);
+    __metadata("design:type", Number)
+], Message.prototype, "message_id", void 0);
 __decorate([
     (0, sequelize_typescript_1.Column)({
         type: sequelize_typescript_1.DataType.STRING,
-        field: UserAssociates_1.ASSOCIATION_STATUS
+        field: Message_1.SENDER_EMAIL
     }),
     __metadata("design:type", String)
-], UserAssociates.prototype, "status", void 0);
-exports.UserAssociates = UserAssociates = UserAssociates_1 = __decorate([
+], Message.prototype, "senderEmail", void 0);
+__decorate([
+    (0, sequelize_typescript_1.Column)({
+        type: sequelize_typescript_1.DataType.STRING,
+        field: Message_1.RECEIVER_EMAIL
+    }),
+    __metadata("design:type", String)
+], Message.prototype, "receiverEmail", void 0);
+__decorate([
+    (0, sequelize_typescript_1.Column)({
+        type: sequelize_typescript_1.DataType.TEXT,
+        field: Message_1.MESSAGE
+    }),
+    __metadata("design:type", String)
+], Message.prototype, "message", void 0);
+exports.Message = Message = Message_1 = __decorate([
     (0, sequelize_typescript_1.Table)({
-        tableName: UserAssociates_1.USER_ASSOCIATES_TABLE_NAME
+        tableName: Message_1.MESSAGE_TABLE_NAME
     })
-], UserAssociates);
+], Message);
