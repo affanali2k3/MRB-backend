@@ -37,6 +37,9 @@ const dotenv = __importStar(require("dotenv"));
 const User_1 = require("../features/UserProfile/model/User");
 const UserAssociates_1 = require("../features/UserAssociates/model/UserAssociates");
 const MessageModel_1 = require("../features/Chat/model/MessageModel");
+const PostModel_1 = require("../features/Post/model/PostModel");
+const PostImages_1 = require("../features/Post/model/PostImages");
+const associations_1 = require("./associations");
 dotenv.config();
 class Database {
     constructor() {
@@ -56,8 +59,9 @@ class Database {
                 username: this.POSTGRES_USER,
                 password: this.POSTGRES_PASSWORD,
                 dialect: "postgres",
-                models: [User_1.User, UserAssociates_1.UserAssociates, MessageModel_1.Message]
+                models: [User_1.User, PostModel_1.Post, PostImages_1.PostImages, UserAssociates_1.UserAssociates, MessageModel_1.Message]
             });
+            (0, associations_1.associations)();
             this.sequelize.authenticate().then(() => {
                 console.log("Postgres has been connected");
             }).catch((err) => {

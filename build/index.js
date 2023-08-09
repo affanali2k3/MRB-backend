@@ -20,6 +20,7 @@ const UserRouter_1 = __importDefault(require("./features/UserProfile/router/User
 const UserAssociatesRouter_1 = __importDefault(require("./features/UserAssociates/router/UserAssociatesRouter"));
 const SearchRouter_1 = __importDefault(require("./features/Search/router/SearchRouter"));
 const ChatRouter_1 = __importDefault(require("./features/Chat/router/ChatRouter"));
+const PostRouter_1 = __importDefault(require("./features/Post/router/PostRouter"));
 class App {
     constructor() {
         this.app = (0, express_1.default)();
@@ -48,6 +49,7 @@ class App {
         this.app.use("/api/v1/associate", UserAssociatesRouter_1.default);
         this.app.use("/api/v1/search", SearchRouter_1.default);
         this.app.use("/api/v1/chat", ChatRouter_1.default);
+        this.app.use("/api/v1/post", PostRouter_1.default);
     }
     setupSocketIO() {
         this.io.on("connection", (socket) => {

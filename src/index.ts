@@ -8,6 +8,7 @@ import SearchRouter from "./features/Search/router/SearchRouter";
 import { Message } from "./features/Chat/model/MessageModel";
 import ChatController from "./features/Chat/controller/ChatController";
 import ChatRouter from "./features/Chat/router/ChatRouter";
+import PostRouter from "./features/Post/router/PostRouter";
 
 class App {
     public app: Application;
@@ -45,6 +46,7 @@ class App {
         this.app.use("/api/v1/associate", UserAssociatesRouter);
         this.app.use("/api/v1/search", SearchRouter);
         this.app.use("/api/v1/chat", ChatRouter);
+        this.app.use("/api/v1/post", PostRouter);
     }
 
     protected setupSocketIO(): void {

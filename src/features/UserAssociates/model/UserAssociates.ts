@@ -1,5 +1,6 @@
 import { Model, Table, Column, DataType, ForeignKey } from "sequelize-typescript";
 import { User } from "../../UserProfile/model/User";
+import { Post } from "../../Post/model/PostModel";
 
 
 @Table({
@@ -38,3 +39,4 @@ export class UserAssociates extends Model {
 
 
 }
+
