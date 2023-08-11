@@ -6,6 +6,8 @@ import { Message } from "../features/Chat/model/MessageModel";
 import { Post } from "../features/Post/model/PostModel";
 import { PostImages } from "../features/Post/model/PostImages";
 import { associations } from "./associations";
+import { Like } from "../features/Like/model/LikeModel";
+import { Comment } from "../features/Comment/model/CommentModel";
 dotenv.config()
 
 class Database {
@@ -29,7 +31,7 @@ class Database {
             username: this.POSTGRES_USER,
             password: this.POSTGRES_PASSWORD,
             dialect: "postgres",
-            models: [User, Post, PostImages, UserAssociates, Message]
+            models: [User, Post, PostImages, UserAssociates, Message, Like, Comment]
         });
 
         associations();

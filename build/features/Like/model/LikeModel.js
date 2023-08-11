@@ -8,49 +8,47 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var Post_1;
+var Like_1;
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Post = void 0;
+exports.Like = void 0;
 const sequelize_typescript_1 = require("sequelize-typescript");
-let Post = exports.Post = Post_1 = class Post extends sequelize_typescript_1.Model {
+let Like = exports.Like = Like_1 = class Like extends sequelize_typescript_1.Model {
 };
-Post.POST_TABLE_NAME = "posts";
-Post.POST_ID = "post_id";
-Post.USER_EMAIL = "user_email";
-Post.POST_TEXT = "post_text";
-Post.POST_NAME = "post_name";
+Like.TABLE_NAME = "likes";
+Like.ID = "like_id";
+Like.POST_ID = "post_id";
+Like.USER_EMAIL = "user_email";
 __decorate([
     (0, sequelize_typescript_1.Column)({
         type: sequelize_typescript_1.DataType.INTEGER,
-        field: Post_1.POST_ID,
+        field: Like_1.ID,
         primaryKey: true,
         autoIncrement: true
     }),
     __metadata("design:type", Number)
-], Post.prototype, "id", void 0);
+], Like.prototype, "id", void 0);
+__decorate([
+    (0, sequelize_typescript_1.Column)({
+        type: sequelize_typescript_1.DataType.INTEGER,
+        field: Like_1.POST_ID,
+        allowNull: false,
+        unique: true,
+        references: { model: 'posts', key: 'post_id' }
+    }),
+    __metadata("design:type", Number)
+], Like.prototype, "postId", void 0);
 __decorate([
     (0, sequelize_typescript_1.Column)({
         type: sequelize_typescript_1.DataType.STRING,
-        field: Post_1.POST_TEXT,
+        field: Like_1.USER_EMAIL,
+        allowNull: false,
+        unique: true,
+        references: { model: 'users', key: 'user_email' },
     }),
     __metadata("design:type", String)
-], Post.prototype, "text", void 0);
-__decorate([
-    (0, sequelize_typescript_1.Column)({
-        type: sequelize_typescript_1.DataType.STRING,
-        field: Post_1.USER_EMAIL,
-    }),
-    __metadata("design:type", String)
-], Post.prototype, "userEmail", void 0);
-__decorate([
-    (0, sequelize_typescript_1.Column)({
-        type: sequelize_typescript_1.DataType.STRING,
-        field: Post_1.POST_NAME,
-    }),
-    __metadata("design:type", String)
-], Post.prototype, "name", void 0);
-exports.Post = Post = Post_1 = __decorate([
+], Like.prototype, "userEmail", void 0);
+exports.Like = Like = Like_1 = __decorate([
     (0, sequelize_typescript_1.Table)({
-        tableName: Post_1.POST_TABLE_NAME
+        tableName: Like_1.TABLE_NAME
     })
-], Post);
+], Like);

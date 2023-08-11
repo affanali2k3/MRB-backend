@@ -29,6 +29,7 @@ class PostRouter extends BaseRouter_1.default {
     routes() {
         this.router.post("/", upload.array('images'), PostController_1.default.savePost); //
         this.router.get("/:userEmail", PostController_1.default.getAllPosts); //
+        this.router.get("/:userEmail/:postName/:imageName", PostController_1.default.getPostImage); //
     }
 }
 exports.default = new PostRouter().router;

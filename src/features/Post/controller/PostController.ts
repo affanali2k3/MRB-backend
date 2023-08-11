@@ -2,31 +2,37 @@ import { Request, Response } from "express";
 import PostRepo from "../repository/PostRepository";
 import { Post } from "../model/PostModel";
 import path from "path";
-import fs from "fs";
 
-class PostData {
-    constructor(text: string, userEmail: string, createdAt: string, updatedAt: string) {
-        this.text = text
-            , this.userEmail = userEmail, this.createdAt = createdAt, this.updatedAt = updatedAt, this.images = null
+class PostWithImages {
+    constructor(text: string, name: string, userEmail: string, createdAt: string, updatedAt: string, imagesName: string[]) {
+        this.text = text, this.name = name
+            , this.userEmail = userEmail, this.createdAt = createdAt, this.updatedAt = updatedAt, this.imagesName = imagesName
     }
     text: string;
+    name: string;
     userEmail: string;
     createdAt: string;
     updatedAt: string;
-    images: Buffer[] | null;
+    imagesName: string[] | null;
 }
 class PostController {
     async savePost(req: Request, res: Response) {
         try {
             const postText: string = req.body.postText;
             const userEmail: string = req.body.userEmail;
+            let fileNames: string[] | null = null;
 
-            let uniqueFolderName: string = req.body.uniqueFolderName;
-            let imageFolderPath: string | null = `./storage/${userEmail}/postImages/${uniqueFolderName}/`;;
 
-            if (req.files === null || req.files?.length === 0) { imageFolderPath = null }
+            if (req.files !== undefined) {
+                fileNames = [];
+                (req.files as Array<Express.Multer.File>).map(function (file) {
+                    fileNames?.push(file.filename);
+                })
+            }
 
-            await PostRepo.savePost({ userEmail: userEmail, postText: postText, imageFolderPath: imageFolderPath });
+            const uniquePostName: string = req.body.uniqueFolderName;
+
+            await PostRepo.savePost({ userEmail: userEmail, postText: postText, fileNames: fileNames, postName: uniquePostName });
 
             res.status(200).json({
                 message: "Post saved succesfully",
@@ -39,30 +45,34 @@ class PostController {
         }
     }
 
+    async getPostImage(req: Request, res: Response) {
+        try {
+            const userEmail: string = req.params.userEmail;
+            const postName: string = req.params.postName;
+            const imageName: string = req.params.imageName;
+            res.sendFile(path.join('C:/Users/Affan/Desktop/MRB/backend/storage/', userEmail, 'postImages', postName, imageName));
+        } catch (err) {
+            res.status(500).json({
+                message: `Failed to get post image ${err}`
+            }
+            )
+        }
+    }
+
     async getAllPosts(req: Request, res: Response) {
         try {
             const userEmail: string = req.params.userEmail;
             const posts: Post[] = await PostRepo.getAllPosts({ userEmail: userEmail });
-
-            const postsToSend: PostData[] = [];
-
-
+            const postsWithImages: PostWithImages[] = [];
             for (const post of posts) {
-                const newPost = new PostData(post.text, post.userEmail, post.createdAt, post.updatedAt);
-                if (post.imageFolderPath !== null) {
-                    newPost.images = [];
-                    const files = fs.readdirSync(post.imageFolderPath);
-                    for (const file of files) {
-                        const fileData: Buffer = fs.readFileSync(path.join(post.imageFolderPath, file));
-                        newPost.images.push(fileData);
-                    }
-                }
-                postsToSend.push(newPost);
+                const postImages: string[] = await PostRepo.getImageNamesOfPost({ postId: post.id });
+                const postWithImages: PostWithImages = new PostWithImages(post.text, post.name, post.userEmail, post.createdAt, post.updatedAt, postImages);
+                postsWithImages.push(postWithImages);
             }
 
             res.status(200).json({
                 message: "Got posts succesfully",
-                data: postsToSend
+                data: postsWithImages
             });
         } catch (err) {
             res.status(500).json({

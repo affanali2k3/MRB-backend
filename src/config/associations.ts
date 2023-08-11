@@ -8,14 +8,8 @@ export function associations() {
     });
 
     Post.belongsTo(User, {
-        foreignKey: 'user_email',
+        foreignKey: 'userEmail',
     });
 
-    Post.hasMany(PostImages, {
-        foreignKey: 'post_id'
-    });
 
-    PostImages.belongsTo(Post, {
-        foreignKey: 'post_id'
-    })
 }

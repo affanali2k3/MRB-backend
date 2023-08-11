@@ -8,49 +8,53 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var Post_1;
+var Comment_1;
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Post = void 0;
+exports.Comment = void 0;
 const sequelize_typescript_1 = require("sequelize-typescript");
-let Post = exports.Post = Post_1 = class Post extends sequelize_typescript_1.Model {
+let Comment = exports.Comment = Comment_1 = class Comment extends sequelize_typescript_1.Model {
 };
-Post.POST_TABLE_NAME = "posts";
-Post.POST_ID = "post_id";
-Post.USER_EMAIL = "user_email";
-Post.POST_TEXT = "post_text";
-Post.POST_NAME = "post_name";
+Comment.TABLE_NAME = "comments";
+Comment.ID = "comment_id";
+Comment.POST_ID = "post_id";
+Comment.USER_EMAIL = "user_email";
+Comment.TEXT = "text";
 __decorate([
     (0, sequelize_typescript_1.Column)({
         type: sequelize_typescript_1.DataType.INTEGER,
-        field: Post_1.POST_ID,
+        field: Comment_1.ID,
         primaryKey: true,
         autoIncrement: true
     }),
     __metadata("design:type", Number)
-], Post.prototype, "id", void 0);
+], Comment.prototype, "id", void 0);
+__decorate([
+    (0, sequelize_typescript_1.Column)({
+        type: sequelize_typescript_1.DataType.INTEGER,
+        field: Comment_1.POST_ID,
+        allowNull: false,
+        references: { model: 'posts', key: 'post_id' }
+    }),
+    __metadata("design:type", Number)
+], Comment.prototype, "postId", void 0);
 __decorate([
     (0, sequelize_typescript_1.Column)({
         type: sequelize_typescript_1.DataType.STRING,
-        field: Post_1.POST_TEXT,
+        field: Comment_1.USER_EMAIL,
+        allowNull: false,
+        references: { model: 'users', key: 'user_email' },
     }),
     __metadata("design:type", String)
-], Post.prototype, "text", void 0);
+], Comment.prototype, "userEmail", void 0);
 __decorate([
     (0, sequelize_typescript_1.Column)({
-        type: sequelize_typescript_1.DataType.STRING,
-        field: Post_1.USER_EMAIL,
+        type: sequelize_typescript_1.DataType.TEXT,
+        field: Comment_1.TEXT,
     }),
     __metadata("design:type", String)
-], Post.prototype, "userEmail", void 0);
-__decorate([
-    (0, sequelize_typescript_1.Column)({
-        type: sequelize_typescript_1.DataType.STRING,
-        field: Post_1.POST_NAME,
-    }),
-    __metadata("design:type", String)
-], Post.prototype, "name", void 0);
-exports.Post = Post = Post_1 = __decorate([
+], Comment.prototype, "text", void 0);
+exports.Comment = Comment = Comment_1 = __decorate([
     (0, sequelize_typescript_1.Table)({
-        tableName: Post_1.POST_TABLE_NAME
+        tableName: Comment_1.TABLE_NAME
     })
-], Post);
+], Comment);

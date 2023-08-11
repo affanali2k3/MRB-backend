@@ -16,13 +16,13 @@ let PostImages = exports.PostImages = PostImages_1 = class PostImages extends se
 };
 PostImages.POST_IMAGES_TABLE_NAME = "post_images";
 PostImages.POST_ID = "post_id";
-PostImages.POST_IMAGE = "post_image";
+PostImages.POST_IMAGE = "image_name";
 __decorate([
     (0, sequelize_typescript_1.Column)({
-        type: sequelize_typescript_1.DataType.NUMBER,
         field: PostImages_1.POST_ID,
+        references: { model: 'posts', key: 'post_id' }
     }),
-    __metadata("design:type", String)
+    __metadata("design:type", Number)
 ], PostImages.prototype, "postId", void 0);
 __decorate([
     (0, sequelize_typescript_1.Column)({
@@ -30,7 +30,7 @@ __decorate([
         field: PostImages_1.POST_IMAGE,
     }),
     __metadata("design:type", String)
-], PostImages.prototype, "imagePath", void 0);
+], PostImages.prototype, "image_name", void 0);
 exports.PostImages = PostImages = PostImages_1 = __decorate([
     (0, sequelize_typescript_1.Table)({
         tableName: PostImages_1.POST_IMAGES_TABLE_NAME

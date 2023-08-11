@@ -33,6 +33,7 @@ class PostRouter extends BaseRoutes {
     public routes(): void {
         this.router.post("/", upload.array('images'), PostController.savePost);//
         this.router.get("/:userEmail", PostController.getAllPosts);//
+        this.router.get("/:userEmail/:postName/:imageName", PostController.getPostImage);//
     }
 }
 

@@ -7,11 +7,11 @@ import { User } from "../../UserProfile/model/User";
 })
 
 export class Post extends Model {
-    public static POST_TABLE_NAME = "post" as string;
+    public static POST_TABLE_NAME = "posts" as string;
     public static POST_ID = "post_id" as string;
     public static USER_EMAIL = "user_email" as string;
     public static POST_TEXT = "post_text" as string;
-    public static POST_IMAGE_FOLDER_PATH = "post_image_folder_path" as string;
+    public static POST_NAME = "post_name" as string;
 
 
     @Column({
@@ -20,7 +20,7 @@ export class Post extends Model {
         primaryKey: true,
         autoIncrement: true
     })
-    id!: string;
+    id!: number;
 
 
     @Column({
@@ -37,9 +37,9 @@ export class Post extends Model {
 
     @Column({
         type: DataType.STRING,
-        field: Post.POST_IMAGE_FOLDER_PATH,
+        field: Post.POST_NAME,
     })
-    imageFolderPath!: string | null;
+    name!: string;
 
 
 }

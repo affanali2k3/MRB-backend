@@ -21,6 +21,9 @@ const UserAssociatesRouter_1 = __importDefault(require("./features/UserAssociate
 const SearchRouter_1 = __importDefault(require("./features/Search/router/SearchRouter"));
 const ChatRouter_1 = __importDefault(require("./features/Chat/router/ChatRouter"));
 const PostRouter_1 = __importDefault(require("./features/Post/router/PostRouter"));
+const path_1 = __importDefault(require("path"));
+const LikeRouter_1 = __importDefault(require("./features/Like/router/LikeRouter"));
+const CommentRouter_1 = __importDefault(require("./features/Comment/router/CommentRouter"));
 class App {
     constructor() {
         this.app = (0, express_1.default)();
@@ -34,6 +37,7 @@ class App {
     }
     plugins() {
         this.app.use(express_1.default.json());
+        this.app.use(express_1.default.static(path_1.default.join(__dirname, 'storage')));
         this.app.use(express_1.default.urlencoded({ extended: true }));
     }
     databaseSync() {
@@ -50,6 +54,8 @@ class App {
         this.app.use("/api/v1/search", SearchRouter_1.default);
         this.app.use("/api/v1/chat", ChatRouter_1.default);
         this.app.use("/api/v1/post", PostRouter_1.default);
+        this.app.use("/api/v1/like", LikeRouter_1.default);
+        this.app.use("/api/v1/comment", CommentRouter_1.default);
     }
     setupSocketIO() {
         this.io.on("connection", (socket) => {

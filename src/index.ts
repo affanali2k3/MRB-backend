@@ -9,6 +9,9 @@ import { Message } from "./features/Chat/model/MessageModel";
 import ChatController from "./features/Chat/controller/ChatController";
 import ChatRouter from "./features/Chat/router/ChatRouter";
 import PostRouter from "./features/Post/router/PostRouter";
+import path from "path";
+import LikeRouter from "./features/Like/router/LikeRouter";
+import CommentRouter from "./features/Comment/router/CommentRouter";
 
 class App {
     public app: Application;
@@ -30,6 +33,7 @@ class App {
 
     protected plugins(): void {
         this.app.use(express.json());
+        this.app.use(express.static(path.join(__dirname, 'storage')));
         this.app.use(express.urlencoded({ extended: true }));
     }
 
@@ -47,6 +51,8 @@ class App {
         this.app.use("/api/v1/search", SearchRouter);
         this.app.use("/api/v1/chat", ChatRouter);
         this.app.use("/api/v1/post", PostRouter);
+        this.app.use("/api/v1/like", LikeRouter);
+        this.app.use("/api/v1/comment", CommentRouter);
     }
 
     protected setupSocketIO(): void {

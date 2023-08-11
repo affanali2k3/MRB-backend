@@ -9,16 +9,25 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const PostImages_1 = require("../model/PostImages");
 const PostModel_1 = require("../model/PostModel");
 class PostRepo {
-    savePost({ userEmail, postText, imageFolderPath }) {
+    savePost({ userEmail, postText, postName, fileNames }) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const post = new PostModel_1.Post();
                 post.text = postText;
                 post.userEmail = userEmail;
-                post.imageFolderPath = imageFolderPath;
-                yield post.save();
+                post.name = postName;
+                const newPost = yield post.save();
+                if (fileNames === null)
+                    return;
+                for (const fileName of fileNames) {
+                    const postImage = new PostImages_1.PostImages();
+                    postImage.postId = newPost.id;
+                    postImage.image_name = fileName;
+                    yield postImage.save();
+                }
             }
             catch (err) {
                 throw new Error(`${err}`);
@@ -30,6 +39,17 @@ class PostRepo {
             try {
                 const posts = yield PostModel_1.Post.findAll({ where: { userEmail: userEmail } });
                 return posts;
+            }
+            catch (err) {
+                throw new Error(`${err}`);
+            }
+        });
+    }
+    getImageNamesOfPost({ postId }) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const imageNames = (yield PostImages_1.PostImages.findAll({ where: { postId: postId }, attributes: ['image_name'] })).map(postImage => postImage.image_name);
+                return imageNames;
             }
             catch (err) {
                 throw new Error(`${err}`);
