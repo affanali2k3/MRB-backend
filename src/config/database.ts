@@ -34,8 +34,6 @@ class Database {
             models: [User, Post, PostImages, UserAssociates, Message, Like, Comment]
         });
 
-        associations();
-
         this.sequelize.authenticate().then(() => {
             console.log("Postgres has been connected")
         }).catch((err) => {
