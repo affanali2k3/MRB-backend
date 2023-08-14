@@ -30,6 +30,22 @@ class LikeController {
             }
         });
     }
+    removeLike(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const data = req.body;
+                yield LikeRepository_1.default.removeLike({ likeId: data.likeId, postId: data.postId });
+                res.status(200).json({
+                    message: 'Like deleted succesfully'
+                });
+            }
+            catch (err) {
+                res.status(500).json({
+                    message: `Cannot delete like ${err}`
+                });
+            }
+        });
+    }
     getPostLikes(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {

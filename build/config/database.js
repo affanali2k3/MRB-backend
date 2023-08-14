@@ -39,7 +39,6 @@ const UserAssociates_1 = require("../features/UserAssociates/model/UserAssociate
 const MessageModel_1 = require("../features/Chat/model/MessageModel");
 const PostModel_1 = require("../features/Post/model/PostModel");
 const PostImages_1 = require("../features/Post/model/PostImages");
-const associations_1 = require("./associations");
 const LikeModel_1 = require("../features/Like/model/LikeModel");
 const CommentModel_1 = require("../features/Comment/model/CommentModel");
 dotenv.config();
@@ -63,7 +62,6 @@ class Database {
                 dialect: "postgres",
                 models: [User_1.User, PostModel_1.Post, PostImages_1.PostImages, UserAssociates_1.UserAssociates, MessageModel_1.Message, LikeModel_1.Like, CommentModel_1.Comment]
             });
-            (0, associations_1.associations)();
             this.sequelize.authenticate().then(() => {
                 console.log("Postgres has been connected");
             }).catch((err) => {

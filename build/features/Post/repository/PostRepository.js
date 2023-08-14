@@ -19,6 +19,7 @@ class PostRepo {
                 post.text = postText;
                 post.userEmail = userEmail;
                 post.name = postName;
+                post.likes = 0;
                 const newPost = yield post.save();
                 if (fileNames === null)
                     return;

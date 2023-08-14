@@ -9,6 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const PostModel_1 = require("../../Post/model/PostModel");
 const LikeModel_1 = require("../model/LikeModel");
 class LikeRepo {
     saveLike({ postId, userEmail }) {
@@ -18,6 +19,42 @@ class LikeRepo {
                 like.postId = postId;
                 like.userEmail = userEmail;
                 yield like.save();
+                const post = yield PostModel_1.Post.findOne({ where: { id: postId } });
+                if (!post)
+                    return;
+                post.likes = post.likes + 1;
+                yield post.save();
+            }
+            catch (err) {
+                throw new Error(`${err}`);
+            }
+        });
+    }
+    getLike({ postId, userEmail }) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const like = yield LikeModel_1.Like.findOne({ where: { postId: postId, userEmail: userEmail } });
+                if (!like)
+                    return null;
+                return like.id;
+            }
+            catch (err) {
+                throw new Error(`${err}`);
+            }
+        });
+    }
+    removeLike({ likeId, postId }) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const like = yield LikeModel_1.Like.findOne({ where: { id: likeId } });
+                if (!like)
+                    throw new Error('Like not found');
+                const post = yield PostModel_1.Post.findOne({ where: { id: postId } });
+                if (!post)
+                    return;
+                post.likes = post.likes - 1;
+                yield post.save();
+                yield like.destroy();
             }
             catch (err) {
                 throw new Error(`${err}`);

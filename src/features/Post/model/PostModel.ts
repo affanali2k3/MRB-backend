@@ -12,6 +12,7 @@ export class Post extends Model {
     public static USER_EMAIL = "user_email" as string;
     public static POST_TEXT = "post_text" as string;
     public static POST_NAME = "post_name" as string;
+    public static POST_LIKES = "post_likes" as string;
 
 
     @Column({
@@ -26,12 +27,14 @@ export class Post extends Model {
     @Column({
         type: DataType.STRING,
         field: Post.POST_TEXT,
+        allowNull: false,
     })
     text!: string;
 
     @Column({
         type: DataType.STRING,
         field: Post.USER_EMAIL,
+        allowNull: false,
     })
     userEmail!: string;
 
@@ -40,6 +43,12 @@ export class Post extends Model {
         field: Post.POST_NAME,
     })
     name!: string;
+
+    @Column({
+        type: DataType.INTEGER,
+        field: Post.POST_LIKES,
+    })
+    likes!: number;
 
 
 }

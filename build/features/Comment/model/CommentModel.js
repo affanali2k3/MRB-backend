@@ -19,6 +19,7 @@ Comment.ID = "comment_id";
 Comment.POST_ID = "post_id";
 Comment.USER_EMAIL = "user_email";
 Comment.TEXT = "text";
+Comment.UNIQUE_CONSTRAINT_POST_USER_EMAIL = "unique_constraint_post_user_email";
 __decorate([
     (0, sequelize_typescript_1.Column)({
         type: sequelize_typescript_1.DataType.INTEGER,
@@ -55,6 +56,13 @@ __decorate([
 ], Comment.prototype, "text", void 0);
 exports.Comment = Comment = Comment_1 = __decorate([
     (0, sequelize_typescript_1.Table)({
+        indexes: [
+            {
+                name: Comment_1.UNIQUE_CONSTRAINT_POST_USER_EMAIL,
+                unique: true,
+                fields: [Comment_1.POST_ID, Comment_1.USER_EMAIL]
+            },
+        ],
         tableName: Comment_1.TABLE_NAME
     })
 ], Comment);

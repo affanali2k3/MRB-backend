@@ -5,6 +5,7 @@ import { Like } from "../model/LikeModel";
 interface LikeData {
     userEmail: string,
     postId: number,
+    likeId: number
 }
 
 class LikeController {
@@ -19,6 +20,21 @@ class LikeController {
         } catch (err) {
             res.status(500).json({
                 message: `Cannot save like ${err}`
+            });
+        }
+    }
+
+    async removeLike(req: Request, res: Response) {
+        try {
+            const data: LikeData = req.body;
+            await LikeRepository.removeLike({ likeId: data.likeId, postId: data.postId });
+
+            res.status(200).json({
+                message: 'Like deleted succesfully'
+            });
+        } catch (err) {
+            res.status(500).json({
+                message: `Cannot delete like ${err}`
             });
         }
     }

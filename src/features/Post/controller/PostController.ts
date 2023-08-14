@@ -2,12 +2,16 @@ import { Request, Response } from "express";
 import PostRepo from "../repository/PostRepository";
 import { Post } from "../model/PostModel";
 import path from "path";
+import LikeRepository from "../../Like/repository/LikeRepository";
 
 class PostWithImages {
-    constructor(text: string, name: string, userEmail: string, createdAt: string, updatedAt: string, imagesName: string[]) {
-        this.text = text, this.name = name
+    constructor(postId: string, likes: number, likeId: number | null, text: string, name: string, userEmail: string, createdAt: string, updatedAt: string, imagesName: string[]) {
+        this.postId = postId, this.likes = likes, this.likeId = likeId; this.text = text, this.name = name
             , this.userEmail = userEmail, this.createdAt = createdAt, this.updatedAt = updatedAt, this.imagesName = imagesName
     }
+    postId: string;
+    likes: number;
+    likeId: number | null;
     text: string;
     name: string;
     userEmail: string;
@@ -64,9 +68,11 @@ class PostController {
             const userEmail: string = req.params.userEmail;
             const posts: Post[] = await PostRepo.getAllPosts({ userEmail: userEmail });
             const postsWithImages: PostWithImages[] = [];
+
             for (const post of posts) {
                 const postImages: string[] = await PostRepo.getImageNamesOfPost({ postId: post.id });
-                const postWithImages: PostWithImages = new PostWithImages(post.text, post.name, post.userEmail, post.createdAt, post.updatedAt, postImages);
+                const likeId: number | null = await LikeRepository.getLike({ postId: post.id, userEmail: userEmail });
+                const postWithImages: PostWithImages = new PostWithImages(post.id.toString(), post.likes, likeId, post.text, post.name, post.userEmail, post.createdAt, post.updatedAt, postImages);
                 postsWithImages.push(postWithImages);
             }
 

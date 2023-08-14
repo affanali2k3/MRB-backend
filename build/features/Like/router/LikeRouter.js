@@ -9,6 +9,7 @@ class LikeRouter extends BaseRouter_1.default {
     routes() {
         this.router.post("/", LikeController_1.default.saveLike);
         this.router.get("/:postId", LikeController_1.default.getPostLikes);
+        this.router.delete("/delete", LikeController_1.default.removeLike);
     }
 }
 exports.default = new LikeRouter().router;

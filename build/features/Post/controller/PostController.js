@@ -14,8 +14,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const PostRepository_1 = __importDefault(require("../repository/PostRepository"));
 const path_1 = __importDefault(require("path"));
+const LikeRepository_1 = __importDefault(require("../../Like/repository/LikeRepository"));
 class PostWithImages {
-    constructor(text, name, userEmail, createdAt, updatedAt, imagesName) {
+    constructor(postId, likes, likeId, text, name, userEmail, createdAt, updatedAt, imagesName) {
+        this.postId = postId, this.likes = likes, this.likeId = likeId;
         this.text = text, this.name = name
             , this.userEmail = userEmail, this.createdAt = createdAt, this.updatedAt = updatedAt, this.imagesName = imagesName;
     }
@@ -69,7 +71,8 @@ class PostController {
                 const postsWithImages = [];
                 for (const post of posts) {
                     const postImages = yield PostRepository_1.default.getImageNamesOfPost({ postId: post.id });
-                    const postWithImages = new PostWithImages(post.text, post.name, post.userEmail, post.createdAt, post.updatedAt, postImages);
+                    const likeId = yield LikeRepository_1.default.getLike({ postId: post.id, userEmail: userEmail });
+                    const postWithImages = new PostWithImages(post.id.toString(), post.likes, likeId, post.text, post.name, post.userEmail, post.createdAt, post.updatedAt, postImages);
                     postsWithImages.push(postWithImages);
                 }
                 res.status(200).json({

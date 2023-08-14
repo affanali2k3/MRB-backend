@@ -18,6 +18,7 @@ Like.TABLE_NAME = "likes";
 Like.ID = "like_id";
 Like.POST_ID = "post_id";
 Like.USER_EMAIL = "user_email";
+Like.UNIQUE_CONSTRAINT_POST_USEREMAIL = "unique_constraint_post_userEmail";
 __decorate([
     (0, sequelize_typescript_1.Column)({
         type: sequelize_typescript_1.DataType.INTEGER,
@@ -32,7 +33,6 @@ __decorate([
         type: sequelize_typescript_1.DataType.INTEGER,
         field: Like_1.POST_ID,
         allowNull: false,
-        unique: true,
         references: { model: 'posts', key: 'post_id' }
     }),
     __metadata("design:type", Number)
@@ -42,13 +42,19 @@ __decorate([
         type: sequelize_typescript_1.DataType.STRING,
         field: Like_1.USER_EMAIL,
         allowNull: false,
-        unique: true,
         references: { model: 'users', key: 'user_email' },
     }),
     __metadata("design:type", String)
 ], Like.prototype, "userEmail", void 0);
 exports.Like = Like = Like_1 = __decorate([
     (0, sequelize_typescript_1.Table)({
+        indexes: [
+            {
+                name: Like_1.UNIQUE_CONSTRAINT_POST_USEREMAIL,
+                unique: true,
+                fields: [Like_1.POST_ID, Like_1.USER_EMAIL]
+            },
+        ],
         tableName: Like_1.TABLE_NAME
     })
 ], Like);

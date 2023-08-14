@@ -16,6 +16,7 @@ class PostRepo implements IPostRepo {
             post.text = postText;
             post.userEmail = userEmail;
             post.name = postName;
+            post.likes = 0;
 
             const newPost = await post.save();
 

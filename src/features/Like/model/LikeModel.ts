@@ -1,7 +1,13 @@
-import { Model, Table, Column, DataType, ForeignKey, BelongsTo } from "sequelize-typescript";
+import { Model, Table, Column, DataType, ForeignKey, BelongsTo, Unique, Index } from "sequelize-typescript";
 
 
 @Table({
+    indexes: [
+        {
+            name: Like.UNIQUE_CONSTRAINT_POST_USEREMAIL,
+            unique: true,
+            fields: [Like.POST_ID, Like.USER_EMAIL]
+        },],
     tableName: Like.TABLE_NAME
 })
 
@@ -10,6 +16,8 @@ export class Like extends Model {
     public static ID = "like_id" as string;
     public static POST_ID = "post_id" as string;
     public static USER_EMAIL = "user_email" as string;
+    public static UNIQUE_CONSTRAINT_POST_USEREMAIL = "unique_constraint_post_userEmail" as string;
+
 
 
     @Column({
@@ -25,7 +33,6 @@ export class Like extends Model {
         type: DataType.INTEGER,
         field: Like.POST_ID,
         allowNull: false,
-        unique: true,
         references: { model: 'posts', key: 'post_id' }
     })
     postId!: number;
@@ -34,10 +41,11 @@ export class Like extends Model {
         type: DataType.STRING,
         field: Like.USER_EMAIL,
         allowNull: false,
-        unique: true,
         references: { model: 'users', key: 'user_email' },
     })
     userEmail!: string;
+
+
 
 
 }

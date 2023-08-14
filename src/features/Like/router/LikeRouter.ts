@@ -8,6 +8,7 @@ class LikeRouter extends BaseRoutes {
     public routes(): void {
         this.router.post("/", LikeController.saveLike);
         this.router.get("/:postId", LikeController.getPostLikes);
+        this.router.delete("/delete", LikeController.removeLike);
 
     }
 }

@@ -19,6 +19,7 @@ Post.POST_ID = "post_id";
 Post.USER_EMAIL = "user_email";
 Post.POST_TEXT = "post_text";
 Post.POST_NAME = "post_name";
+Post.POST_LIKES = "post_likes";
 __decorate([
     (0, sequelize_typescript_1.Column)({
         type: sequelize_typescript_1.DataType.INTEGER,
@@ -32,6 +33,7 @@ __decorate([
     (0, sequelize_typescript_1.Column)({
         type: sequelize_typescript_1.DataType.STRING,
         field: Post_1.POST_TEXT,
+        allowNull: false,
     }),
     __metadata("design:type", String)
 ], Post.prototype, "text", void 0);
@@ -39,6 +41,7 @@ __decorate([
     (0, sequelize_typescript_1.Column)({
         type: sequelize_typescript_1.DataType.STRING,
         field: Post_1.USER_EMAIL,
+        allowNull: false,
     }),
     __metadata("design:type", String)
 ], Post.prototype, "userEmail", void 0);
@@ -49,6 +52,13 @@ __decorate([
     }),
     __metadata("design:type", String)
 ], Post.prototype, "name", void 0);
+__decorate([
+    (0, sequelize_typescript_1.Column)({
+        type: sequelize_typescript_1.DataType.INTEGER,
+        field: Post_1.POST_LIKES,
+    }),
+    __metadata("design:type", Number)
+], Post.prototype, "likes", void 0);
 exports.Post = Post = Post_1 = __decorate([
     (0, sequelize_typescript_1.Table)({
         tableName: Post_1.POST_TABLE_NAME
