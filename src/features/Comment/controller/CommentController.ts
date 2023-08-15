@@ -12,10 +12,11 @@ class CommentController {
     async saveComment(req: Request, res: Response) {
         try {
             const data: CommentData = req.body;
-            await CommentRepository.saveComment({ userEmail: data.userEmail, postId: data.postId, text: data.text });
+            const commentId: number = await CommentRepository.saveComment({ userEmail: data.userEmail, postId: data.postId, text: data.text });
 
             res.status(200).json({
-                message: 'Comment saved succesfully'
+                message: 'Comment saved succesfully',
+                data: commentId
             });
         } catch (err) {
             res.status(500).json({

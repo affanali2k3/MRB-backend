@@ -14,36 +14,39 @@ exports.User = void 0;
 const sequelize_typescript_1 = require("sequelize-typescript");
 let User = exports.User = User_1 = class User extends sequelize_typescript_1.Model {
 };
-User.USER_TABLE_NAME = "users";
-User.USER_SSN = "user_ssn";
-User.USER_EMAIL = "user_email";
+User.TABLE_NAME = "users";
+User.ID = "user_id";
+User.EMAIL = "user_email";
 User.USER_NAME = "user_name";
-User.USER_LICENSE = "user_licence";
-User.USER_PHOTO = "user_photo";
-User.USER_PHONE = "user_phone";
-User.USER_OCCUPATION = "user_occupation";
-User.USER_GENDER = "user_gender";
-User.USER_ADDRESS = "user_address";
-User.USER_LICENCE_STATE = "user_licence_state";
-User.USER_LICENCE_NUMBER = "user_licence_number";
-User.USER_YEAR_LICENCED = "user_year_licenced";
-User.USER_COMPLETED_DEALS = "user_completed_deals";
-User.USER_PREVIOUS_DEALS = "user_previous_deals";
+User.LICENCE = "user_licence";
+User.PHOTO = "user_photo";
+User.PHONE = "user_phone";
+User.OCCUPATION = "user_occupation";
+User.GENDER = "user_gender";
+User.ADDRESS = "user_address";
+User.LICENCE_STATE = "user_licence_state";
+User.LICENCE_NUMBER = "user_licence_number";
+User.YEAR_LICENCED = "user_year_licenced";
+User.COMPLETED_DEALS = "user_completed_deals";
+User.PREVIOUS_DEALS = "user_previous_deals";
+__decorate([
+    (0, sequelize_typescript_1.Column)({
+        type: sequelize_typescript_1.DataType.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+        field: User_1.ID
+    }),
+    __metadata("design:type", Number)
+], User.prototype, "id", void 0);
 __decorate([
     (0, sequelize_typescript_1.Column)({
         type: sequelize_typescript_1.DataType.STRING,
         primaryKey: true,
-        field: User_1.USER_EMAIL
+        unique: true,
+        field: User_1.EMAIL
     }),
     __metadata("design:type", String)
 ], User.prototype, "email", void 0);
-__decorate([
-    (0, sequelize_typescript_1.Column)({
-        type: sequelize_typescript_1.DataType.STRING,
-        field: User_1.USER_SSN
-    }),
-    __metadata("design:type", String)
-], User.prototype, "ssn", void 0);
 __decorate([
     (0, sequelize_typescript_1.Column)({
         type: sequelize_typescript_1.DataType.STRING,
@@ -54,82 +57,75 @@ __decorate([
 __decorate([
     (0, sequelize_typescript_1.Column)({
         type: sequelize_typescript_1.DataType.STRING,
-        field: User_1.USER_LICENSE
+        field: User_1.LICENCE
     }),
     __metadata("design:type", String)
 ], User.prototype, "licence", void 0);
 __decorate([
     (0, sequelize_typescript_1.Column)({
         type: sequelize_typescript_1.DataType.STRING,
-        field: User_1.USER_LICENCE_NUMBER
+        field: User_1.LICENCE_NUMBER
     }),
     __metadata("design:type", String)
 ], User.prototype, "licenceNumber", void 0);
 __decorate([
     (0, sequelize_typescript_1.Column)({
         type: sequelize_typescript_1.DataType.STRING,
-        field: User_1.USER_LICENCE_STATE
+        field: User_1.LICENCE_STATE
     }),
     __metadata("design:type", String)
 ], User.prototype, "licenceState", void 0);
 __decorate([
     (0, sequelize_typescript_1.Column)({
-        type: sequelize_typescript_1.DataType.STRING,
-        field: User_1.USER_YEAR_LICENCED
+        type: sequelize_typescript_1.DataType.INTEGER,
+        field: User_1.YEAR_LICENCED
     }),
-    __metadata("design:type", String)
+    __metadata("design:type", Number)
 ], User.prototype, "yearLicenced", void 0);
 __decorate([
     (0, sequelize_typescript_1.Column)({
         type: sequelize_typescript_1.DataType.STRING,
-        field: User_1.USER_ADDRESS
+        field: User_1.ADDRESS
     }),
     __metadata("design:type", String)
 ], User.prototype, "address", void 0);
 __decorate([
     (0, sequelize_typescript_1.Column)({
-        type: sequelize_typescript_1.DataType.STRING,
-        field: User_1.USER_COMPLETED_DEALS
+        type: sequelize_typescript_1.DataType.INTEGER,
+        field: User_1.COMPLETED_DEALS
     }),
-    __metadata("design:type", String)
+    __metadata("design:type", Number)
 ], User.prototype, "completedDeals", void 0);
 __decorate([
     (0, sequelize_typescript_1.Column)({
-        type: sequelize_typescript_1.DataType.TEXT,
-        field: User_1.USER_PREVIOUS_DEALS
-    }),
-    __metadata("design:type", String)
-], User.prototype, "previousDeals", void 0);
-__decorate([
-    (0, sequelize_typescript_1.Column)({
         type: sequelize_typescript_1.DataType.STRING,
-        field: User_1.USER_PHOTO
+        field: User_1.PHOTO
     }),
     __metadata("design:type", String)
 ], User.prototype, "photo", void 0);
 __decorate([
     (0, sequelize_typescript_1.Column)({
         type: sequelize_typescript_1.DataType.STRING,
-        field: User_1.USER_PHONE
+        field: User_1.PHONE
     }),
     __metadata("design:type", String)
 ], User.prototype, "phone", void 0);
 __decorate([
     (0, sequelize_typescript_1.Column)({
         type: sequelize_typescript_1.DataType.STRING,
-        field: User_1.USER_OCCUPATION
+        field: User_1.OCCUPATION
     }),
     __metadata("design:type", String)
 ], User.prototype, "occupation", void 0);
 __decorate([
     (0, sequelize_typescript_1.Column)({
         type: sequelize_typescript_1.DataType.STRING,
-        field: User_1.USER_GENDER
+        field: User_1.GENDER
     }),
     __metadata("design:type", String)
 ], User.prototype, "gender", void 0);
 exports.User = User = User_1 = __decorate([
     (0, sequelize_typescript_1.Table)({
-        tableName: User_1.USER_TABLE_NAME
+        tableName: User_1.TABLE_NAME
     })
 ], User);

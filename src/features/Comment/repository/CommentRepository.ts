@@ -1,19 +1,21 @@
 import { Comment } from "../model/CommentModel";
 
 interface ICommentRepo {
-    saveComment({ postId, userEmail, text }: { userEmail: string, postId: number, text: string }): Promise<void>;
+    saveComment({ postId, userEmail, text }: { userEmail: string, postId: number, text: string }): Promise<number>;
     getPostComments({ postId }: { postId: number }): Promise<Comment[]>;
 }
 
 class CommentRepo implements ICommentRepo {
-    async saveComment({ postId, userEmail, text }: { userEmail: string, postId: number, text: string }): Promise<void> {
+    async saveComment({ postId, userEmail, text }: { userEmail: string, postId: number, text: string }): Promise<number> {
         try {
             const comment = new Comment();
             comment.postId = postId;
             comment.userEmail = userEmail;
             comment.text = text;
 
-            await comment.save();
+            const savedComment = await comment.save();
+
+            return savedComment.id;
 
         } catch (err) {
             throw new Error(`${err}`);

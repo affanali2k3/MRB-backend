@@ -24,6 +24,7 @@ const PostRouter_1 = __importDefault(require("./features/Post/router/PostRouter"
 const path_1 = __importDefault(require("path"));
 const LikeRouter_1 = __importDefault(require("./features/Like/router/LikeRouter"));
 const CommentRouter_1 = __importDefault(require("./features/Comment/router/CommentRouter"));
+const FeedRouter_1 = __importDefault(require("./features/Feed/router/FeedRouter"));
 class App {
     constructor() {
         this.app = (0, express_1.default)();
@@ -56,6 +57,7 @@ class App {
         this.app.use("/api/v1/post", PostRouter_1.default);
         this.app.use("/api/v1/like", LikeRouter_1.default);
         this.app.use("/api/v1/comment", CommentRouter_1.default);
+        this.app.use("/api/v1/feed", FeedRouter_1.default);
     }
     setupSocketIO() {
         this.io.on("connection", (socket) => {

@@ -18,9 +18,10 @@ class CommentController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const data = req.body;
-                yield CommentRepository_1.default.saveComment({ userEmail: data.userEmail, postId: data.postId, text: data.text });
+                const commentId = yield CommentRepository_1.default.saveComment({ userEmail: data.userEmail, postId: data.postId, text: data.text });
                 res.status(200).json({
-                    message: 'Comment saved succesfully'
+                    message: 'Comment saved succesfully',
+                    data: commentId
                 });
             }
             catch (err) {

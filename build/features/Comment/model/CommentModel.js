@@ -12,6 +12,7 @@ var Comment_1;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Comment = void 0;
 const sequelize_typescript_1 = require("sequelize-typescript");
+const PostModel_1 = require("../../Post/model/PostModel");
 let Comment = exports.Comment = Comment_1 = class Comment extends sequelize_typescript_1.Model {
 };
 Comment.TABLE_NAME = "comments";
@@ -19,7 +20,6 @@ Comment.ID = "comment_id";
 Comment.POST_ID = "post_id";
 Comment.USER_EMAIL = "user_email";
 Comment.TEXT = "text";
-Comment.UNIQUE_CONSTRAINT_POST_USER_EMAIL = "unique_constraint_post_user_email";
 __decorate([
     (0, sequelize_typescript_1.Column)({
         type: sequelize_typescript_1.DataType.INTEGER,
@@ -34,7 +34,7 @@ __decorate([
         type: sequelize_typescript_1.DataType.INTEGER,
         field: Comment_1.POST_ID,
         allowNull: false,
-        references: { model: 'posts', key: 'post_id' }
+        references: { model: PostModel_1.Post.POST_TABLE_NAME, key: PostModel_1.Post.POST_ID }
     }),
     __metadata("design:type", Number)
 ], Comment.prototype, "postId", void 0);
@@ -56,13 +56,6 @@ __decorate([
 ], Comment.prototype, "text", void 0);
 exports.Comment = Comment = Comment_1 = __decorate([
     (0, sequelize_typescript_1.Table)({
-        indexes: [
-            {
-                name: Comment_1.UNIQUE_CONSTRAINT_POST_USER_EMAIL,
-                unique: true,
-                fields: [Comment_1.POST_ID, Comment_1.USER_EMAIL]
-            },
-        ],
         tableName: Comment_1.TABLE_NAME
     })
 ], Comment);

@@ -1,43 +1,45 @@
 import { Model, Table, Column, DataType, HasMany } from "sequelize-typescript";
-import { Post } from "../../Post/model/PostModel";
 
 
 @Table({
-    tableName: User.USER_TABLE_NAME
+    tableName: User.TABLE_NAME
 })
 
 export class User extends Model {
-    public static USER_TABLE_NAME = "users" as string;
-    public static USER_SSN = "user_ssn" as string;
-    public static USER_EMAIL = "user_email" as string;
+    public static TABLE_NAME = "users" as string;
+    public static ID = "user_id" as string;
+    public static EMAIL = "user_email" as string;
     public static USER_NAME = "user_name" as string;
-    public static USER_LICENSE = "user_licence" as string;
-    public static USER_PHOTO = "user_photo" as string;
-    public static USER_PHONE = "user_phone" as string;
-    public static USER_OCCUPATION = "user_occupation" as string;
-    public static USER_GENDER = "user_gender" as string;
-    public static USER_ADDRESS = "user_address" as string;
-    public static USER_LICENCE_STATE = "user_licence_state" as string;
-    public static USER_LICENCE_NUMBER = "user_licence_number" as string;
-    public static USER_YEAR_LICENCED = "user_year_licenced" as string;
-    public static USER_COMPLETED_DEALS = "user_completed_deals" as string;
-    public static USER_PREVIOUS_DEALS = "user_previous_deals" as string;
+    public static LICENCE = "user_licence" as string;
+    public static PHOTO = "user_photo" as string;
+    public static PHONE = "user_phone" as string;
+    public static OCCUPATION = "user_occupation" as string;
+    public static GENDER = "user_gender" as string;
+    public static ADDRESS = "user_address" as string;
+    public static LICENCE_STATE = "user_licence_state" as string;
+    public static LICENCE_NUMBER = "user_licence_number" as string;
+    public static YEAR_LICENCED = "user_year_licenced" as string;
+    public static COMPLETED_DEALS = "user_completed_deals" as string;
+    public static PREVIOUS_DEALS = "user_previous_deals" as string;
 
+
+
+    @Column({
+        type: DataType.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+        field: User.ID
+    })
+    id!: number;
 
 
     @Column({
         type: DataType.STRING,
         primaryKey: true,
-        field: User.USER_EMAIL
+        unique: true,
+        field: User.EMAIL
     })
     email!: string;
-
-    @Column({
-        type: DataType.STRING,
-        field: User.USER_SSN
-    })
-    ssn!: string;
-
 
     @Column({
         type: DataType.STRING,
@@ -47,67 +49,61 @@ export class User extends Model {
 
     @Column({
         type: DataType.STRING,
-        field: User.USER_LICENSE
+        field: User.LICENCE
     })
     licence!: string;
 
     @Column({
         type: DataType.STRING,
-        field: User.USER_LICENCE_NUMBER
+        field: User.LICENCE_NUMBER
     })
     licenceNumber!: string;
 
     @Column({
         type: DataType.STRING,
-        field: User.USER_LICENCE_STATE
+        field: User.LICENCE_STATE
     })
     licenceState!: string;
 
     @Column({
-        type: DataType.STRING,
-        field: User.USER_YEAR_LICENCED
+        type: DataType.INTEGER,
+        field: User.YEAR_LICENCED
     })
-    yearLicenced!: string;
+    yearLicenced!: number;
 
     @Column({
         type: DataType.STRING,
-        field: User.USER_ADDRESS
+        field: User.ADDRESS
     })
     address!: string;
 
     @Column({
-        type: DataType.STRING,
-        field: User.USER_COMPLETED_DEALS
+        type: DataType.INTEGER,
+        field: User.COMPLETED_DEALS
     })
-    completedDeals!: string;
-
-    @Column({
-        type: DataType.TEXT,
-        field: User.USER_PREVIOUS_DEALS
-    })
-    previousDeals!: string;
+    completedDeals!: number;
 
     @Column({
         type: DataType.STRING,
-        field: User.USER_PHOTO
+        field: User.PHOTO
     })
     photo!: string;
 
     @Column({
         type: DataType.STRING,
-        field: User.USER_PHONE
+        field: User.PHONE
     })
     phone!: string;
 
     @Column({
         type: DataType.STRING,
-        field: User.USER_OCCUPATION
+        field: User.OCCUPATION
     })
     occupation!: string;
 
     @Column({
         type: DataType.STRING,
-        field: User.USER_GENDER
+        field: User.GENDER
     })
     gender!: string;
 }

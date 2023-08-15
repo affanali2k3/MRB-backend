@@ -15,16 +15,28 @@ const sequelize_typescript_1 = require("sequelize-typescript");
 const User_1 = require("../../UserProfile/model/User");
 let UserAssociates = exports.UserAssociates = UserAssociates_1 = class UserAssociates extends sequelize_typescript_1.Model {
 };
-UserAssociates.USER_ASSOCIATES_TABLE_NAME = "user_associates";
+UserAssociates.TABLE_NAME = "user_associates";
+UserAssociates.ID = "association_id";
 UserAssociates.USER_EMAIL = "user_email";
 UserAssociates.ASSOCIATE_EMAIL = "associate_email";
 UserAssociates.ASSOCIATION_STATUS = "association_status";
+UserAssociates.UNIQUE_CONSTRAINT_ASSOCIATION = "unique_constraint_association";
 __decorate([
-    (0, sequelize_typescript_1.ForeignKey)(() => User_1.User),
+    (0, sequelize_typescript_1.Column)({
+        type: sequelize_typescript_1.DataType.INTEGER,
+        field: UserAssociates_1.ID,
+        primaryKey: true,
+        autoIncrement: true
+    }),
+    __metadata("design:type", Number)
+], UserAssociates.prototype, "id", void 0);
+__decorate([
     (0, sequelize_typescript_1.Column)({
         type: sequelize_typescript_1.DataType.STRING,
         field: UserAssociates_1.USER_EMAIL,
-        primaryKey: true,
+        allowNull: false,
+        unique: true,
+        references: { model: User_1.User.TABLE_NAME, key: User_1.User.EMAIL },
     }),
     __metadata("design:type", String)
 ], UserAssociates.prototype, "userEmail", void 0);
@@ -32,19 +44,29 @@ __decorate([
     (0, sequelize_typescript_1.Column)({
         type: sequelize_typescript_1.DataType.STRING,
         field: UserAssociates_1.ASSOCIATE_EMAIL,
-        primaryKey: true
+        allowNull: false,
+        unique: true,
+        references: { model: User_1.User.TABLE_NAME, key: User_1.User.EMAIL },
     }),
     __metadata("design:type", String)
 ], UserAssociates.prototype, "associateEmail", void 0);
 __decorate([
     (0, sequelize_typescript_1.Column)({
         type: sequelize_typescript_1.DataType.STRING,
-        field: UserAssociates_1.ASSOCIATION_STATUS
+        field: UserAssociates_1.ASSOCIATION_STATUS,
+        allowNull: false
     }),
     __metadata("design:type", String)
 ], UserAssociates.prototype, "status", void 0);
 exports.UserAssociates = UserAssociates = UserAssociates_1 = __decorate([
     (0, sequelize_typescript_1.Table)({
-        tableName: UserAssociates_1.USER_ASSOCIATES_TABLE_NAME
+        // indexes: [
+        //     {
+        //         name: UserAssociates.UNIQUE_CONSTRAINT_ASSOCIATION,
+        //         unique: true,
+        //         fields: [UserAssociates.USER_EMAIL, UserAssociates.ASSOCIATE_EMAIL]
+        //     }
+        // ],
+        tableName: UserAssociates_1.TABLE_NAME
     })
 ], UserAssociates);

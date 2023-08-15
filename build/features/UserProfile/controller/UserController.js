@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const User_1 = require("../model/User");
 const UserRepo_1 = require("../repository/UserRepo");
 const fs_1 = __importDefault(require("fs"));
+const path_1 = __importDefault(require("path"));
 class UserController {
     create(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -53,14 +54,20 @@ class UserController {
         var _a;
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                console.log(req.file);
+                // console.log(req)
                 let userBucket;
                 if (req.file !== undefined) {
-                    userBucket = `./storage/${req.body.ssn}/${(_a = req.file) === null || _a === void 0 ? void 0 : _a.filename}`;
+                    userBucket = `./storage/${req.body.email}/${(_a = req.file) === null || _a === void 0 ? void 0 : _a.filename}`;
                 }
                 const updatedUser = new User_1.User();
-                const { address, licenceState, licenceNumber, yearLicenced, completedDeals, previousDeals, email, ssn, phone, occupation, name, gender, licence } = req.body;
-                Object.assign(updatedUser, { address, licenceState, licenceNumber, yearLicenced, completedDeals, previousDeals, email, ssn, phone, occupation, photo: userBucket, name, gender, licence });
+                const { address, licenceState, licenceNumber, previousDeals, email, phone, occupation, name, gender, licence } = req.body;
+                var { yearLicenced, completedDeals } = req.body;
+                yearLicenced = parseInt(yearLicenced);
+                completedDeals = parseInt(completedDeals);
+                if (Number.isNaN(yearLicenced) || Number.isNaN(completedDeals))
+                    throw new Error('error');
+                Object.assign(updatedUser, { address, licenceState, licenceNumber, yearLicenced, completedDeals, previousDeals, email, phone, occupation, photo: userBucket, name, gender, licence });
+                console.log(typeof (yearLicenced));
                 console.log(updatedUser.dataValues);
                 yield new UserRepo_1.UserRepo().update(updatedUser);
                 res.status(200).json({
@@ -70,6 +77,19 @@ class UserController {
             catch (err) {
                 res.status(500).json({
                     message: `Cannot update user because ${err}`
+                });
+            }
+        });
+    }
+    getUserAvatar(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const userEmail = req.params.userEmail;
+                res.sendFile(path_1.default.join('C:/Users/Affan/Desktop/MRB/backend/storage/', userEmail, 'avatar.png'));
+            }
+            catch (err) {
+                res.status(500).json({
+                    message: `Failed to get user avatar ${err}`
                 });
             }
         });

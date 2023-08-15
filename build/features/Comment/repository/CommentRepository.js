@@ -18,7 +18,8 @@ class CommentRepo {
                 comment.postId = postId;
                 comment.userEmail = userEmail;
                 comment.text = text;
-                yield comment.save();
+                const savedComment = yield comment.save();
+                return savedComment.id;
             }
             catch (err) {
                 throw new Error(`${err}`);

@@ -31,7 +31,7 @@ class Database {
             username: this.POSTGRES_USER,
             password: this.POSTGRES_PASSWORD,
             dialect: "postgres",
-            models: [User, Post, PostImages, UserAssociates, Message, Like, Comment]
+            models: [User, UserAssociates, Post, PostImages, Message, Like, Comment]
         });
 
         this.sequelize.authenticate().then(() => {

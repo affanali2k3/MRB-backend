@@ -12,6 +12,7 @@ import PostRouter from "./features/Post/router/PostRouter";
 import path from "path";
 import LikeRouter from "./features/Like/router/LikeRouter";
 import CommentRouter from "./features/Comment/router/CommentRouter";
+import FeedRouter from "./features/Feed/router/FeedRouter";
 
 class App {
     public app: Application;
@@ -53,6 +54,7 @@ class App {
         this.app.use("/api/v1/post", PostRouter);
         this.app.use("/api/v1/like", LikeRouter);
         this.app.use("/api/v1/comment", CommentRouter);
+        this.app.use("/api/v1/feed", FeedRouter);
     }
 
     protected setupSocketIO(): void {

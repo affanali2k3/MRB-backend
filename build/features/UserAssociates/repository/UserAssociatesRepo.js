@@ -17,6 +17,14 @@ class UserAssociatesRepo {
     sendRequest({ senderEmail, receiverEmail }) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
+                const existsAssociation = yield UserAssociates_1.UserAssociates.findOne({
+                    where: {
+                        [sequelize_1.Op.or]: [{ userEmail: senderEmail, associateEmail: receiverEmail },
+                            { userEmail: receiverEmail, associateEmail: senderEmail }]
+                    }
+                });
+                if (existsAssociation !== null)
+                    throw new Error('Association already exists');
                 const newAssociation = new UserAssociates_1.UserAssociates();
                 newAssociation.userEmail = senderEmail;
                 newAssociation.associateEmail = receiverEmail;

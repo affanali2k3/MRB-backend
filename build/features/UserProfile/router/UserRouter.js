@@ -9,8 +9,10 @@ const multer_1 = __importDefault(require("multer"));
 const fs_1 = __importDefault(require("fs"));
 const storage = multer_1.default.diskStorage({
     destination: function (req, file, cb) {
-        const ssnFolder = req.body.ssn; // Get the value of 'ssn' from req.body
-        const destinationPath = `./storage/${ssnFolder}/`;
+        console.log(req.body);
+        const userEmail = req.body.email; // Get the value of 'ssn' from req.body
+        console.log(userEmail);
+        const destinationPath = `./storage/${userEmail}/`;
         if (!fs_1.default.existsSync(destinationPath)) {
             fs_1.default.mkdirSync(destinationPath, { recursive: true });
         }
@@ -29,6 +31,7 @@ class UserRoutes extends BaseRouter_1.default {
         this.router.delete("/:email", UserController_1.default.delete);
         this.router.get("", UserController_1.default.getAllUsers);
         this.router.get("/:email", UserController_1.default.getUserByEmail);
+        this.router.get("/avatar/:userEmail", UserController_1.default.getUserAvatar);
     }
 }
 exports.default = new UserRoutes().router;

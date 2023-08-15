@@ -1,13 +1,8 @@
 import { Model, Table, Column, DataType, ForeignKey, BelongsTo } from "sequelize-typescript";
+import { Post } from "../../Post/model/PostModel";
 
 
 @Table({
-    indexes: [
-        {
-            name: Comment.UNIQUE_CONSTRAINT_POST_USER_EMAIL,
-            unique: true,
-            fields: [Comment.POST_ID, Comment.USER_EMAIL]
-        },],
     tableName: Comment.TABLE_NAME
 })
 
@@ -17,7 +12,6 @@ export class Comment extends Model {
     public static POST_ID = "post_id" as string;
     public static USER_EMAIL = "user_email" as string;
     public static TEXT = "text" as string;
-    public static UNIQUE_CONSTRAINT_POST_USER_EMAIL = "unique_constraint_post_user_email" as string;
 
 
 
@@ -34,7 +28,7 @@ export class Comment extends Model {
         type: DataType.INTEGER,
         field: Comment.POST_ID,
         allowNull: false,
-        references: { model: 'posts', key: 'post_id' }
+        references: { model: Post.POST_TABLE_NAME, key: Post.POST_ID }
     })
     postId!: number;
 

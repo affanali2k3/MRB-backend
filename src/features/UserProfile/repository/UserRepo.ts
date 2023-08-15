@@ -31,7 +31,6 @@ export class UserRepo implements IUserRepo {
             if (!updatedUser) throw new Error("User not found");
 
             updatedUser.email = user.email;
-            updatedUser.ssn = user.ssn;
             updatedUser.name = user.name;
             updatedUser.licence = user.licence;
             updatedUser.photo = user.photo;
@@ -41,8 +40,7 @@ export class UserRepo implements IUserRepo {
             updatedUser.licenceState = user.licenceState;
             updatedUser.yearLicenced = user.yearLicenced;
             updatedUser.address = user.address;
-            updatedUser.completedDeals = user.completedDeals;
-            updatedUser.previousDeals = user.previousDeals;
+            updatedUser.completedDeals = user.completedDeals
 
             updatedUser.save();
 

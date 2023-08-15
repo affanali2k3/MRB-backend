@@ -2,6 +2,9 @@ import { Request, Response } from "express"
 import { User } from "../model/User";
 import { UserRepo } from "../repository/UserRepo";
 import fs from "fs";
+import { type } from "os";
+import path from "path";
+
 
 class UserController {
     async create(req: Request, res: Response) {
@@ -37,16 +40,25 @@ class UserController {
 
     async update(req: Request, res: Response) {
         try {
-            console.log(req.file)
+            // console.log(req)
             let userBucket
             if (req.file !== undefined) {
-                userBucket = `./storage/${req.body.ssn}/${req.file?.filename}`
+                userBucket = `./storage/${req.body.email}/${req.file?.filename}`
             }
 
             const updatedUser = new User();
-            const { address, licenceState, licenceNumber, yearLicenced, completedDeals, previousDeals, email, ssn, phone, occupation, name, gender, licence } = req.body;
-            Object.assign(updatedUser, { address, licenceState, licenceNumber, yearLicenced, completedDeals, previousDeals, email, ssn, phone, occupation, photo: userBucket, name, gender, licence });
+            const { address, licenceState, licenceNumber, previousDeals, email, phone, occupation, name, gender, licence } = req.body;
+            var { yearLicenced, completedDeals } = req.body;
 
+            yearLicenced = parseInt(yearLicenced);
+            completedDeals = parseInt(completedDeals);
+
+            if (Number.isNaN(yearLicenced) || Number.isNaN(completedDeals)) throw new Error('error');
+
+            Object.assign(updatedUser, { address, licenceState, licenceNumber, yearLicenced, completedDeals, previousDeals, email, phone, occupation, photo: userBucket, name, gender, licence });
+
+
+            console.log(typeof (yearLicenced));
             console.log(updatedUser.dataValues);
 
             await new UserRepo().update(updatedUser);
@@ -57,6 +69,18 @@ class UserController {
             res.status(500).json({
                 message: `Cannot update user because ${err}`
             })
+        }
+    }
+
+    async getUserAvatar(req: Request, res: Response) {
+        try {
+            const userEmail: string = req.params.userEmail;
+            res.sendFile(path.join('C:/Users/Affan/Desktop/MRB/backend/storage/', userEmail, 'avatar.png'));
+        } catch (err) {
+            res.status(500).json({
+                message: `Failed to get user avatar ${err}`
+            }
+            )
         }
     }
 

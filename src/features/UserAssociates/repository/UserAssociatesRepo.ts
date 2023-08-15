@@ -22,6 +22,15 @@ interface IUserAssociatesRepo {
 export class UserAssociatesRepo implements IUserAssociatesRepo {
     async sendRequest({ senderEmail, receiverEmail }: { senderEmail: string, receiverEmail: string }): Promise<void> {
         try {
+            const existsAssociation: UserAssociates | null = await UserAssociates.findOne({
+                where:
+                {
+                    [Op.or]: [{ userEmail: senderEmail, associateEmail: receiverEmail },
+                    { userEmail: receiverEmail, associateEmail: senderEmail }]
+                }
+            })
+            if (existsAssociation !== null) throw new Error('Association already exists');
+
             const newAssociation = new UserAssociates();
 
 

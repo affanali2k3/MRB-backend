@@ -5,8 +5,10 @@ import fs from "fs";
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        const ssnFolder = req.body.ssn; // Get the value of 'ssn' from req.body
-        const destinationPath = `./storage/${ssnFolder}/`;
+        console.log(req.body);
+        const userEmail = req.body.email; // Get the value of 'ssn' from req.body
+        console.log(userEmail);
+        const destinationPath = `./storage/${userEmail}/`;
 
         if (!fs.existsSync(destinationPath)) {
             fs.mkdirSync(destinationPath, { recursive: true });
@@ -31,6 +33,7 @@ class UserRoutes extends BaseRoutes {
         this.router.delete("/:email", UserController.delete)
         this.router.get("", UserController.getAllUsers)
         this.router.get("/:email", UserController.getUserByEmail)
+        this.router.get("/avatar/:userEmail", UserController.getUserAvatar)
     }
 
 }

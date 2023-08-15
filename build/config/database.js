@@ -60,7 +60,7 @@ class Database {
                 username: this.POSTGRES_USER,
                 password: this.POSTGRES_PASSWORD,
                 dialect: "postgres",
-                models: [User_1.User, PostModel_1.Post, PostImages_1.PostImages, UserAssociates_1.UserAssociates, MessageModel_1.Message, LikeModel_1.Like, CommentModel_1.Comment]
+                models: [User_1.User, UserAssociates_1.UserAssociates, PostModel_1.Post, PostImages_1.PostImages, MessageModel_1.Message, LikeModel_1.Like, CommentModel_1.Comment]
             });
             this.sequelize.authenticate().then(() => {
                 console.log("Postgres has been connected");
