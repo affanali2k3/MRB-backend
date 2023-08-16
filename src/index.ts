@@ -5,8 +5,6 @@ import Database from "./config/database";
 import UserRouter from "./features/UserProfile/router/UserRouter";
 import UserAssociatesRouter from "./features/UserAssociates/router/UserAssociatesRouter";
 import SearchRouter from "./features/Search/router/SearchRouter";
-import { Message } from "./features/Chat/model/MessageModel";
-import ChatController from "./features/Chat/controller/ChatController";
 import ChatRouter from "./features/Chat/router/ChatRouter";
 import PostRouter from "./features/Post/router/PostRouter";
 import path from "path";

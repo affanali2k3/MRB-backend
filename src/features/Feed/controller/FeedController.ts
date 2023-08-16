@@ -20,11 +20,17 @@ class PostWithImages {
     imagesName: string[] | null;
 }
 
+
 class FeedController {
     async getFeedForUser(req: Request, res: Response) {
         try {
             const userEmail: string = req.params.userEmail;
-            const posts: Post[] = await FeedRepo.getFeedForUser({ userEmail: userEmail });
+            const page: number = parseInt(req.params.page);
+            const postsPerPage: number = 2;
+
+            const skipPosts: number = (page - 1) * postsPerPage;
+
+            const posts: Post[] = await FeedRepo.getFeedForUser({ userEmail: userEmail, skipPosts: skipPosts, postsPerPage: postsPerPage });
             const postsWithImages: PostWithImages[] = [];
 
 

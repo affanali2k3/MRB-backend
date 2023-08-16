@@ -2,12 +2,12 @@ import { Op, literal } from "sequelize"
 import { Post } from "../../Post/model/PostModel"
 
 interface IFeedRepo {
-    getFeedForUser({ userEmail }: { userEmail: string }): Promise<Post[]>
+    getFeedForUser({ userEmail, skipPosts, postsPerPage }: { userEmail: string, skipPosts: number, postsPerPage: number }): Promise<Post[]>
 
 }
 
 class FeedRepo implements IFeedRepo {
-    async getFeedForUser({ userEmail }: { userEmail: string }) {
+    async getFeedForUser({ userEmail, skipPosts, postsPerPage }: { userEmail: string, skipPosts: number, postsPerPage: number }) {
         try {
             const posts: Post[] = await Post.findAll({
                 where: {
@@ -23,7 +23,9 @@ class FeedRepo implements IFeedRepo {
                   )
                 `),
                     },
-                }
+                },
+                offset: skipPosts,
+                limit: postsPerPage,
             });
 
             return posts;

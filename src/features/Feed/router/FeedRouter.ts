@@ -4,7 +4,7 @@ import FeedController from "../controller/FeedController";
 
 class FeedRouter extends BaseRoutes {
     public routes(): void {
-        this.router.get("/:userEmail", FeedController.getFeedForUser);
+        this.router.get("/:userEmail/:page", FeedController.getFeedForUser);
     }
 }
 
