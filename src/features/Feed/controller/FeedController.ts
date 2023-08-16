@@ -26,10 +26,11 @@ class FeedController {
         try {
             const userEmail: string = req.params.userEmail;
             const page: number = parseInt(req.params.page);
-            const postsPerPage: number = 2;
+            const postsPerPage: number = 3;
 
             const skipPosts: number = (page - 1) * postsPerPage;
 
+            // Just a comment
             const posts: Post[] = await FeedRepo.getFeedForUser({ userEmail: userEmail, skipPosts: skipPosts, postsPerPage: postsPerPage });
             const postsWithImages: PostWithImages[] = [];
 
