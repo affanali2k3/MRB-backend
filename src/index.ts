@@ -20,33 +20,36 @@ class App {
     public io: Server;
     public activeClientsOnSocket: Map<string, string>;
 
+    // Initialize the application
     constructor() {
-        this.app = express();
-        this.server = http.createServer(this.app);
-        this.io = new Server(this.server);
-        this.databaseSync();
-        this.plugins();
-        this.routes();
-        this.activeClientsOnSocket = new Map<string, string>()
-        this.setupSocketIO();
-
+        this.app = express(); // Initialize Express
+        this.server = http.createServer(this.app); // Create HTTP server using Express app
+        this.io = new Server(this.server); // Initialize Socket.IO
+        this.databaseSync(); // Sync database models
+        this.plugins(); // Configure Express plugins
+        this.routes(); // Define API routes
+        this.activeClientsOnSocket = new Map<string, string>() // Initialize a Map to track active clients
+        this.setupSocketIO(); // Set up Socket.IO for real-time communication
     }
 
     protected plugins(): void {
-        this.app.use(express.json());
-        this.app.use(express.static(path.join(__dirname, 'storage')));
-        this.app.use(express.urlencoded({ extended: true }));
+        this.app.use(express.json()); // Parse JSON requests
+        this.app.use(express.static(path.join(__dirname, 'storage'))); // Serve static files from 'storage' directory
+        this.app.use(express.urlencoded({ extended: true })); // Parse URL-encoded requests
     }
 
     protected databaseSync(): void {
-        const db = new Database();
-        db.sequelize?.sync();
+        const db = new Database(); // Initialize the database connection
+        db.sequelize?.sync(); // Sync database models
     }
 
     protected routes(): void {
+        // Define a default route
         this.app.route("/").get((req: Request, res: Response) => {
             res.send("welcome home");
         });
+        
+        // Define various API routes using routers
         this.app.use("/api/v1/user", UserRouter);
         this.app.use("/api/v1/associate", UserAssociatesRouter);
         this.app.use("/api/v1/search", SearchRouter);
@@ -58,23 +61,23 @@ class App {
     }
 
     protected setupSocketIO(): void {
+        // Set up Socket.IO event handlers
         this.io.on("connection", (socket: Socket) => {
             console.log("A user connected");
-            this.activeClientsOnSocket.set(socket.id, '');
-
+            this.activeClientsOnSocket.set(socket.id, ''); // Add the newly connected user to the Map
+            
             socket.on("disconnect", () => {
                 console.log("A user disconnected");
             });
-
+            
             socket.on('user-connected', (email: string) => {
-                this.activeClientsOnSocket.set(email, socket.id);
-            })
-
+                this.activeClientsOnSocket.set(email, socket.id); // Update the Map with user's email and socket ID
+            });
+            
             socket.on("message", async ({ message, senderEmail, receiverEmail }: { message: string, senderEmail: string, receiverEmail: string }) => {
                 console.log("Message received:", message);
                 console.log("Sender email:", senderEmail);
                 console.log("Receiver Email:", receiverEmail);
-                // this.io.emit("chat message", msg);
             });
         });
     }
@@ -83,7 +86,7 @@ class App {
 const port: number = 8080;
 const server = new App().server;
 
-
+// Start the server and listen on the specified port
 server.listen(port, () => {
     console.log("✅ Server started successfully!");
 });
