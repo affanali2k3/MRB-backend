@@ -26,7 +26,7 @@ class FeedController {
         try {
             const userEmail: string = req.params.userEmail;
             const page: number = parseInt(req.params.page);
-            const postsPerPage: number = 3;
+            const postsPerPage: number = 5;
 
             const skipPosts: number = (page - 1) * postsPerPage;
 
