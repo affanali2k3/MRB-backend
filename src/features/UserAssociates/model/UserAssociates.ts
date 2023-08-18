@@ -2,6 +2,7 @@ import { Model, Table, Column, DataType } from "sequelize-typescript";
 import { User } from "../../UserProfile/model/User";
 
 @Table({
+    // Commented out index definition
     // indexes: [
     //     {
     //         name: UserAssociates.UNIQUE_CONSTRAINT_ASSOCIATION,
@@ -19,8 +20,6 @@ export class UserAssociates extends Model {
     public static ASSOCIATE_EMAIL = "associate_email" as string;
     public static ASSOCIATION_STATUS = "association_status" as string;
     public static UNIQUE_CONSTRAINT_ASSOCIATION = "unique_constraint_association" as string;
-
-
 
     @Column({
         type: DataType.INTEGER,
@@ -45,10 +44,8 @@ export class UserAssociates extends Model {
         allowNull: false,
         unique: true,
         references: { model: User.TABLE_NAME, key: User.EMAIL },
-
     })
     associateEmail!: string;
-
 
     @Column({
         type: DataType.STRING,
@@ -56,7 +53,6 @@ export class UserAssociates extends Model {
         allowNull: false
     })
     status!: string;
-
-
 }
 
+export default UserAssociates;
