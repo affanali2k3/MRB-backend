@@ -1,4 +1,7 @@
-*.env
+.env
+.yarnrc.yml
+index.ts
 storage/
+serviceAccountKey.json
 build/
 node_modules/
