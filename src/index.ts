@@ -11,6 +11,8 @@ import path from "path";
 import LikeRouter from "./features/Like/router/LikeRouter";
 import CommentRouter from "./features/Comment/router/CommentRouter";
 import FeedRouter from "./features/Feed/router/FeedRouter";
+import SenderAgentFormRouter from "./features/SenderAgentForm/router/SenderAgentFormRouter";
+import ReceiverAgentFormRouter from "./features/ReceiverAgentForm/router/ReceiverAgentFormRouter";
 
 class App {
     public app: Application;
@@ -46,7 +48,7 @@ class App {
         this.app.route("/").get((req: Request, res: Response) => {
             res.send("welcome home");
         });
-        
+
         // Define various API routes using routers
         this.app.use("/api/v1/user", UserRouter);
         this.app.use("/api/v1/associate", UserAssociatesRouter);
@@ -56,6 +58,8 @@ class App {
         this.app.use("/api/v1/like", LikeRouter);
         this.app.use("/api/v1/comment", CommentRouter);
         this.app.use("/api/v1/feed", FeedRouter);
+        this.app.use("/api/v1/senderAgentForm", SenderAgentFormRouter);
+        this.app.use("/api/v1/receiverAgentForm", ReceiverAgentFormRouter);
     }
 
     protected setupSocketIO(): void {
@@ -63,15 +67,15 @@ class App {
         this.io.on("connection", (socket: Socket) => {
             console.log("A user connected");
             this.activeClientsOnSocket.set(socket.id, ''); // Add the newly connected user to the Map
-            
+
             socket.on("disconnect", () => {
                 console.log("A user disconnected");
             });
-            
+
             socket.on('user-connected', (email: string) => {
                 this.activeClientsOnSocket.set(email, socket.id); // Update the Map with user's email and socket ID
             });
-            
+
             socket.on("message", async ({ message, senderEmail, receiverEmail }: { message: string, senderEmail: string, receiverEmail: string }) => {
                 console.log("Message received:", message);
                 console.log("Sender email:", senderEmail);

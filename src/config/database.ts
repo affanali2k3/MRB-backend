@@ -8,6 +8,10 @@ import { PostImages } from "../features/Post/model/PostImages";
 import { associations } from "./associations";
 import { Like } from "../features/Like/model/LikeModel";
 import { Comment } from "../features/Comment/model/CommentModel";
+import { SenderAgentDirectForm } from "../features/SenderAgentForm/model/SenderAgentDirectForm";
+import { SenderAgentOpenForm } from "../features/SenderAgentForm/model/SenderAgentOpenForm";
+import { ReceiverAgentDirectForm } from "../features/ReceiverAgentForm/model/ReceiverAgentDirectFormModel";
+import { ReceiverAgentOpenForm } from "../features/ReceiverAgentForm/model/ReceiverAgentOpenForm";
 
 dotenv.config(); // Load environment variables from .env file
 
@@ -34,7 +38,7 @@ class Database {
             username: this.POSTGRES_USER,
             password: this.POSTGRES_PASSWORD,
             dialect: "postgres", // Use PostgreSQL dialect
-            models: [User, UserAssociates, Post, PostImages, Message, Like, Comment]
+            models: [User, UserAssociates, Post, PostImages, Message, Like, Comment, SenderAgentDirectForm, SenderAgentOpenForm, ReceiverAgentDirectForm, ReceiverAgentOpenForm]
         });
 
         // Authenticate the connection and handle success or failure
