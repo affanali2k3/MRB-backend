@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { User } from "../model/User";
-import {UserRepo} from "../repository/UserRepo"; // Assuming you have imported the correct path
+import { UserRepo } from "../repository/UserRepo"; // Assuming you have imported the correct path
 import fs from "fs";
 import path from "path";
 
@@ -47,16 +47,17 @@ class UserController {
 
             const updatedUser = new User();
             const { address, licenceState, licenceNumber, previousDeals, email, phone, occupation, name, gender, licence } = req.body;
-            var { yearLicenced, completedDeals } = req.body;
+            var { yearLicenced, completedDeals, yearsOfExperience } = req.body;
 
             yearLicenced = parseInt(yearLicenced);
             completedDeals = parseInt(completedDeals);
+            completedDeals = parseInt(yearsOfExperience);
 
             if (Number.isNaN(yearLicenced) || Number.isNaN(completedDeals)) {
                 throw new Error('error');
             }
 
-            Object.assign(updatedUser, { address, licenceState, licenceNumber, yearLicenced, completedDeals, previousDeals, email, phone, occupation, photo: userBucket, name, gender, licence });
+            Object.assign(updatedUser, { address, licenceState, yearsOfExperience, licenceNumber, yearLicenced, completedDeals, previousDeals, email, phone, occupation, photo: userBucket, name, gender, licence });
 
             await new UserRepo().update(updatedUser);
             res.status(200).json({

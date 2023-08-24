@@ -19,6 +19,7 @@ export class User extends Model {
     public static LICENCE_STATE = "user_licence_state" as string;
     public static LICENCE_NUMBER = "user_licence_number" as string;
     public static YEAR_LICENCED = "user_year_licenced" as string;
+    public static YEARS_OF_EXPERIENCE = "user_years_of_experience" as string;
     public static COMPLETED_DEALS = "user_completed_deals" as string;
     public static PREVIOUS_DEALS = "user_previous_deals" as string;
 
@@ -27,6 +28,7 @@ export class User extends Model {
     @Column({
         type: DataType.INTEGER,
         primaryKey: true,
+        unique: true,
         autoIncrement: true,
         field: User.ID
     })
@@ -70,6 +72,12 @@ export class User extends Model {
         field: User.YEAR_LICENCED
     })
     yearLicenced!: number;
+
+    @Column({
+        type: DataType.INTEGER,
+        field: User.YEARS_OF_EXPERIENCE
+    })
+    yearsOfExperience!: number;
 
     @Column({
         type: DataType.STRING,

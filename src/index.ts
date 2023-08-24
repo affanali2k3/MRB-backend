@@ -13,6 +13,11 @@ import CommentRouter from "./features/Comment/router/CommentRouter";
 import FeedRouter from "./features/Feed/router/FeedRouter";
 import SenderAgentFormRouter from "./features/SenderAgentForm/router/SenderAgentFormRouter";
 import ReceiverAgentFormRouter from "./features/ReceiverAgentForm/router/ReceiverAgentFormRouter";
+import AgentInviteeRouter from "./features/AgentInvitee/router/AgentInviteeRouter";
+import AgentInviteCodeRouter from "./features/AgentInviteCode/router/AgentInviteCodeRouter";
+import AgentAnalyticRouter from "./features/AgentAnalytics/router/AgentAnalyticRouter";
+import AgentReviewRouter from "./features/AgentReviews/router/AgentReviewRouter";
+import ReferralCenterRouter from "./features/ReferralCenter/router/ReferralCenterRouter";
 
 class App {
     public app: Application;
@@ -60,6 +65,11 @@ class App {
         this.app.use("/api/v1/feed", FeedRouter);
         this.app.use("/api/v1/senderAgentForm", SenderAgentFormRouter);
         this.app.use("/api/v1/receiverAgentForm", ReceiverAgentFormRouter);
+        this.app.use("/api/v1/agentInviteCode", AgentInviteCodeRouter);
+        this.app.use("/api/v1/agentInvitee", AgentInviteeRouter);
+        this.app.use("/api/v1/agent-analytics", AgentAnalyticRouter);
+        this.app.use("/api/v1/agent-reviews", AgentReviewRouter);
+        this.app.use("/api/v1/referral-center", ReferralCenterRouter);
     }
 
     protected setupSocketIO(): void {

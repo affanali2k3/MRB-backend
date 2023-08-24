@@ -45,6 +45,7 @@ export class UserRepo implements IUserRepo {
             updatedUser.yearLicenced = user.yearLicenced;
             updatedUser.address = user.address;
             updatedUser.completedDeals = user.completedDeals;
+            updatedUser.yearsOfExperience = user.yearsOfExperience;
 
             // Save the updated user
             updatedUser.save();
