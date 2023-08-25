@@ -10,7 +10,9 @@ export class AgentAnalytic extends Model {
     public static REFERRALS_SENT = "agent_analytic_referrals_sent" as string;
     public static REFERRALS_RECEIVED = "agent_analytic_referrals_received" as string;
     public static AGENT_TO_AGENT_RATING_SCORE = "agent_analytic_agent_to_agent_rating_score" as string;
+    public static AGENT_TO_AGENT_RATING = "agent_analytic_agent_to_agent_rating" as string;
     public static CLIENT_TO_AGENT_RATING_SCORE = "agent_analytic_client_to_agent_rating_score" as string;
+    public static CLIENT_TO_AGENT_RATING = "agent_analytic_client_to_agent_rating" as string;
     public static AGENT_TO_AGENT_RATING_NUMBER = "agent_analytic_agent_to_agent_rating_number" as string;
     public static CLIENT_TO_AGENT_RATING_NUMBER = "agent_analytic_client_to_agent_rating_number" as string;
     public static USER_ID = "agent_analytic_user_id" as string;
@@ -43,6 +45,20 @@ export class AgentAnalytic extends Model {
         allowNull: false,
     })
     agentToAgentRatingScore!: number;
+
+    @Column({
+        type: DataType.FLOAT,
+        field: AgentAnalytic.AGENT_TO_AGENT_RATING,
+        allowNull: false,
+    })
+    agentToAgentRating!: number;
+
+    @Column({
+        type: DataType.FLOAT,
+        field: AgentAnalytic.CLIENT_TO_AGENT_RATING,
+        allowNull: false,
+    })
+    clientToAgentRating!: number;
 
     @Column({
         type: DataType.FLOAT,

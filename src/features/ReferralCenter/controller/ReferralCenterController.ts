@@ -3,38 +3,37 @@ import { SenderAgentOpenForm } from "../../SenderAgentForm/model/SenderAgentOpen
 import { User } from "../../UserProfile/model/User";
 import { AgentAnalytic } from "../../AgentAnalytics/model/AgentAnalyticsModel";
 import { Op, Sequelize } from "sequelize";
+import ReferralCenterRepo from "../repository/ReferralCenterRepo";
 
 
 export interface SearchData {
-    state: string,
-    city: string,
-    agentYearsOfExperience: number,
-    isAgentOnTeam: boolean,
-    rating: number,
+    state?: string,
+    city?: string,
+    agentYearsOfExperience?: number,
+    isAgentOnTeam?: boolean,
+    rating?: number,
 }
 
 class ReferralCenterController {
 
     async searchForLeads(req: Request, res: Response) {
         try {
-            console.log('here');
-            const result = await SenderAgentOpenForm.findAll({
-                include: [
-                    {
-                        model: User,
-                        attributes: ['id'],
-                        on: Sequelize.literal('"User"."user_email" = "SenderAgentOpenForm"."sender_agent_open_forms_sender_agent"::text')
-                    }
-                ]
+            // const state: string | undefined = req.query.state as string;
+            // const city: string | undefined = req.query.state as string;
+            // const agentYearsOfExperience: number | undefined = parseInt(req.query.state as string);
+            // const isAgentOnTeam: boolean | undefined = req.query.isAgentOnTeam === 'true';
+            // const rating: number | undefined = parseInt(req.query.rating as string);
+
+            const reqBody: SearchData = req.query;
 
 
+            console.log(reqBody);
 
-            });
-            console.log(result);
-            console.log('done')
+            const results: SenderAgentOpenForm[] = await ReferralCenterRepo.searchForLeads(reqBody);
+
             res.status(200).send({
                 message: "Searched for leads succesfully",
-                data: result
+                data: results
             })
         } catch (err: any) {
             res.status(500).send({

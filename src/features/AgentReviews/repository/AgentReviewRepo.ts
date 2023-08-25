@@ -32,6 +32,7 @@ class AgentReviewRepo implements IAgentReviewRepo {
 
             agentAnalytic.agentToAgentRatingNumber = agentAnalytic.agentToAgentRatingNumber + 1;
             agentAnalytic.agentToAgentRatingScore = agentAnalytic.agentToAgentRatingScore + data.rating;
+            agentAnalytic.agentToAgentRating = agentAnalytic.agentToAgentRatingScore / agentAnalytic.agentToAgentRatingNumber;
 
             agentAnalytic.save();
         } catch (err) {
@@ -55,6 +56,9 @@ class AgentReviewRepo implements IAgentReviewRepo {
 
             agentAnalytic.clientToAgentRatingNumber = agentAnalytic.clientToAgentRatingNumber + 1;
             agentAnalytic.clientToAgentRatingScore = agentAnalytic.clientToAgentRatingScore + data.rating;
+
+            agentAnalytic.clientToAgentRating = agentAnalytic.clientToAgentRating / agentAnalytic.clientToAgentRatingNumber;
+
 
             agentAnalytic.save();
         } catch (err) {

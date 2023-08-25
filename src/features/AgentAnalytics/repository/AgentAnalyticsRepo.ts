@@ -23,6 +23,8 @@ class AgentAnalyticsRepo implements IAgentAnalyticsRepo {
             agentAnalytic.clientToAgentRatingNumber = 0;
             agentAnalytic.agentToAgentRatingScore = 0;
             agentAnalytic.clientToAgentRatingScore = 0;
+            agentAnalytic.agentToAgentRating = 0;
+            agentAnalytic.clientToAgentRating = 0;
 
             await agentAnalytic.save();
         } catch (err) {

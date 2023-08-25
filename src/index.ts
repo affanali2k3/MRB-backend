@@ -18,6 +18,7 @@ import AgentInviteCodeRouter from "./features/AgentInviteCode/router/AgentInvite
 import AgentAnalyticRouter from "./features/AgentAnalytics/router/AgentAnalyticRouter";
 import AgentReviewRouter from "./features/AgentReviews/router/AgentReviewRouter";
 import ReferralCenterRouter from "./features/ReferralCenter/router/ReferralCenterRouter";
+import RegistrationRouter from "./features/Registration/router/RegistrationRouter";
 
 class App {
     public app: Application;
@@ -70,6 +71,7 @@ class App {
         this.app.use("/api/v1/agent-analytics", AgentAnalyticRouter);
         this.app.use("/api/v1/agent-reviews", AgentReviewRouter);
         this.app.use("/api/v1/referral-center", ReferralCenterRouter);
+        this.app.use("/api/v1/registration", RegistrationRouter);
     }
 
     protected setupSocketIO(): void {

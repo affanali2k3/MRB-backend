@@ -16,6 +16,7 @@ import { AgentInvitee } from "../features/AgentInvitee/model/AgentInviteeModel";
 import { AgentAnalytic } from "../features/AgentAnalytics/model/AgentAnalyticsModel";
 import { AgentToAgentReview } from "../features/AgentReviews/model/AgentToAgentReviewModel";
 import { ClientToAgentReview } from "../features/AgentReviews/model/ClientToAgentReviewModel";
+import { UsedInviteeCode } from "../features/AgentInviteCode/model/UsedInviteeCode";
 
 dotenv.config(); // Load environment variables from .env file
 
@@ -45,11 +46,14 @@ class Database {
             models: [User, UserAssociates, Post, PostImages, Message,
                 Like, Comment, SenderAgentDirectForm, SenderAgentOpenForm,
                 ReceiverAgentDirectForm, ReceiverAgentOpenForm, AgentInviteCode,
-                AgentInvitee, AgentAnalytic, AgentToAgentReview, ClientToAgentReview]
+                AgentInvitee, AgentAnalytic, AgentToAgentReview, ClientToAgentReview, UsedInviteeCode]
         });
 
         User.hasMany(SenderAgentOpenForm, { foreignKey: SenderAgentOpenForm.SENDER_AGENT });
         SenderAgentOpenForm.belongsTo(User, { foreignKey: SenderAgentOpenForm.SENDER_AGENT });
+
+        User.hasOne(AgentAnalytic, { foreignKey: AgentAnalytic.USER_ID });
+        AgentAnalytic.belongsTo(User, { foreignKey: AgentAnalytic.USER_ID });
 
         // Authenticate the connection and handle success or failure
         this.sequelize.authenticate().then(() => {

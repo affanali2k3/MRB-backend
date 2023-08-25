@@ -45,7 +45,8 @@ export class User extends Model {
 
     @Column({
         type: DataType.STRING,
-        field: User.USER_NAME
+        field: User.USER_NAME,
+        allowNull: false
     })
     name!: string;
 
