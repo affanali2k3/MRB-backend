@@ -18,12 +18,6 @@ class ReferralCenterController {
 
     async searchForLeads(req: Request, res: Response) {
         try {
-            // const state: string | undefined = req.query.state as string;
-            // const city: string | undefined = req.query.state as string;
-            // const agentYearsOfExperience: number | undefined = parseInt(req.query.state as string);
-            // const isAgentOnTeam: boolean | undefined = req.query.isAgentOnTeam === 'true';
-            // const rating: number | undefined = parseInt(req.query.rating as string);
-
             const reqBody: SearchData = req.query;
 
 

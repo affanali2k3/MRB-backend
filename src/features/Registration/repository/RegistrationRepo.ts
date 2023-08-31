@@ -3,6 +3,7 @@ import { AgentInviteCode } from "../../AgentInviteCode/model/AgentInviteCode"
 import { User } from "../../UserProfile/model/User"
 import { createAccountData } from "../controller/RegistrationController"
 import { UsedInviteeCode } from "../../AgentInviteCode/model/UsedInviteeCode"
+import { AgentAnalytic } from "../../AgentAnalytics/model/AgentAnalyticsModel"
 
 
 interface IRegistrationRepo {
@@ -55,7 +56,21 @@ class RegistrationRepo implements IRegistrationRepo {
             user.email = data.email
             user.phone = data.phone
 
-            await user.save();
+            const savedUser = await user.save();
+
+            const agentAnalytic: AgentAnalytic = new AgentAnalytic();
+
+            agentAnalytic.referralsReceived = 0;
+            agentAnalytic.referralsSent = 0;
+            agentAnalytic.agentToAgentRatingNumber = 0;
+            agentAnalytic.agentToAgentRatingScore = 0;
+            agentAnalytic.agentToAgentRating = 0;
+            agentAnalytic.clientToAgentRating = 0;
+            agentAnalytic.clientToAgentRatingNumber = 0;
+            agentAnalytic.clientToAgentRatingScore = 0;
+            agentAnalytic.userId = savedUser.id;
+
+            await agentAnalytic.save();
 
             return user;
 

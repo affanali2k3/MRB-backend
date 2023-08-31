@@ -33,21 +33,21 @@ export class SenderAgentDirectForm extends Model {
 
     // Foreign key in user table. Meaning the agent who is referring should be a registered user
     @Column({
-        type: DataType.TEXT,
+        type: DataType.INTEGER,
         field: SenderAgentDirectForm.SENDER_AGENT,
-        references: { model: User.TABLE_NAME, key: User.EMAIL },
+        references: { model: User.TABLE_NAME, key: User.ID },
         allowNull: false
     })
-    senderAgent!: string
+    senderAgent!: number
 
     // Foreign key in user table. Meaning the agent who is referred to should be a registered user
     @Column({
-        type: DataType.TEXT,
+        type: DataType.INTEGER,
         field: SenderAgentDirectForm.RECEIVER_AGENT,
-        references: { model: User.TABLE_NAME, key: User.EMAIL },
+        references: { model: User.TABLE_NAME, key: User.ID },
         allowNull: false
     })
-    receiverAgent!: string
+    receiverAgent!: number
 
     @Column({
         type: DataType.BOOLEAN,

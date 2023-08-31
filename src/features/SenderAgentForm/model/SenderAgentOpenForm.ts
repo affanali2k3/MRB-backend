@@ -3,15 +3,7 @@ import { User } from "../../UserProfile/model/User";
 
 
 // Interface defining how the incoming data for this model should be like (especially their datatypes)
-interface SenderAgentOpenFormValues {
-    senderAgent: string,
-    isBuyer: boolean,
-    city: string,
-    state: string,
-    providence: string,
-    desiredDate: Date | null,
-    price: number
-}
+
 
 @Table({
     tableName: SenderAgentOpenForm.TABLE_NAME
@@ -43,12 +35,12 @@ export class SenderAgentOpenForm extends Model {
 
     // Foreign key in user table. Meaning the agent who is referring should be a registered user
     @Column({
-        type: DataType.TEXT,
+        type: DataType.INTEGER,
         field: SenderAgentOpenForm.SENDER_AGENT,
-        references: { model: User.TABLE_NAME, key: User.EMAIL },
+        references: { model: User.TABLE_NAME, key: User.ID },
         allowNull: false
     })
-    senderAgent!: string
+    senderAgent!: number
 
     @Column({
         type: DataType.BOOLEAN,

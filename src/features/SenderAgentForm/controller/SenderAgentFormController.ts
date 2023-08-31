@@ -11,8 +11,8 @@ export enum SenderAgentFormType {
 
 // Define the type of incoming data from the frontend
 export interface SenderAgentFormValues {
-    senderAgent: string,
-    receiverAgent: string,
+    senderAgent: number,
+    receiverAgent: number,
     formType: SenderAgentFormType,
     isBuyer: boolean,
     city: string,

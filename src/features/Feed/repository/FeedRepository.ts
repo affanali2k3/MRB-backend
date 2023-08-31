@@ -24,7 +24,7 @@ class FeedRepo implements IFeedRepo {
                             SELECT user_email
                             FROM user_associates
                             WHERE associate_email = '${userEmail}' AND association_status = 'Accepted'
-                        )`),
+                        ) ORDER BY "createdAt" DESC`),
                     },
                 },
                 offset: skipPosts, // Offset for pagination

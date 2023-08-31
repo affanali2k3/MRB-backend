@@ -13,7 +13,7 @@ class ReferralCenterRepo implements IReferralCenterRepo {
     async searchForLeads(data: SearchData): Promise<SenderAgentOpenForm[]> {
         try {
             const whereClause: any = {};
-            const userWhereClause: any = {};
+            const userWhereClause: WhereOptions<User> = {};
             const analyticWhereClause: WhereOptions<AgentAnalytic> = {};
 
             if (data.state !== undefined) {
@@ -32,11 +32,14 @@ class ReferralCenterRepo implements IReferralCenterRepo {
                 analyticWhereClause.agentToAgentRating = { [Op.gte]: data.rating };
             }
 
+            console.log(data);
+
             const results = await SenderAgentOpenForm.findAll({
                 where: whereClause,
                 include: [
                     {
                         model: User,
+                        attributes: [User.USER_NAME, User.ID],
                         where: userWhereClause,
                         include: [
                             {
@@ -47,6 +50,8 @@ class ReferralCenterRepo implements IReferralCenterRepo {
                     },
                 ]
             });
+
+            console.log(results);
 
             return results;
         } catch (err) {
