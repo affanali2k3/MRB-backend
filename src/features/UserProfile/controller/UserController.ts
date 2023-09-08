@@ -9,8 +9,8 @@ class UserController {
     async create(req: Request, res: Response) {
         try {
             const newUser = new User();
-            const { email } = req.body;
-            Object.assign(newUser, { email });
+            const { email,name } = req.body;
+            Object.assign(newUser, { email, name });
 
             await new UserRepo().create(newUser.dataValues);
             res.status(200).json({

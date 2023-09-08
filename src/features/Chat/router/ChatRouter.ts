@@ -10,6 +10,8 @@ class ChatRouter extends BaseRoutes {
         
         // Define a POST route to get all messages, using the getAllMessages method from the ChatController
         this.router.post("/getAll", ChatController.getAllMessages);
+        this.router.get("/chat/get-all", ChatController.getAllChats);
+        this.router.post("/chat/create", ChatController.createChat);
     }
 }
 

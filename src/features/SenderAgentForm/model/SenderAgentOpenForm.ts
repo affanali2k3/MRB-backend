@@ -37,7 +37,7 @@ export class SenderAgentOpenForm extends Model {
     @Column({
         type: DataType.INTEGER,
         field: SenderAgentOpenForm.SENDER_AGENT,
-        references: { model: User.TABLE_NAME, key: User.ID },
+        // references: { model: User.TABLE_NAME, key: User.ID },
         allowNull: false
     })
     senderAgent!: number

@@ -37,7 +37,7 @@ export class User extends Model {
 
     @Column({
         type: DataType.STRING,
-        primaryKey: true,
+        // primaryKey: true,
         unique: true,
         field: User.EMAIL
     })

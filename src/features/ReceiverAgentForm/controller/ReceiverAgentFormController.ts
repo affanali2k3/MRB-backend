@@ -1,5 +1,7 @@
 import { Request, Response } from "express"
 import ReceiverAgentFormRepo from "../repository/ReceiverAgentFormRepo";
+import { ReceiverAgentOpenForm } from "../model/ReceiverAgentOpenForm";
+import { ReceiverAgentDirectForm } from "../model/ReceiverAgentDirectFormModel";
 
 // Form can be either be direct (to a specific agent) or open(to all agents)
 export enum ReceiverAgentFormType {
@@ -9,7 +11,7 @@ export enum ReceiverAgentFormType {
 
 // Define the type of incoming data from the frontend
 export interface ReceiverAgentFormValues {
-    receiverAgent: string,
+    receiverAgent: number,
     senderAgentFormId: number,
     formType: ReceiverAgentFormType,
     proposal: string,
@@ -17,6 +19,44 @@ export interface ReceiverAgentFormValues {
 
 
 class SenderAgentFormController {
+    async getOpenFormsProposalsReceivedByUser(req: Request, res: Response) {
+        try {
+            const userIdString: string = req.query.userId as string;
+            const userId: number = parseInt(userIdString);
+
+            const openFormsProposalsReceivedByUser: ReceiverAgentOpenForm[] = 
+            await ReceiverAgentFormRepo.getOpenFormsProposalsReceivedByUser({userId: userId});
+
+            res.status(200).send({
+                message: "Got proposals successfully",
+                data: openFormsProposalsReceivedByUser
+            })
+        } catch (err) {
+            res.status(500).send({
+                message: 'Failed to get proposals',
+                error: `${err}`
+            })
+        }
+    }
+    async getDirectFormsProposalsReceivedByUser(req: Request, res: Response) {
+        try {
+            const userIdString: string = req.query.userId as string;
+            const userId: number = parseInt(userIdString);
+
+            const directFormsProposalsReceivedByUser: ReceiverAgentDirectForm[] = 
+            await ReceiverAgentFormRepo.getDirectFormsProposalsReceivedByUser({userId: userId});
+
+            res.status(200).send({
+                message: "Got proposals successfully",
+                data: directFormsProposalsReceivedByUser
+            })
+        } catch (err) {
+            res.status(500).send({
+                message: 'Failed to create form',
+                error: `${err}`
+            })
+        }
+    }
     async createForm(req: Request, res: Response) {
         try {
             const reqData: ReceiverAgentFormValues = req.body;

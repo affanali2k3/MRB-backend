@@ -26,12 +26,12 @@ export class ReceiverAgentOpenForm extends Model {
 
     // Foreign key in user table. Meaning the agent who is referring should be a registered user
     @Column({
-        type: DataType.TEXT,
+        type: DataType.INTEGER,
         field: ReceiverAgentOpenForm.RECEIVER_AGENT,
-        references: { model: User.TABLE_NAME, key: User.EMAIL },
+        references: { model: User.TABLE_NAME, key: User.ID },
         allowNull: false
     })
-    receiverAgent!: string
+    receiverAgent!: number
 
     // Foreign key in sender agent table.
     @Column({

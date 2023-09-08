@@ -17,6 +17,7 @@ import { AgentAnalytic } from "../features/AgentAnalytics/model/AgentAnalyticsMo
 import { AgentToAgentReview } from "../features/AgentReviews/model/AgentToAgentReviewModel";
 import { ClientToAgentReview } from "../features/AgentReviews/model/ClientToAgentReviewModel";
 import { UsedInviteeCode } from "../features/AgentInviteCode/model/UsedInviteeCode";
+import { Chat } from "../features/Chat/model/ChatModel";
 
 dotenv.config(); // Load environment variables from .env file
 
@@ -46,11 +47,21 @@ class Database {
             models: [User, UserAssociates, Post, PostImages, Message,
                 Like, Comment, SenderAgentDirectForm, SenderAgentOpenForm,
                 ReceiverAgentDirectForm, ReceiverAgentOpenForm, AgentInviteCode,
-                AgentInvitee, AgentAnalytic, AgentToAgentReview, ClientToAgentReview, UsedInviteeCode]
+                AgentInvitee, AgentAnalytic, AgentToAgentReview, ClientToAgentReview
+                , UsedInviteeCode, Chat]
         });
 
         User.hasMany(SenderAgentOpenForm, { foreignKey: SenderAgentOpenForm.SENDER_AGENT });
         SenderAgentOpenForm.belongsTo(User, { foreignKey: SenderAgentOpenForm.SENDER_AGENT });
+        
+        SenderAgentOpenForm.hasOne(ReceiverAgentOpenForm, { foreignKey: ReceiverAgentOpenForm.SENDER_AGENT_FORM_ID });
+        ReceiverAgentOpenForm.belongsTo(SenderAgentOpenForm, { foreignKey: ReceiverAgentOpenForm.SENDER_AGENT_FORM_ID });
+
+
+        User.hasMany(Chat, { foreignKey: Chat.USER_TWO_ID });
+        Chat.belongsTo(User, { foreignKey: Chat.USER_TWO_ID });
+
+
 
         User.hasOne(AgentAnalytic, { foreignKey: AgentAnalytic.USER_ID });
         AgentAnalytic.belongsTo(User, { foreignKey: AgentAnalytic.USER_ID });

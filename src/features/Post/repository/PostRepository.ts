@@ -26,12 +26,14 @@ class PostRepo implements IPostRepo {
             // If there are image file names provided, save them as PostImages
             if (fileNames === null) return;
 
+
             for (const fileName of fileNames) {
                 const postImage = new PostImages();
                 postImage.postId = newPost.id;
                 postImage.image_name = fileName;
                 await postImage.save();
             }
+        
 
         } catch (err) {
             throw new Error(`${err}`);
