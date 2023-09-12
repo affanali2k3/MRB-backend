@@ -16,8 +16,8 @@ import { User } from "../../UserProfile/model/User";
 export class UserAssociates extends Model {
     public static TABLE_NAME = "user_associates" as string;
     public static ID = "association_id" as string;
-    public static USER_EMAIL = "user_email" as string;
-    public static ASSOCIATE_EMAIL = "associate_email" as string;
+    public static USER_ID = "user_id" as string;
+    public static ASSOCIATE_ID = "associate_id" as string;
     public static ASSOCIATION_STATUS = "association_status" as string;
     public static UNIQUE_CONSTRAINT_ASSOCIATION = "unique_constraint_association" as string;
 
@@ -30,22 +30,22 @@ export class UserAssociates extends Model {
     id!: number;
 
     @Column({
-        type: DataType.STRING,
-        field: UserAssociates.USER_EMAIL,
+        type: DataType.INTEGER,
+        field: UserAssociates.USER_ID,
         allowNull: false,
         unique: true,
-        references: { model: User.TABLE_NAME, key: User.EMAIL },
+        references: { model: User.TABLE_NAME, key: User.ID },
     })
-    userEmail!: string;
+    userId!: number;
 
     @Column({
-        type: DataType.STRING,
-        field: UserAssociates.ASSOCIATE_EMAIL,
+        type: DataType.INTEGER,
+        field: UserAssociates.ASSOCIATE_ID,
         allowNull: false,
         unique: true,
-        references: { model: User.TABLE_NAME, key: User.EMAIL },
+        references: { model: User.TABLE_NAME, key: User.ID },
     })
-    associateEmail!: string;
+    associateId!: number;
 
     @Column({
         type: DataType.STRING,

@@ -5,45 +5,45 @@ import { Op, Sequelize, UniqueConstraintError, literal } from "sequelize"; // Im
 
 interface IUserAssociatesRepo {
     // Sends a friend request from sender to receiver
-    sendRequest({ senderEmail, receiverEmail }: { senderEmail: string, receiverEmail: string }): Promise<void>;
+    sendRequest({ senderId, receiverId }: { senderId: number, receiverId: number }): Promise<void>;
 
     // Accepts a friend request from sender to receiver
-    acceptRequest({ senderEmail, receiverEmail }: { senderEmail: string, receiverEmail: string }): Promise<void>;
+    acceptRequest({ senderId, receiverId }: { senderId: number, receiverId: number }): Promise<void>;
 
     // Declines a friend request from sender to receiver
-    declineRequest({ senderEmail, receiverEmail }: { senderEmail: string, receiverEmail: string }): Promise<void>;
+    declineRequest({ senderId, receiverId }: { senderId: number, receiverId: number }): Promise<void>;
 
     // Cancels a friend request from sender to receiver or vice versa
-    cancelRequest({ senderEmail, receiverEmail }: { senderEmail: string, receiverEmail: string }): Promise<void>;
+    cancelRequest({ senderId, receiverId }: { senderId: number, receiverId: number }): Promise<void>;
 
     // Retrieves all user's associates with "Accepted" status
-    getAllAssociates({ userEmail }: { userEmail: string }): Promise<User[]>;
+    getAllAssociates({ userId }: { userId: number }): Promise<User[]>;
 
     // Removes an associate relationship between two users
-    removeAssociate({ userEmail, associateEmail }: { userEmail: string, associateEmail: string }): Promise<void>;
+    removeAssociate({ userId, associateId }: { userId: number, associateId: number }): Promise<void>;
 
     // Checks the friend request status between two users
-    checkRequestStatusWithUser({ userEmail, associateEmail }: { userEmail: string, associateEmail: string }): Promise<UserAssociates | null>;
+    checkRequestStatusWithUser({ userId, associateId }: { userId: number, associateId: number }): Promise<UserAssociates | null>;
 }
 
 
 export class UserAssociatesRepo implements IUserAssociatesRepo {
-    async sendRequest({ senderEmail, receiverEmail }: { senderEmail: string, receiverEmail: string }): Promise<void> {
+    async sendRequest({ senderId, receiverId }: { senderId: number, receiverId: number }): Promise<void> {
         try {
             // Check if an association already exists between sender and receiver
             const existsAssociation: UserAssociates | null = await UserAssociates.findOne({
                 where:
                 {
-                    [Op.or]: [{ userEmail: senderEmail, associateEmail: receiverEmail },
-                    { userEmail: receiverEmail, associateEmail: senderEmail }]
+                    [Op.or]: [{ userId: senderId, associateId: receiverId },
+                    { userId: receiverId, associateId: senderId }]
                 }
             })
             if (existsAssociation !== null) throw new Error('Association already exists');
     
             // Create a new UserAssociates instance with pending status
             const newAssociation = new UserAssociates();
-            newAssociation.userEmail = senderEmail;
-            newAssociation.associateEmail = receiverEmail;
+            newAssociation.userId = senderId;
+            newAssociation.associateId = receiverId;
             newAssociation.status = 'Pending';
     
             // Save the new association
@@ -55,10 +55,10 @@ export class UserAssociatesRepo implements IUserAssociatesRepo {
         }
     }
     
-    async acceptRequest({ senderEmail, receiverEmail }: { senderEmail: string, receiverEmail: string }): Promise<void> {
+    async acceptRequest({ senderId, receiverId }: { senderId: number, receiverId: number }): Promise<void> {
         try {
             // Find the association between sender and receiver
-            const association = await UserAssociates.findOne({ where: { userEmail: senderEmail, associateEmail: receiverEmail } });
+            const association = await UserAssociates.findOne({ where: { userId: senderId, associateId: receiverId } });
     
             if (!association) throw new Error("There is no friend request");
     
@@ -72,10 +72,10 @@ export class UserAssociatesRepo implements IUserAssociatesRepo {
         }
     }
     
-    async declineRequest({ senderEmail, receiverEmail }: { senderEmail: string, receiverEmail: string }): Promise<void> {
+    async declineRequest({ senderId, receiverId }: { senderId: number, receiverId: number }): Promise<void> {
         try {
             // Find the association between sender and receiver
-            const association = await UserAssociates.findOne({ where: { userEmail: senderEmail, associateEmail: receiverEmail } });
+            const association = await UserAssociates.findOne({ where: { userId: senderId, associateId: receiverId } });
     
             if (!association) throw new Error("There is no friend request");
     
@@ -89,10 +89,10 @@ export class UserAssociatesRepo implements IUserAssociatesRepo {
         }
     }
     
-    async cancelRequest({ senderEmail, receiverEmail }: { senderEmail: string, receiverEmail: string }): Promise<void> {
+    async cancelRequest({ senderId, receiverId }: { senderId: number, receiverId: number }): Promise<void> {
         try {
             // Find the association between sender and receiver
-            const association = await UserAssociates.findOne({ where: { userEmail: senderEmail, associateEmail: receiverEmail } });
+            const association = await UserAssociates.findOne({ where: { userId: senderId, associateId: receiverId } });
     
             if (!association) throw new Error("There is no friend request");
     
@@ -103,20 +103,20 @@ export class UserAssociatesRepo implements IUserAssociatesRepo {
         }
     }
     
-    async getAllAssociates({ userEmail }: { userEmail: string }) {
+    async getAllAssociates({ userId }: { userId: number }) {
         try {
             // Fetch all users associated with the provided user's email and with "Accepted" status
             const usersWithAcceptedAssociates = await User.findAll({
                 where: {
-                    user_email: {
+                    id: {
                         [Op.in]: literal(`(
-                      SELECT associate_email
+                      SELECT associate_id
                       FROM user_associates
-                      WHERE user_email = '${userEmail}' AND association_status = 'Accepted'
+                      WHERE user_id = '${userId}' AND association_status = 'Accepted'
                       UNION
-                      SELECT user_email
+                      SELECT user_id
                       FROM user_associates
-                      WHERE associate_email = '${userEmail}' AND association_status = 'Accepted'
+                      WHERE associate_id = '${userId}' AND association_status = 'Accepted'
                       )
                     `),
                     },
@@ -129,12 +129,12 @@ export class UserAssociatesRepo implements IUserAssociatesRepo {
         }
     }
     
-    async removeAssociate({ userEmail, associateEmail }: { userEmail: string, associateEmail: string }) {
+    async removeAssociate({ userId, associateId }: { userId: number, associateId: number }) {
         try {
             // Find the association between the provided user emails
             const userAssociates: UserAssociates | null = await UserAssociates.findOne({
-                where: Sequelize.or({ userEmail: userEmail, associateEmail: associateEmail },
-                    { userEmail: associateEmail, associateEmail: userEmail })
+                where: Sequelize.or({ userId: userId, associateId: associateId },
+                    { userId: associateId, associateEmail: userId })
             });
     
             if (!userAssociates) throw new Error("There is no association");
@@ -146,12 +146,12 @@ export class UserAssociatesRepo implements IUserAssociatesRepo {
         }
     }
     
-    async checkRequestStatusWithUser({ userEmail, associateEmail }: { userEmail: string, associateEmail: string }) {
+    async checkRequestStatusWithUser({ userId, associateId }: { userId: number, associateId: number }) {
         try {
             // Find the association between the provided user emails
             const userAssociates: UserAssociates | null = await UserAssociates.findOne({
-                where: Sequelize.or({ userEmail: userEmail, associateEmail: associateEmail },
-                    { userEmail: associateEmail, associateEmail: userEmail })
+                where: Sequelize.or({ userId: userId, associateId: associateId },
+                    { userId: associateId, associateId: userId })
             });
     
             if (!userAssociates) return null;

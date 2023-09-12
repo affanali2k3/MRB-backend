@@ -16,7 +16,7 @@ class UserAssociatesRouter extends BaseRoutes {
         this.router.delete("/cancel", UserAssociatesController.cancelRequest);
         
         // Endpoint to get all associates of a user
-        this.router.get("/getAll/:userEmail", UserAssociatesController.getAllAssociates);
+        this.router.get("/get-all", UserAssociatesController.getAllAssociates);
         
         // Endpoint to remove an associate
         this.router.delete("/remove", UserAssociatesController.removeAssociate);
