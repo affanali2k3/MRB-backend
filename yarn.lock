@@ -632,6 +632,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/validator@npm:*":
+  version: 13.11.1
+  resolution: "@types/validator@npm:13.11.1"
+  checksum: 49e8b611e0b9a0cd645534fd5eeacc64c14ac2f11d7e91d3d8b891f7cf730bccb8a4b7466ac67f4c11e16531bc211a547b97314ca977dd5e58468a77bd0da735
+  languageName: node
+  linkType: hard
+
 "@types/validator@npm:^13.7.17":
   version: 13.7.17
   resolution: "@types/validator@npm:13.7.17"
@@ -816,6 +823,15 @@ __metadata:
   dependencies:
     retry: 0.13.1
   checksum: 38a7152ff7265a9321ea214b9c69e8224ab1febbdec98efbbde6e562f17ff68405569b796b1c5271f354aef8783665d29953f051f68c1fc45306e61aec82fdc4
+  languageName: node
+  linkType: hard
+
+"axios@npm:^0.21.1":
+  version: 0.21.4
+  resolution: "axios@npm:0.21.4"
+  dependencies:
+    follow-redirects: ^1.14.0
+  checksum: 44245f24ac971e7458f3120c92f9d66d1fc695e8b97019139de5b0cc65d9b8104647db01e5f46917728edfc0cfd88eb30fc4c55e6053eef4ace76768ce95ff3c
   languageName: node
   linkType: hard
 
@@ -1112,6 +1128,15 @@ __metadata:
   version: 1.0.5
   resolution: "content-type@npm:1.0.5"
   checksum: 566271e0a251642254cde0f845f9dd4f9856e52d988f4eb0d0dcffbb7a1f8ec98de7a5215fc628f3bce30fe2fb6fd2bc064b562d721658c59b544e2d34ea2766
+  languageName: node
+  linkType: hard
+
+"convertapi@npm:^1.12.0":
+  version: 1.12.0
+  resolution: "convertapi@npm:1.12.0"
+  dependencies:
+    axios: ^0.21.1
+  checksum: ea5fa5599fa552aad995dd405e605ba9db25b2db54b5bee12741bdc618e24c4bbe1ebc5f8660f90cf787842e033529460213753001c28e5621cd9878be689e02
   languageName: node
   linkType: hard
 
@@ -1618,6 +1643,16 @@ __metadata:
     "@google-cloud/storage":
       optional: true
   checksum: e0ba6795be4064b0713c83d305894b79d1543d9129e4b531ee9f299020923b36b0c3ed7509ced9fe02ca5a65f030077eee9bcfa20c29919a0996ef7e7a5caeaa
+  languageName: node
+  linkType: hard
+
+"follow-redirects@npm:^1.14.0":
+  version: 1.15.2
+  resolution: "follow-redirects@npm:1.15.2"
+  peerDependenciesMeta:
+    debug:
+      optional: true
+  checksum: faa66059b66358ba65c234c2f2a37fcec029dc22775f35d9ad6abac56003268baf41e55f9ee645957b32c7d9f62baf1f0b906e68267276f54ec4b4c597c2b190
   languageName: node
   linkType: hard
 
@@ -2681,6 +2716,8 @@ __metadata:
     "@types/multer": ^1.4.7
     "@types/node": ^20.4.4
     "@types/socket.io": ^3.0.2
+    "@types/validator": "*"
+    convertapi: ^1.12.0
     dotenv: ^16.3.1
     express: ^4.18.2
     firebase-admin: ^11.10.1

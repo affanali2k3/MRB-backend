@@ -13,13 +13,15 @@ export class User extends Model {
     public static LICENCE = "user_licence" as string;
     public static PHOTO = "user_photo" as string;
     public static PHONE = "user_phone" as string;
-    public static OCCUPATION = "user_occupation" as string;
+    public static USER_CITY = "user_city" as string;
+    public static USER_STATE = "user_state" as string;
+    public static USER_COUNTY = "user_county" as string;
+
     public static GENDER = "user_gender" as string;
     public static ADDRESS = "user_address" as string;
-    public static LICENCE_STATE = "user_licence_state" as string;
-    public static LICENCE_NUMBER = "user_licence_number" as string;
+ 
     public static YEAR_LICENCED = "user_year_licenced" as string;
-    public static COMPLETED_DEALS = "user_completed_deals" as string;
+
     public static PREVIOUS_DEALS = "user_previous_deals" as string;
 
 
@@ -55,15 +57,21 @@ export class User extends Model {
 
     @Column({
         type: DataType.STRING,
-        field: User.LICENCE_NUMBER
+        field: User.USER_CITY
     })
-    licenceNumber!: string;
+    city!: string;
 
     @Column({
         type: DataType.STRING,
-        field: User.LICENCE_STATE
+        field: User.USER_STATE
     })
-    licenceState!: string;
+    state!: string;
+
+    @Column({
+        type: DataType.STRING,
+        field: User.USER_COUNTY
+    })
+    county!: string;
 
     @Column({
         type: DataType.INTEGER,
@@ -77,11 +85,7 @@ export class User extends Model {
     })
     address!: string;
 
-    @Column({
-        type: DataType.INTEGER,
-        field: User.COMPLETED_DEALS
-    })
-    completedDeals!: number;
+
 
     @Column({
         type: DataType.STRING,
@@ -95,12 +99,7 @@ export class User extends Model {
     })
     phone!: string;
 
-    @Column({
-        type: DataType.STRING,
-        field: User.OCCUPATION
-    })
-    occupation!: string;
-
+   
     @Column({
         type: DataType.STRING,
         field: User.GENDER

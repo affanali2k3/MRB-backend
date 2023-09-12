@@ -1,24 +1,22 @@
-import { Model, Table, Column, DataType, ForeignKey, BelongsTo, Unique, Index } from "sequelize-typescript";
-
+import { Model, Table, Column, DataType, ForeignKey, BelongsTo, Unique, Index } from "sequelize-typescript"; // Import necessary modules
 
 @Table({
     indexes: [
+        // Define an index with a unique constraint on the combination of POST_ID and USER_EMAIL fields
         {
             name: Like.UNIQUE_CONSTRAINT_POST_USEREMAIL,
             unique: true,
-            fields: [Like.POST_ID, Like.USER_EMAIL]
-        },],
-    tableName: Like.TABLE_NAME
+            fields: [Like.POST_ID, Like.USER_ID]
+        },
+    ],
+    tableName: Like.TABLE_NAME // Set the table name for the Like model
 })
-
 export class Like extends Model {
-    public static TABLE_NAME = "likes" as string;
-    public static ID = "like_id" as string;
-    public static POST_ID = "post_id" as string;
-    public static USER_EMAIL = "user_email" as string;
-    public static UNIQUE_CONSTRAINT_POST_USEREMAIL = "unique_constraint_post_userEmail" as string;
-
-
+    public static TABLE_NAME = "likes" as string; // Define the table name constant for the Like model
+    public static ID = "like_id" as string; // Define the column name constant for the ID field
+    public static POST_ID = "post_id" as string; // Define the column name constant for the POST_ID field
+    public static USER_ID = "user_id" as string; // Define the column name constant for the USER_EMAIL field
+    public static UNIQUE_CONSTRAINT_POST_USEREMAIL = "unique_constraint_post_userEmail" as string; // Define the unique constraint name
 
     @Column({
         type: DataType.INTEGER,
@@ -26,8 +24,7 @@ export class Like extends Model {
         primaryKey: true,
         autoIncrement: true
     })
-    id!: number;
-
+    id!: number; // Define the ID field with auto-incrementing primary key
 
     @Column({
         type: DataType.INTEGER,
@@ -35,17 +32,13 @@ export class Like extends Model {
         allowNull: false,
         references: { model: 'posts', key: 'post_id' }
     })
-    postId!: number;
+    postId!: number; // Define the POST_ID field with a foreign key reference to the 'posts' table
 
     @Column({
         type: DataType.STRING,
-        field: Like.USER_EMAIL,
+        field: Like.USER_ID,
         allowNull: false,
-        references: { model: 'users', key: 'user_email' },
+        references: { model: 'users', key: 'user_id' },
     })
-    userEmail!: string;
-
-
-
-
+    userId!: string; // Define the USER_EMAIL field with a foreign key reference to the 'users' table
 }

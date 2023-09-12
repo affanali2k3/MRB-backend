@@ -5,10 +5,9 @@ import Database from "./config/database";
 import UserRouter from "./features/UserProfile/router/UserRouter";
 import UserAssociatesRouter from "./features/UserAssociates/router/UserAssociatesRouter";
 import SearchRouter from "./features/Search/router/SearchRouter";
-import { Message } from "./features/Chat/model/MessageModel";
-import ChatController from "./features/Chat/controller/ChatController";
 import ChatRouter from "./features/Chat/router/ChatRouter";
 import PostRouter from "./features/Post/router/PostRouter";
+import PostShareRouter from "./features/PostSharing/router/PostShareRouter";
 import path from "path";
 import LikeRouter from "./features/Like/router/LikeRouter";
 import CommentRouter from "./features/Comment/router/CommentRouter";
@@ -58,6 +57,7 @@ class App {
         this.app.use("/api/v1/like", LikeRouter);
         this.app.use("/api/v1/comment", CommentRouter);
         this.app.use("/api/v1/feed", FeedRouter);
+        this.app.use("/api/v1/post-share", PostShareRouter)
     }
 
     protected setupSocketIO(): void {

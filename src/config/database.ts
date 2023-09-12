@@ -5,7 +5,7 @@ import { UserAssociates } from "../features/UserAssociates/model/UserAssociates"
 import { Message } from "../features/Chat/model/MessageModel";
 import { Post } from "../features/Post/model/PostModel";
 import { PostImages } from "../features/Post/model/PostImages";
-import { associations } from "./associations";
+import { PostShare } from "../features/PostSharing/model/PostSharingModel";
 import { Like } from "../features/Like/model/LikeModel";
 import { Comment } from "../features/Comment/model/CommentModel";
 
@@ -34,7 +34,7 @@ class Database {
             username: this.POSTGRES_USER,
             password: this.POSTGRES_PASSWORD,
             dialect: "postgres", // Use PostgreSQL dialect
-            models: [User, UserAssociates, Post, PostImages, Message, Like, Comment]
+            models: [User, UserAssociates, Post, PostImages, Message, Like, Comment, PostShare]
         });
 
         // Authenticate the connection and handle success or failure
