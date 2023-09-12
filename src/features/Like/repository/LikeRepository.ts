@@ -4,11 +4,11 @@ import { Like } from "../model/LikeModel"; // Import the Like model
 // Interface for the Like Repository
 interface ILikeRepo {
     // Method to save a like
-    saveLike({ postId, userEmail }: { userEmail: string, postId: number }): Promise<void>;
+    saveLike({ postId, userId }: { userId: number, postId: number }): Promise<void>;
     // Method to get likes for a specific post
     getPostLikes({ postId }: { postId: number }): Promise<Like[]>;
     // Method to check if a user has liked a specific post and get the like ID
-    getLike({ postId, userEmail }: { postId: number, userEmail: string }): Promise<number | null>;
+    getLike({ postId, userId }: { postId: number, userId: number }): Promise<number | null>;
     // Method to remove a like
     removeLike({ likeId, postId }: { likeId: number, postId: number }): Promise<void>;
 }
@@ -16,12 +16,12 @@ interface ILikeRepo {
 // Implement the Like Repository interface
 class LikeRepo implements ILikeRepo {
     // Method to save a like
-    async saveLike({ postId, userEmail }: { userEmail: string, postId: number }): Promise<void> {
+    async saveLike({ postId, userId }: { userId: number, postId: number }): Promise<void> {
         try {
             // Create a new Like instance and set its properties
             const like = new Like();
             like.postId = postId;
-            like.userEmail = userEmail;
+            like.userId = userId;
 
             // Save the like
             await like.save();
@@ -42,10 +42,10 @@ class LikeRepo implements ILikeRepo {
     }
 
     // Method to check if a user has liked a specific post and get the like ID
-    async getLike({ postId, userEmail }: { postId: number, userEmail: string }) {
+    async getLike({ postId, userId }: { postId: number, userId: number }) {
         try {
             // Find the like based on post ID and user email
-            const like: Like | null = await Like.findOne({ where: { postId: postId, userEmail: userEmail } });
+            const like: Like | null = await Like.findOne({ where: { postId: postId, userId: userId } });
 
             if (!like) return null;
 

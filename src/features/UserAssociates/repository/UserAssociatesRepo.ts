@@ -50,7 +50,6 @@ export class UserAssociatesRepo implements IUserAssociatesRepo {
             await UserAssociates.create({ ...newAssociation.dataValues });
         } catch (err) {
             // Handle unique constraint error (Request already sent)
-            if (err instanceof UniqueConstraintError) throw new Error("Request already sent");
             throw new Error(`${err}`);
         }
     }

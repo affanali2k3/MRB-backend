@@ -2,14 +2,13 @@ import { Model, Table, Column, DataType } from "sequelize-typescript";
 import { User } from "../../UserProfile/model/User";
 
 @Table({
-    // Commented out index definition
-    // indexes: [
-    //     {
-    //         name: UserAssociates.UNIQUE_CONSTRAINT_ASSOCIATION,
-    //         unique: true,
-    //         fields: [UserAssociates.USER_EMAIL, UserAssociates.ASSOCIATE_EMAIL]
-    //     }
-    // ],
+    indexes: [
+        {
+            name: UserAssociates.UNIQUE_CONSTRAINT_ASSOCIATION,
+            unique: true,
+            fields: [UserAssociates.USER_ID, UserAssociates.ASSOCIATE_ID]
+        }
+    ],
     tableName: UserAssociates.TABLE_NAME
 })
 
@@ -33,7 +32,6 @@ export class UserAssociates extends Model {
         type: DataType.INTEGER,
         field: UserAssociates.USER_ID,
         allowNull: false,
-        unique: true,
         references: { model: User.TABLE_NAME, key: User.ID },
     })
     userId!: number;
@@ -42,7 +40,6 @@ export class UserAssociates extends Model {
         type: DataType.INTEGER,
         field: UserAssociates.ASSOCIATE_ID,
         allowNull: false,
-        unique: true,
         references: { model: User.TABLE_NAME, key: User.ID },
     })
     associateId!: number;

@@ -4,13 +4,13 @@ import { Post } from "../../Post/model/PostModel"; // Import the Post model
 // Interface for the Feed Repository
 interface IFeedRepo {
     // Method to get the feed for a specific user
-    getFeedForUser({ userEmail, skipPosts, postsPerPage }: { userEmail: string, skipPosts: number, postsPerPage: number }): Promise<Post[]>;
+    getFeedForUser({ userId, skipPosts, postsPerPage }: { userId: number, skipPosts: number, postsPerPage: number }): Promise<Post[]>;
 }
 
 // Implement the Feed Repository interface
 class FeedRepo implements IFeedRepo {
     // Method to get the feed for a specific user
-    async getFeedForUser({ userEmail, skipPosts, postsPerPage }: { userEmail: string, skipPosts: number, postsPerPage: number }): Promise<Post[]> {
+    async getFeedForUser({ userId, skipPosts, postsPerPage }: { userId: number, skipPosts: number, postsPerPage: number }): Promise<Post[]> {
         try {
             // Query to fetch posts for the user's feed based on their associates
             const posts: Post[] = await Post.findAll({
@@ -19,11 +19,11 @@ class FeedRepo implements IFeedRepo {
                         [Op.in]: literal(`(
                             SELECT associate_email
                             FROM user_associates
-                            WHERE user_email = '${userEmail}' AND association_status = 'Accepted'
+                            WHERE user_email = '${userId}' AND association_status = 'Accepted'
                             UNION
                             SELECT user_email
                             FROM user_associates
-                            WHERE associate_email = '${userEmail}' AND association_status = 'Accepted'
+                            WHERE associate_email = '${userId}' AND association_status = 'Accepted'
                         ) ORDER BY "createdAt" DESC`),
                     },
                 },

@@ -6,13 +6,13 @@ import LikeRepository from "../../Like/repository/LikeRepository"; // Import the
 
 // Class to represent a Post with associated images
 class PostWithImages {
-    constructor(postId: string, likes: number, likeId: number | null, text: string, name: string, userEmail: string, createdAt: string, updatedAt: string, imagesName: string[]) {
+    constructor(postId: string, likes: number, likeId: number | null, text: string, name: string, userId: number, createdAt: string, updatedAt: string, imagesName: string[]) {
         this.postId = postId;
         this.likes = likes;
         this.likeId = likeId;
         this.text = text;
         this.name = name;
-        this.userEmail = userEmail;
+        this.userId = userId;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.imagesName = imagesName;
@@ -22,7 +22,7 @@ class PostWithImages {
     likeId: number | null;
     text: string;
     name: string;
-    userEmail: string;
+    userId: number;
     createdAt: string;
     updatedAt: string;
     imagesName: string[] | null;
@@ -33,14 +33,15 @@ class FeedController {
     // Method to get the feed for a specific user
     async getFeedForUser(req: Request, res: Response) {
         try {
-            const userEmail: string = req.params.userEmail;
+            const userIdString: string = req.query.userId as string;
+            const userId: number = parseInt(userIdString);
             const page: number = parseInt(req.params.page);
             const postsPerPage: number = 3;
 
             const skipPosts: number = (page - 1) * postsPerPage;
 
             // Retrieve posts for the user's feed using the FeedRepo
-            const posts: Post[] = await FeedRepo.getFeedForUser({ userEmail: userEmail, skipPosts: skipPosts, postsPerPage: postsPerPage });
+            const posts: Post[] = await FeedRepo.getFeedForUser({ userId: userId, skipPosts: skipPosts, postsPerPage: postsPerPage });
             const postsWithImages: PostWithImages[] = [];
 
             // Loop through each post to gather additional details and images
@@ -48,10 +49,10 @@ class FeedController {
                 // Retrieve image names of the post using the PostRepository
                 const postImages: string[] = await PostRepository.getImageNamesOfPost({ postId: post.id });
                 // Retrieve like information for the post using the LikeRepository
-                const likeId: number | null = await LikeRepository.getLike({ postId: post.id, userEmail: userEmail });
+                const likeId: number | null = await LikeRepository.getLike({ postId: post.id, userId: userId });
                 // Create a PostWithImages object with the gathered details
                 const postWithImages: PostWithImages = new PostWithImages(
-                    post.id.toString(), post.likes, likeId, post.text, post.name, post.userEmail, post.createdAt, post.updatedAt, postImages
+                    post.id.toString(), post.likes, likeId, post.text, post.name, post.userId, post.createdAt, post.updatedAt, postImages
                 );
                 postsWithImages.push(postWithImages);
             }

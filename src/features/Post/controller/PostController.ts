@@ -12,7 +12,7 @@ class PostWithImages {
         likeId: number | null,
         text: string,
         name: string,
-        userEmail: string,
+        userId: number,
         createdAt: string,
         updatedAt: string,
         imagesName: string[]
@@ -23,7 +23,7 @@ class PostWithImages {
         this.likeId = likeId;
         this.text = text;
         this.name = name;
-        this.userEmail = userEmail;
+        this.userId = userId;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.imagesName = imagesName;
@@ -35,7 +35,7 @@ class PostWithImages {
     likeId: number | null;
     text: string;
     name: string;
-    userEmail: string;
+    userId: number;
     createdAt: string;
     updatedAt: string;
     imagesName: string[] | null;
@@ -47,7 +47,7 @@ class PostController {
         try {
             // Retrieve post data from request body
             const postText: string = req.body.postText;
-            const userEmail: string = req.body.userEmail;
+            const userId: number = req.body.userId;
             let fileNames: string[] | null = null;
 
             // Extract filenames from uploaded files
@@ -62,7 +62,7 @@ class PostController {
 
             // Save the post to the database
             await PostRepo.savePost({
-                userEmail: userEmail,
+                userId: userId,
                 postText: postText,
                 fileNames: fileNames,
                 postName: uniquePostName,
@@ -105,11 +105,12 @@ class PostController {
     async getAllPosts(req: Request, res: Response) {
         try {
             // Retrieve user email from request parameters
-            const userEmail: string = req.params.userEmail;
+            const userIdString: string = req.query.userId as string;
+            const userId: number = parseInt(userIdString);
 
             // Get all posts associated with the user
             const posts: Post[] = await PostRepo.getAllPosts({
-                userEmail: userEmail,
+                userId: userId,
             });
 
             const postsWithImages: PostWithImages[] = [];
@@ -121,7 +122,7 @@ class PostController {
                 });
                 const likeId: number | null = await LikeRepository.getLike({
                     postId: post.id,
-                    userEmail: userEmail,
+                    userId: userId,
                 });
                 const postWithImages: PostWithImages = new PostWithImages(
                     post.id.toString(),
@@ -129,7 +130,7 @@ class PostController {
                     likeId,
                     post.text,
                     post.name,
-                    post.userEmail,
+                    post.userId,
                     post.createdAt,
                     post.updatedAt,
                     postImages

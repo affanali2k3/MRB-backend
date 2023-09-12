@@ -3,20 +3,20 @@ import { Post } from "../model/PostModel";
 
 // Interface that defines the methods of the PostRepo class
 interface IPostRepo {
-    savePost({ userEmail, postText, postName }: { userEmail: string, postText: string, postName: string | null }): Promise<void>;
-    getAllPosts({ userEmail }: { userEmail: string }): Promise<Post[]>;
+    savePost({ userId, postText, postName }: { userId: number, postText: string, postName: string | null }): Promise<void>;
+    getAllPosts({ userId }: { userId: number }): Promise<Post[]>;
     getImageNamesOfPost({ postId }: { postId: number }): Promise<string[]>;
 }
 
 class PostRepo implements IPostRepo {
     // Method to save a new post with images
-    async savePost({ userEmail, postText, postName, fileNames }: { userEmail: string, postText: string, fileNames: string[] | null, postName: string }): Promise<void> {
+    async savePost({ userId, postText, postName, fileNames }: { userId: number, postText: string, fileNames: string[] | null, postName: string }): Promise<void> {
         try {
             const post = new Post();
 
             // Set attributes of the new post
             post.text = postText;
-            post.userEmail = userEmail;
+            post.userId = userId;
             post.name = postName;
             post.likes = 0;
 
@@ -41,9 +41,9 @@ class PostRepo implements IPostRepo {
     }
 
     // Method to retrieve all posts for a specific user
-    async getAllPosts({ userEmail }: { userEmail: string }) {
+    async getAllPosts({ userId }: { userId: number }) {
         try {
-            const posts: Post[] = await Post.findAll({ where: { userEmail: userEmail } });
+            const posts: Post[] = await Post.findAll({ where: { userId: userId } });
             return posts;
         } catch (err) {
             throw new Error(`${err}`);

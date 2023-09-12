@@ -10,7 +10,7 @@ export class Post extends Model {
 
     // Define the column names for various attributes
     public static POST_ID = "post_id" as string;
-    public static USER_EMAIL = "user_email" as string;
+    public static USER_ID = "user_id" as string;
     public static POST_TEXT = "post_text" as string;
     public static POST_NAME = "post_name" as string;
     public static POST_LIKES = "post_likes" as string;
@@ -34,11 +34,11 @@ export class Post extends Model {
 
     // Define a column for the user's email associated with the post
     @Column({
-        type: DataType.STRING,
-        field: Post.USER_EMAIL,
+        type: DataType.INTEGER,
+        field: Post.USER_ID,
         allowNull: false,
     })
-    userEmail!: string;
+    userId!: number;
 
     // Define a column for the post's name
     @Column({

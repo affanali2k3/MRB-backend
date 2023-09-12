@@ -36,7 +36,7 @@ class PostRouter extends BaseRoutes {
         // Route to save a new post with uploaded images
         this.router.post("/", upload.array('images'), PostController.savePost);
         // Route to get all posts for a specific user
-        this.router.get("/:userEmail", PostController.getAllPosts);
+        this.router.get("/get-all", PostController.getAllPosts);
         // Route to get a specific post image
         this.router.get("/:userEmail/:postName/:imageName", PostController.getPostImage);
     }
