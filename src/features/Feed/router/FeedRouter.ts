@@ -7,7 +7,7 @@ class FeedRouter extends BaseRoutes {
     public routes(): void {
         // Define a GET route to retrieve the user's feed based on email and page number,
         // using the getFeedForUser method from the FeedController
-        this.router.get("/:userEmail/:page", FeedController.getFeedForUser);
+        this.router.get("/get/", FeedController.getFeedForUser);
     }
 }
 

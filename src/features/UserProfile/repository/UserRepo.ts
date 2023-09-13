@@ -5,7 +5,8 @@ interface IUserRepo {
     create(user: User): Promise<void>;
     update(user: User): Promise<void>;
     delete(userSsn: string): Promise<void>;
-    getByEmail(email: string): Promise<User>;
+    getUserByEmail(userEmail: string): Promise<User>;
+    getUser(userId: number): Promise<User>;
     getAll(): Promise<User[]>;
 }
 
@@ -73,11 +74,27 @@ export class UserRepo implements IUserRepo {
     }
 
     // Get user by email
-    async getByEmail(email: string): Promise<User> {
+    async getUser(userId: number): Promise<User> {
         try {
             const user = await User.findOne({
                 where: {
-                    email: email
+                    id: userId
+                }
+            });
+
+            if (!user) throw new Error("User not found");
+
+            return user;
+        } catch (err) {
+            throw new Error(`Failed to get user. ${err}`);
+        }
+    }
+    async getUserByEmail(userEmail: string): Promise<User> {
+        try {
+            console.log(userEmail)
+            const user = await User.findOne({
+                where: {
+                    email: userEmail
                 }
             });
 

@@ -12,18 +12,19 @@ class FeedRepo implements IFeedRepo {
     // Method to get the feed for a specific user
     async getFeedForUser({ userId, skipPosts, postsPerPage }: { userId: number, skipPosts: number, postsPerPage: number }): Promise<Post[]> {
         try {
+    
             // Query to fetch posts for the user's feed based on their associates
             const posts: Post[] = await Post.findAll({
                 where: {
-                    user_email: {
+                    userId: {
                         [Op.in]: literal(`(
-                            SELECT associate_email
+                            SELECT associate_id
                             FROM user_associates
-                            WHERE user_email = '${userId}' AND association_status = 'Accepted'
+                            WHERE user_id = '${userId}' AND association_status = 'Accepted'
                             UNION
-                            SELECT user_email
+                            SELECT user_id
                             FROM user_associates
-                            WHERE associate_email = '${userId}' AND association_status = 'Accepted'
+                            WHERE associate_id = '${userId}' AND association_status = 'Accepted'
                         ) ORDER BY "createdAt" DESC`),
                     },
                 },

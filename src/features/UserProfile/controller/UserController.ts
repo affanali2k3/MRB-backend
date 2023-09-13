@@ -83,9 +83,33 @@ class UserController {
     }
 
     // Endpoint to get user information by email
+    async getUser(req: Request, res: Response) {
+        try {
+            const userIdString: string = req.query.userId as string;
+            const userId: number = parseInt(userIdString);
+            const user = await new UserRepo().getUser(userId);
+            let file;
+            try {
+                file = fs.readFileSync(user.photo);
+            } catch { }
+
+            res.status(200).json({
+                message: "Got user successfully",
+                data: user,
+                photo: file === undefined ? null : file.toString('base64')
+            });
+        } catch (err) {
+            res.status(500).json({
+                message: `Cannot get user ${err}`
+            });
+        }
+    }
     async getUserByEmail(req: Request, res: Response) {
         try {
-            const user = await new UserRepo().getByEmail(req.params.email);
+            const userEmail: string = req.query.userEmail as string;
+            console.log('A');
+            console.log(userEmail);
+            const user = await new UserRepo().getUserByEmail(userEmail);
             let file;
             try {
                 file = fs.readFileSync(user.photo);

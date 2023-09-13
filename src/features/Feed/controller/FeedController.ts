@@ -6,7 +6,7 @@ import LikeRepository from "../../Like/repository/LikeRepository"; // Import the
 
 // Class to represent a Post with associated images
 class PostWithImages {
-    constructor(postId: string, likes: number, likeId: number | null, text: string, name: string, userId: number, createdAt: string, updatedAt: string, imagesName: string[]) {
+    constructor(postId: number, likes: number, likeId: number | null, text: string, name: string, userId: number, createdAt: string, updatedAt: string, imagesName: string[]) {
         this.postId = postId;
         this.likes = likes;
         this.likeId = likeId;
@@ -17,7 +17,7 @@ class PostWithImages {
         this.updatedAt = updatedAt;
         this.imagesName = imagesName;
     }
-    postId: string;
+    postId: number;
     likes: number;
     likeId: number | null;
     text: string;
@@ -35,7 +35,10 @@ class FeedController {
         try {
             const userIdString: string = req.query.userId as string;
             const userId: number = parseInt(userIdString);
-            const page: number = parseInt(req.params.page);
+
+            const pageString: string = req.query.page as string;
+            const page: number = parseInt(pageString);
+
             const postsPerPage: number = 3;
 
             const skipPosts: number = (page - 1) * postsPerPage;
@@ -52,7 +55,7 @@ class FeedController {
                 const likeId: number | null = await LikeRepository.getLike({ postId: post.id, userId: userId });
                 // Create a PostWithImages object with the gathered details
                 const postWithImages: PostWithImages = new PostWithImages(
-                    post.id.toString(), post.likes, likeId, post.text, post.name, post.userId, post.createdAt, post.updatedAt, postImages
+                    post.id, post.likes, likeId, post.text, post.name, post.userId, post.createdAt, post.updatedAt, postImages
                 );
                 postsWithImages.push(postWithImages);
             }

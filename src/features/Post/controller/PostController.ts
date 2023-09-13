@@ -7,7 +7,7 @@ import LikeRepository from "../../Like/repository/LikeRepository"; // Import the
 // Create a class to represent a Post with associated image information
 class PostWithImages {
     constructor(
-        postId: string,
+        postId: number,
         likes: number,
         likeId: number | null,
         text: string,
@@ -30,7 +30,7 @@ class PostWithImages {
     }
 
     // Declare properties for the PostWithImages class
-    postId: string;
+    postId: number;
     likes: number;
     likeId: number | null;
     text: string;
@@ -125,7 +125,7 @@ class PostController {
                     userId: userId,
                 });
                 const postWithImages: PostWithImages = new PostWithImages(
-                    post.id.toString(),
+                    post.id,
                     post.likes,
                     likeId,
                     post.text,

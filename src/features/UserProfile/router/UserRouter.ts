@@ -34,8 +34,9 @@ class UserRoutes extends BaseRoutes {
         this.router.post("", UserController.create); // Create a new user
         this.router.patch("/:email", upload.single('avatar'), UserController.update); // Update user with email
         this.router.delete("/:email", UserController.delete); // Delete user with email
-        this.router.get("", UserController.getAllUsers); // Get all users
-        this.router.get("/:email", UserController.getUserByEmail); // Get user by email
+        this.router.get("/get-all", UserController.getAllUsers); // Get all users
+        this.router.get("/get", UserController.getUser); // Get user by email
+        this.router.get("/get/email", UserController.getUserByEmail); // Get user by email
         this.router.get("/avatar/:userEmail", UserController.getUserAvatar); // Get user avatar by userEmail
     }
 }
