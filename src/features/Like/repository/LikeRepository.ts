@@ -4,7 +4,7 @@ import { Like } from "../model/LikeModel"; // Import the Like model
 // Interface for the Like Repository
 interface ILikeRepo {
     // Method to save a like
-    saveLike({ postId, userId }: { userId: string, postId: number }): Promise<void>;
+    saveLike({ postId, userId }: { userId: number, postId: number }): Promise<void>;
     // Method to get likes for a specific post
     getPostLikes({ postId }: { postId: number }): Promise<Like[]>;
     // Method to check if a user has liked a specific post and get the like ID
@@ -16,7 +16,7 @@ interface ILikeRepo {
 // Implement the Like Repository interface
 class LikeRepo implements ILikeRepo {
     // Method to save a like
-    async saveLike({ postId, userId }: { userId: string, postId: number }): Promise<void> {
+    async saveLike({ postId, userId }: { userId: number, postId: number }): Promise<void> {
         try {
             // Create a new Like instance and set its properties
             const like = new Like();

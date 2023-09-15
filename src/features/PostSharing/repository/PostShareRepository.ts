@@ -7,7 +7,7 @@ interface IPostShareRepo {
   getAllPostsbyUser({
     user_id,
   }: {
-    user_id: string;
+    user_id: number;
   }): Promise<PostShare[]>;
 }
 
@@ -16,7 +16,7 @@ class PostShareRepo implements IPostShareRepo {
   async getAllPostsbyUser({
     user_id,
   }: {
-    user_id: string;
+    user_id: number;
   }): Promise<PostShare[]> {
     try {
       // Retrieve all post shares associated with the provided user's email
@@ -34,7 +34,7 @@ class PostShareRepo implements IPostShareRepo {
     user_id,
     post_id,
   }: {
-    user_id: string;
+    user_id: number;
     post_id: number;
   }): Promise<void> {
     try {

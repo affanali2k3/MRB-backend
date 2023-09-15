@@ -3,14 +3,14 @@ import { Message } from "../model/MessageModel";
 
 // Define an interface for the Chat Repository
 interface IChatRepo {
-    getAllMessages({ userOneId, userTwoId }: { userOneId: string, userTwoId: string }): Promise<Message[]>;
-    saveMessage({ senderId, receiverId, message }: { senderId: string, receiverId: string, message: string }): Promise<void>;
+    getAllMessages({ userOneId, userTwoId }: { userOneId: number, userTwoId: number }): Promise<Message[]>;
+    saveMessage({ senderId, receiverId, message }: { senderId: number, receiverId: number, message: string }): Promise<void>;
 }
 
 // Implement the Chat Repository interface
 class ChatRepo implements IChatRepo {
     // Method to retrieve all messages between two users
-    async getAllMessages({ userOneId, userTwoId }: { userOneId: string, userTwoId: string }): Promise<Message[]> {
+    async getAllMessages({ userOneId, userTwoId }: { userOneId: number, userTwoId: number }): Promise<Message[]> {
         try {
             // Use Sequelize's findAll to get messages sent between userOne and userTwo
             const messages: Message[] = await Message.findAll({
@@ -26,7 +26,7 @@ class ChatRepo implements IChatRepo {
     }
 
     // Method to save a new message
-    async saveMessage({ senderId, receiverId, message }: { senderId: string, receiverId: string, message: string }): Promise<void> {
+    async saveMessage({ senderId, receiverId, message }: { senderId: number, receiverId: number, message: string }): Promise<void> {
         try {
             // Create a new Message instance and set its properties
             const newMessage: Message = new Message();

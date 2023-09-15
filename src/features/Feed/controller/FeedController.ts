@@ -48,10 +48,10 @@ class FeedController {
                 // Retrieve image names of the post using the PostRepository
                 const postImages: string[] = await PostRepository.getImageNamesOfPost({ postId: post.id });
                 // Retrieve like information for the post using the LikeRepository
-                const likeId: number | null = await LikeRepository.getLike({ postId: post.id, userEmail: userEmail });
+                const likeId: number | null = await LikeRepository.getLike({ postId: post.id, userId: post.userId });
                 // Create a PostWithImages object with the gathered details
                 const postWithImages: PostWithImages = new PostWithImages(
-                    post.id.toString(), post.likes, likeId, post.text, post.name, post.userEmail, post.createdAt, post.updatedAt, postImages
+                    post.id.toString(), post.likes, likeId, post.text, post.name, post.userId, post.createdAt, post.updatedAt, postImages
                 );
                 postsWithImages.push(postWithImages);
             }

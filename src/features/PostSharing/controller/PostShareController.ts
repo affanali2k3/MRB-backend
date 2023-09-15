@@ -5,7 +5,7 @@ import { PostShare } from "../model/PostSharingModel";
 class PostShareController {
   // Handles sharing a post by a user
   async sharePost(req: Request, res: Response) {
-    const userId: string = req.params.userId;
+    const userId: number = parseInt(req.params.userId);
     const postId: number = parseInt(req.params.postId);
 
     try {
@@ -29,7 +29,7 @@ class PostShareController {
 
   // Retrieves all posts shared by a specific user
   async getPostSharedByUser(req: Request, res: Response) {
-    const userId: string = req.params.userId;
+    const userId: number = parseInt(req.params.userId);
 
     try {
       // Retrieve all posts shared by the user from the database using the repository method

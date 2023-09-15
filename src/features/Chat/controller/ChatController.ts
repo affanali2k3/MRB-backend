@@ -4,15 +4,15 @@ import { Message } from "../model/MessageModel"; // Import the Message model
 
 // Interface for the data required to get messages
 interface GetMessageInterface {
-    userOneId: string,
-    userTwoId: string,
+    userOneId: number,
+    userTwoId: number,
     message: string
 }
 
 // Interface for the data required to save a message
 interface SaveMessageInterface {
-    senderId: string,
-    receiverId: string,
+    senderId: number,
+    receiverId: number,
     message: string
 }
 

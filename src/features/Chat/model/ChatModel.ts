@@ -11,16 +11,16 @@ export class Chat extends Model {
 
     // Define columns for user1's email and user2's email
     @Column({
-        type: DataType.STRING,
+        type: DataType.INTEGER,
         field: Chat.USER1_ID, // Set the field name in the database to user1's email
         primaryKey: true, // Mark this column as a primary key
     })
-    user1Id!: string;
+    user1Id!: number;
 
     @Column({
-        type: DataType.STRING,
+        type: DataType.INTEGER,
         field: Chat.USER1_ID, // Set the field name in the database to user2's email
         primaryKey: true, // Mark this column as a primary key
     })
-    user2Id!: string;
+    user2Id!: number;
 }

@@ -1,9 +1,10 @@
 import { Comment } from "../model/CommentModel"; // Import the Comment model
+import { Post } from "../../Post/model/PostModel";
 
 // Interface for the Comment Repository
 interface ICommentRepo {
     // Method to save a comment
-    saveComment({ postId, userId, text }: { userId: string, postId: number, text: string }): Promise<number>;
+    saveComment({ postId, userId, text }: { userId: number, postId: number, text: string }): Promise<number>;
 
     // Method to get comments for a specific post
     getPostComments({ postId }: { postId: number }): Promise<Comment[]>;
@@ -12,7 +13,7 @@ interface ICommentRepo {
 // Implement the Comment Repository interface
 class CommentRepo implements ICommentRepo {
     // Method to save a comment
-    async saveComment({ postId, userId, text }: { userId: string, postId: number, text: string }): Promise<number> {
+    async saveComment({ postId, userId, text }: { userId: number, postId: number, text: string }): Promise<number> {
         try {
             const comment = new Comment();
             comment.postId = postId; // Set the post ID for the comment
@@ -20,6 +21,15 @@ class CommentRepo implements ICommentRepo {
             comment.text = text; // Set the text of the comment
 
             const savedComment = await comment.save(); // Save the comment in the database
+
+            const post = await Post.findOne({ where: { id: postId } });
+
+            if (!post) throw new Error('Post not found');
+
+            // Increment the post's likes count
+            post.comments = post.comments + 1;
+
+            await post.save(); // Save the updated post
 
             return savedComment.id; // Return the ID of the saved comment
         } catch (err) {

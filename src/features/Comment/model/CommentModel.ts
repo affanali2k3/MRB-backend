@@ -29,12 +29,12 @@ export class Comment extends Model {
     postId!: number; // Define the post ID column
 
     @Column({
-        type: DataType.STRING,
+        type: DataType.INTEGER,
         field: Comment.USER_ID,
         allowNull: false,
         references: { model: 'users', key: 'user_id' }, // Set up a foreign key relationship with the "users" table
     })
-    userId!: string; // Define the user's email column
+    userId!: number; // Define the user's email column
 
     @Column({
         type: DataType.TEXT,

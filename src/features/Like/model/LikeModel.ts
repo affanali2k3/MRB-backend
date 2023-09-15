@@ -35,10 +35,10 @@ export class Like extends Model {
     postId!: number; // Define the POST_ID field with a foreign key reference to the 'posts' table
 
     @Column({
-        type: DataType.STRING,
+        type: DataType.INTEGER,
         field: Like.USER_ID,
         allowNull: false,
         references: { model: 'users', key: 'user_id' },
     })
-    userId!: string; // Define the USER_EMAIL field with a foreign key reference to the 'users' table
+    userId!:number; // Define the USER_EMAIL field with a foreign key reference to the 'users' table
 }

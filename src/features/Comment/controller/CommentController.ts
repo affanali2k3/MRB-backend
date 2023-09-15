@@ -15,7 +15,7 @@ class CommentController {
     async saveComment(req: Request, res: Response) {
         try {
             const data: CommentData = req.body; // Extract comment data from the request body
-            const commentId: number = await CommentRepository.saveComment({ userId: data.userId, postId: data.postId, text: data.text }); // Call the CommentRepository method to save the comment
+            const commentId: number = await CommentRepository.saveComment({ userId: parseInt(data.userId), postId: data.postId, text: data.text }); // Call the CommentRepository method to save the comment
 
             res.status(200).json({
                 message: 'Comment saved successfully',

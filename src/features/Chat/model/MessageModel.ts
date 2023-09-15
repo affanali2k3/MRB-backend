@@ -21,16 +21,16 @@ export class Message extends Model {
     message_id!: number;
 
     @Column({
-        type: DataType.STRING,
+        type: DataType.INTEGER,
         field: Message.SENDER_ID, // Set the field name in the database to sender_email
     })
-    senderId!: string;
-
+    senderId!: number;
+    
     @Column({
-        type: DataType.STRING,
+        type: DataType.INTEGER,
         field: Message.RECEIVER_ID, // Set the field name in the database to receiver_email
     })
-    receiverId!: string;
+    receiverId!: number;
 
     @Column({
         type: DataType.TEXT,

@@ -23,10 +23,10 @@ export class PostShare extends Model {
 
     // Define the userEmail column with foreign key to users table
     @Column({
-        type: DataType.STRING,
+        type: DataType.INTEGER,
         field: PostShare.USER_ID,
         references: { model: 'users', key: 'user_id' }, // Establish the relationship with the 'users' table
         allowNull: false,
     })
-    userId!: string;
+    userId!: number;
 }

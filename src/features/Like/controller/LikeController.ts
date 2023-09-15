@@ -15,7 +15,7 @@ class LikeController {
     async saveLike(req: Request, res: Response) {
         try {
             const data: LikeData = req.body; // Extract like-related data from the request body
-            await LikeRepository.saveLike({ userId: data.userId, postId: data.postId }); // Call the LikeRepository to save the like
+            await LikeRepository.saveLike({ userId: parseInt(data.userId), postId: data.postId }); // Call the LikeRepository to save the like
 
             // Respond with success message
             res.status(200).json({
