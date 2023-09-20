@@ -27,7 +27,7 @@ class PostController {
         try {
             // Retrieve post data from request body
             const postText: string = req.body.postText;
-            const userEmail: string = req.body.userEmail;
+            const userId: number = parseInt(req.body.userId);
             let fileNames: string[] | null = null;
 
             // Extract filenames from uploaded files
@@ -73,16 +73,16 @@ class PostController {
 
     async getAllPosts(req: Request, res: Response) {
         try {
-            const userEmail: string = req.params.userEmail;
-            const posts: Post[] = await PostRepo.getAllPosts({ userEmail: userEmail });
+            const userId: number = parseInt(req.params.userId);
+            const posts: Post[] = await PostRepo.getAllPosts({ userId: userId });
             const postsWithImages: PostWithImages[] = [];
 
             // Iterate through posts and retrieve associated image information
             for (const post of posts) {
                 const postImages: string[] = await PostRepo.getImageNamesOfPost({ postId: post.id });
-                const likeId: number | null = await LikeRepository.getLike({ postId: post.id, userEmail: userEmail });
-                const postWithImages: PostWithImages = new PostWithImages(post.id.toString(), post.likes, likeId, post.text, post.name, post.userEmail, post.createdAt, post.updatedAt, postImages);
-                postsWithImages.push(postWithImages);
+                const likeId: number | null = await LikeRepository.getLike({ postId: post.id, userId: userId });
+                // const postWithImages: PostWithImages = new PostWithImages(post.id.toString(), post.likes, likeId, post.text, post.name, post.userId, post.createdAt, post.updatedAt, postImages);
+                // postsWithImages.push(postWithImages);
             }
 
             res.status(200).json({

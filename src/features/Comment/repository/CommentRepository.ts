@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import { Comment } from "../model/CommentModel"; // Import the Comment model
 import { Post } from "../../Post/model/PostModel";
 
@@ -28,7 +27,7 @@ class CommentRepo implements ICommentRepo {
             if (!post) throw new Error('Post not found');
 
             // Increment the post's likes count
-            post.comments = post.comments + 1;
+            // post.comments = post.comments + 1;
 
             await post.save(); // Save the updated post
 
@@ -50,46 +49,3 @@ class CommentRepo implements ICommentRepo {
 }
 
 export default new CommentRepo; //
-=======
-import { Comment } from "../model/CommentModel"; // Import the Comment model
-
-// Interface for the Comment Repository
-interface ICommentRepo {
-    // Method to save a comment
-    saveComment({ postId, userEmail, text }: { userEmail: string, postId: number, text: string }): Promise<number>;
-
-    // Method to get comments for a specific post
-    getPostComments({ postId }: { postId: number }): Promise<Comment[]>;
-}
-
-// Implement the Comment Repository interface
-class CommentRepo implements ICommentRepo {
-    // Method to save a comment
-    async saveComment({ postId, userEmail, text }: { userEmail: string, postId: number, text: string }): Promise<number> {
-        try {
-            const comment = new Comment();
-            comment.postId = postId; // Set the post ID for the comment
-            comment.userEmail = userEmail; // Set the user's email for the comment
-            comment.text = text; // Set the text of the comment
-
-            const savedComment = await comment.save(); // Save the comment in the database
-
-            return savedComment.id; // Return the ID of the saved comment
-        } catch (err) {
-            throw new Error(`${err}`); // Throw an error if saving the comment fails
-        }
-    }
-
-    // Method to get comments for a specific post
-    async getPostComments({ postId }: { postId: number }): Promise<Comment[]> {
-        try {
-            const comments: Comment[] = await Comment.findAll({ where: { postId: postId } }); // Retrieve comments for the specified post
-            return comments; // Return the retrieved comments
-        } catch (err) {
-            throw new Error(`${err}`); // Throw an error if retrieving comments fails
-        }
-    }
-}
-
-export default new CommentRepo; //
->>>>>>> 083bb9737406d5cc219ca9fd883c90697dabefac
