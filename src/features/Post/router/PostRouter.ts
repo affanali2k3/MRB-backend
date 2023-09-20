@@ -33,12 +33,9 @@ const upload = multer({ storage });
 
 class PostRouter extends BaseRoutes {
     public routes(): void {
-        // Route to save a new post with uploaded images
-        this.router.post("/", upload.array('images'), PostController.savePost);
-        // Route to get all posts for a specific user
-        this.router.get("/:userEmail", PostController.getAllPosts);
-        // Route to get a specific post image
-        this.router.get("/:userEmail/:postName/:imageName", PostController.getPostImage);
+        this.router.post("/", upload.array('images'), PostController.savePost);//
+        this.router.get("/:userEmail", PostController.getAllPosts);//
+        this.router.get("/:userEmail/:postName/:imageName", PostController.getPostImage);//
     }
 }
 

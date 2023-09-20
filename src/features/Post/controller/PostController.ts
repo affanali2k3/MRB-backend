@@ -6,36 +6,16 @@ import LikeRepository from "../../Like/repository/LikeRepository"; // Import the
 
 // Create a class to represent a Post with associated image information
 class PostWithImages {
-    constructor(
-        postId: string,
-        likes: number,
-        likeId: number | null,
-        text: string,
-        name: string,
-        userId: string,
-        createdAt: string,
-        updatedAt: string,
-        imagesName: string[]
-    ) {
-        // Initialize properties
-        this.postId = postId;
-        this.likes = likes;
-        this.likeId = likeId;
-        this.text = text;
-        this.name = name;
-        this.userId = userId;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-        this.imagesName = imagesName;
+    constructor(postId: string, likes: number, likeId: number | null, text: string, name: string, userEmail: string, createdAt: string, updatedAt: string, imagesName: string[]) {
+        this.postId = postId, this.likes = likes, this.likeId = likeId; this.text = text, this.name = name
+            , this.userEmail = userEmail, this.createdAt = createdAt, this.updatedAt = updatedAt, this.imagesName = imagesName
     }
-
-    // Declare properties for the PostWithImages class
     postId: string;
     likes: number;
     likeId: number | null;
     text: string;
     name: string;
-    userId: string;
+    userEmail: string;
     createdAt: string;
     updatedAt: string;
     imagesName: string[] | null;
@@ -47,7 +27,7 @@ class PostController {
         try {
             // Retrieve post data from request body
             const postText: string = req.body.postText;
-            const userId: string = req.body.userId;
+            const userEmail: string = req.body.userEmail;
             let fileNames: string[] | null = null;
 
             // Extract filenames from uploaded files
@@ -80,21 +60,10 @@ class PostController {
 
     async getPostImage(req: Request, res: Response) {
         try {
-            // Retrieve user email, post name, and image name from request parameters
-            const userId: string = req.params.userId;
+            const userEmail: string = req.params.userEmail;
             const postName: string = req.params.postName;
             const imageName: string = req.params.imageName;
-
-            // Send the post image file as a response
-            res.sendFile(
-                path.join(
-                    'C:/Users/Affan/Desktop/MRB/backend/storage/',
-                    userId,
-                    'postImages',
-                    postName,
-                    imageName
-                )
-            );
+            res.sendFile(path.join('C:/Users/Affan/Desktop/MRB/backend/storage/', userEmail, 'postImages', postName, imageName));
         } catch (err) {
             res.status(500).json({
                 message: `Failed to get post image ${err}`,
@@ -104,36 +73,15 @@ class PostController {
 
     async getAllPosts(req: Request, res: Response) {
         try {
-            // Retrieve user email from request parameters
-            const userId: string = req.params.userId;
-
-            // Get all posts associated with the user
-            const posts: Post[] = await PostRepo.getAllPosts({
-                userId: userId,
-            });
-
+            const userEmail: string = req.params.userEmail;
+            const posts: Post[] = await PostRepo.getAllPosts({ userEmail: userEmail });
             const postsWithImages: PostWithImages[] = [];
 
             // Iterate through posts and retrieve associated image information
             for (const post of posts) {
-                const postImages: string[] = await PostRepo.getImageNamesOfPost({
-                    postId: post.id,
-                });
-                const likeId: number | null = await LikeRepository.getLike({
-                    postId: post.id,
-                    userId: userId,
-                });
-                const postWithImages: PostWithImages = new PostWithImages(
-                    post.id.toString(),
-                    post.likes,
-                    likeId,
-                    post.text,
-                    post.name,
-                    post.userId,
-                    post.createdAt,
-                    post.updatedAt,
-                    postImages
-                );
+                const postImages: string[] = await PostRepo.getImageNamesOfPost({ postId: post.id });
+                const likeId: number | null = await LikeRepository.getLike({ postId: post.id, userEmail: userEmail });
+                const postWithImages: PostWithImages = new PostWithImages(post.id.toString(), post.likes, likeId, post.text, post.name, post.userEmail, post.createdAt, post.updatedAt, postImages);
                 postsWithImages.push(postWithImages);
             }
 

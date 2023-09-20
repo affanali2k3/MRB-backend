@@ -1,4 +1,13 @@
+<<<<<<< HEAD
 *.env
 storage/
 build/
+=======
+.env
+.yarnrc.yml
+index.ts
+storage/
+serviceAccountKey.json
+build/
+>>>>>>> 083bb9737406d5cc219ca9fd883c90697dabefac
 node_modules/
