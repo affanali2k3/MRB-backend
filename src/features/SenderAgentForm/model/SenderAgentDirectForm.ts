@@ -19,7 +19,9 @@ export class SenderAgentDirectForm extends Model {
     public static STATE = 'sender_agent_direct_forms_state' as string
     public static PROVIDENCE = 'sender_agent_direct_forms_providence' as string
     // When is the lead looking to purchase or sell a home
-    public static DESIRED_DATE = 'sender_agent_direct_forms_desired_date' as string
+    public static time_amount = 'sender_agent_direct_forms_time_amount' as string
+    public static time_unit = 'sender_agent_direct_forms_time_unit' as string
+
     // The approximate price of the home
     public static PRICE = 'sender_agent_direct_forms_price' as string
 
@@ -79,10 +81,18 @@ export class SenderAgentDirectForm extends Model {
 
     // Only this value can be null
     @Column({
-        type: DataType.DATEONLY,
-        field: SenderAgentDirectForm.DESIRED_DATE,
+        type: DataType.INTEGER,
+        field: SenderAgentDirectForm.time_amount,
     })
-    desiredDate!: Date | null
+    timeAmount!: number | null
+
+    @Column({
+        type: DataType.STRING,
+        field: SenderAgentDirectForm.time_unit,
+    })
+    timeUnit!: string | null
+
+
 
     @Column({
         type: DataType.INTEGER,

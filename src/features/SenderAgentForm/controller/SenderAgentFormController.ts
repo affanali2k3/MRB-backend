@@ -18,7 +18,8 @@ export interface SenderAgentFormValues {
     city: string,
     state: string,
     providence: string,
-    desiredDate: Date | null,
+    time_amount: number,
+    time_unit: string,
     price: number
 }
 
@@ -42,8 +43,8 @@ class SenderAgentFormController {
     }
     async getDirectFormsSentByUser(req: Request, res: Response) {
         try {
-            const userEmail: string = req.params.userEmail;
-            const directFormsSent: SenderAgentDirectForm[] = await SenderAgentFormRepo.getDirectFormsSentByUser({ userEmail: userEmail });
+            const userId: number = parseInt(req.params.userId);
+            const directFormsSent: SenderAgentDirectForm[] = await SenderAgentFormRepo.getDirectFormsSentByUser({ userId: userId });
 
             res.status(200).send({
                 message: "Got forms succesfully",
@@ -58,8 +59,8 @@ class SenderAgentFormController {
     }
     async getOpenFormsSentByUser(req: Request, res: Response) {
         try {
-            const userEmail: string = req.params.userEmail;
-            const openFormsSent: SenderAgentOpenForm[] = await SenderAgentFormRepo.getOpenFormsSentByUser({ userEmail: userEmail });
+            const userId: number = parseInt(req.params.userId);
+            const openFormsSent: SenderAgentOpenForm[] = await SenderAgentFormRepo.getOpenFormsSentByUser({ userId: userId });
 
             res.status(200).send({
                 message: "Got forms succesfully",
@@ -74,8 +75,8 @@ class SenderAgentFormController {
     }
     async getFormsReceivedByUser(req: Request, res: Response) {
         try {
-            const userEmail: string = req.params.userEmail;
-            const formsReceived: SenderAgentDirectForm[] = await SenderAgentFormRepo.getFormsReceivedByUser({ userEmail: userEmail });
+            const userId: number = parseInt(req.params.userId);
+            const formsReceived: SenderAgentDirectForm[] = await SenderAgentFormRepo.getFormsReceivedByUser({ userId: userId });
 
             res.status(200).send({
                 message: "Got forms succesfully",

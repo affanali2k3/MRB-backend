@@ -21,7 +21,8 @@ export class SenderAgentOpenForm extends Model {
     public static STATE = 'sender_agent_open_forms_state' as string
     public static PROVIDENCE = 'sender_agent_open_forms_providence' as string
     // When is the lead looking to purchase or sell a home
-    public static DESIRED_DATE = 'sender_agent_open_forms_desired_date' as string
+    public static time_amount = 'sender_agent_open_forms_time_amount' as string
+    public static time_unit = 'sender_agent_open_forms_time_unit' as string
     // The approximate price of the home
     public static PRICE = 'sender_agent_open_forms_price' as string
 
@@ -33,6 +34,17 @@ export class SenderAgentOpenForm extends Model {
     })
     id!: number
 
+    @Column({
+        type: DataType.INTEGER,
+        field: SenderAgentOpenForm.time_amount,
+    })
+    timeAmount!: number | null
+
+    @Column({
+        type: DataType.STRING,
+        field:SenderAgentOpenForm.time_unit,
+    })
+    timeUnit!: string | null
     // Foreign key in user table. Meaning the agent who is referring should be a registered user
     @Column({
         type: DataType.INTEGER,
@@ -71,11 +83,7 @@ export class SenderAgentOpenForm extends Model {
     providence!: string
 
     // Only this value can be null
-    @Column({
-        type: DataType.DATEONLY,
-        field: SenderAgentOpenForm.DESIRED_DATE,
-    })
-    desiredDate!: Date | null
+
 
     @Column({
         type: DataType.INTEGER,
