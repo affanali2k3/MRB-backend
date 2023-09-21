@@ -73,7 +73,7 @@ class App {
         this.app.use("/api/v1/agent-reviews", AgentReviewRouter);
         this.app.use("/api/v1/referral-center", ReferralCenterRouter);
         this.app.use("/api/v1/registration", RegistrationRouter);
-        this.app.use("/api/v1/leads", LeadsRouter);
+       
     }
 
     protected setupSocketIO(): void {
