@@ -49,7 +49,7 @@ class Database {
                 Like, Comment, SenderAgentDirectForm, SenderAgentOpenForm,
                 ReceiverAgentDirectForm, ReceiverAgentOpenForm, AgentInviteCode,
                 AgentInvitee, AgentAnalytic, AgentToAgentReview, ClientToAgentReview
-                , UsedInviteeCode, Chat, LeadsModel, SenderAgentOpenForm, SenderAgentDirectForm]
+                , UsedInviteeCode, Chat]
         });
 
         User.hasMany(SenderAgentOpenForm, { foreignKey: SenderAgentOpenForm.SENDER_AGENT });
