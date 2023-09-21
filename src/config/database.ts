@@ -18,7 +18,7 @@ import { AgentToAgentReview } from "../features/AgentReviews/model/AgentToAgentR
 import { ClientToAgentReview } from "../features/AgentReviews/model/ClientToAgentReviewModel";
 import { UsedInviteeCode } from "../features/AgentInviteCode/model/UsedInviteeCode";
 import { Chat } from "../features/Chat/model/ChatModel";
-import { LeadsModel } from "../features/Leads/model/LeadsModel";
+
 
 dotenv.config(); // Load environment variables from .env file
 
