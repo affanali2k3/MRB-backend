@@ -55,6 +55,9 @@ class SenderAgentFormRepo implements ISenderAgentFormRepo {
                 senderAgentDirectForm.state = values.state;
                 senderAgentDirectForm.timeAmount = values.time_amount;
                 senderAgentDirectForm.timeUnit = values.time_unit;
+                senderAgentDirectForm.details = values.details;
+                senderAgentDirectForm.typeOfHouse = values.typeOfHouse;
+          
                 senderAgentDirectForm.providence = values.providence;
                 senderAgentDirectForm.price = values.price;
 
@@ -71,6 +74,8 @@ class SenderAgentFormRepo implements ISenderAgentFormRepo {
                 senderAgentopenForm.timeAmount = values.time_amount;
                 senderAgentopenForm.timeUnit = values.time_unit;
                 senderAgentopenForm.providence = values.providence;
+                senderAgentopenForm.details = values.details;
+                senderAgentopenForm.typeOfHouse = values.typeOfHouse;
                 senderAgentopenForm.price = values.price;
 
                 await senderAgentopenForm.save();

@@ -25,6 +25,9 @@ export class SenderAgentDirectForm extends Model {
     // The approximate price of the home
     public static PRICE = 'sender_agent_direct_forms_price' as string
 
+    public static details = 'sender_agent_open_forms_details' as string
+    public static typeOfHouse = 'sender_agent_open_forms_type_of_house' as string
+
     @Column({
         type: DataType.INTEGER,
         field: SenderAgentDirectForm.ID,
@@ -86,6 +89,17 @@ export class SenderAgentDirectForm extends Model {
     })
     timeAmount!: number | null
 
+    
+    @Column({
+        type: DataType.TEXT,
+        field: SenderAgentDirectForm.details,
+    })
+    details!: string | null
+    @Column({
+        type: DataType.TEXT,
+        field: SenderAgentDirectForm.typeOfHouse,
+    })
+    typeOfHouse!: string | null
     @Column({
         type: DataType.STRING,
         field: SenderAgentDirectForm.time_unit,

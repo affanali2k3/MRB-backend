@@ -20,6 +20,8 @@ export interface SenderAgentFormValues {
     providence: string,
     time_amount: number,
     time_unit: string,
+    details: string,
+    typeOfHouse: string,
     price: number
 }
 

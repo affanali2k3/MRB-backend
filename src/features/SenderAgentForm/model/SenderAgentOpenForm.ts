@@ -23,6 +23,10 @@ export class SenderAgentOpenForm extends Model {
     // When is the lead looking to purchase or sell a home
     public static time_amount = 'sender_agent_open_forms_time_amount' as string
     public static time_unit = 'sender_agent_open_forms_time_unit' as string
+
+    public static details = 'sender_agent_open_forms_details' as string
+    public static typeOfHouse = 'sender_agent_open_forms_type_of_house' as string
+
     // The approximate price of the home
     public static PRICE = 'sender_agent_open_forms_price' as string
 
@@ -53,7 +57,16 @@ export class SenderAgentOpenForm extends Model {
         allowNull: false
     })
     senderAgent!: number
-
+    @Column({
+        type: DataType.TEXT,
+        field: SenderAgentOpenForm.details,
+    })
+    details!: string | null
+    @Column({
+        type: DataType.TEXT,
+        field: SenderAgentOpenForm.typeOfHouse,
+    })
+    typeOfHouse!: string | null
     @Column({
         type: DataType.BOOLEAN,
         field: SenderAgentOpenForm.IS_BUYER,
