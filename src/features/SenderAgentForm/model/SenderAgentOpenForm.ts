@@ -1,5 +1,6 @@
 import { Column, DataType, Model, Table } from "sequelize-typescript";
 import { User } from "../../UserProfile/model/User";
+import { Col } from "sequelize/types/utils";
 
 
 // Interface defining how the incoming data for this model should be like (especially their datatypes)
@@ -37,6 +38,8 @@ export class SenderAgentOpenForm extends Model {
         primaryKey: true,
     })
     id!: number
+
+   
 
     @Column({
         type: DataType.INTEGER,
