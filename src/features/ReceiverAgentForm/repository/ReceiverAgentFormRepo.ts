@@ -6,11 +6,14 @@ import { ReceiverAgentFormType, ReceiverAgentFormValues } from "../controller/Re
 import { ReceiverAgentDirectForm } from "../model/ReceiverAgentDirectFormModel";
 import { ReceiverAgentOpenForm } from "../model/ReceiverAgentOpenForm";
 
+enum ReceiverAgentFormStatus {Awaiting = 'Awaiting', Accepted = 'Accepted', Rejected = 'Rejected'}
+
 
 interface IReceiverAgentFormRepo {
     createForm(values: ReceiverAgentFormValues): Promise<void>
     getOpenFormsProposalsReceivedByUser({userId}: {userId: number}): Promise<ReceiverAgentOpenForm[]>
     getDirectFormsProposalsReceivedByUser({userId}: {userId: number}): Promise<ReceiverAgentDirectForm[]>
+    getOpenFormsSent({ userId }: { userId: number; }): Promise<ReceiverAgentOpenForm[]>
 }
 
 class SenderAgentFormRepo implements IReceiverAgentFormRepo {
@@ -62,6 +65,32 @@ class SenderAgentFormRepo implements IReceiverAgentFormRepo {
             throw new Error(`${err}`)
         }
     }
+    async getOpenFormsSent({ userId }: { userId: number; }): Promise<ReceiverAgentOpenForm[]> {
+        try{
+            const formsSent: ReceiverAgentOpenForm[] = await ReceiverAgentOpenForm.findAll(
+                {
+                    where: {
+                        receiverAgent: userId,
+                    },
+                    include: [
+                        {
+                            model: SenderAgentOpenForm,
+                            include: [
+                                {
+                                    model: User,
+                                }
+                            ]
+                        }
+                    ]
+                }
+            )
+
+            return formsSent;
+        }catch(err){
+            throw new Error(`${err}`)
+        }
+    }
+    
     async createForm(values: ReceiverAgentFormValues): Promise<void> {
         try {
             if (values.formType === ReceiverAgentFormType.Direct) {
@@ -79,6 +108,7 @@ class SenderAgentFormRepo implements IReceiverAgentFormRepo {
                 receiverAgentopenForm.receiverAgent = values.receiverAgent;
                 receiverAgentopenForm.senderAgentFormId = values.senderAgentFormId;
                 receiverAgentopenForm.proposal = values.proposal;
+                receiverAgentopenForm.status = ReceiverAgentFormStatus.Awaiting;
 
                 await receiverAgentopenForm.save();
             }

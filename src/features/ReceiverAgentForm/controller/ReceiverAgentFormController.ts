@@ -57,6 +57,25 @@ class SenderAgentFormController {
             })
         }
     }
+    async getOpenFormsSentByUser(req: Request, res: Response) {
+        try {
+            const userIdString: string = req.query.userId as string;
+            const userId: number = parseInt(userIdString);
+
+            const openFormsSent: ReceiverAgentOpenForm[] = 
+            await ReceiverAgentFormRepo.getOpenFormsSent({userId: userId});
+
+            res.status(200).send({
+                message: "Got open forms sent successfully",
+                data: openFormsSent
+            })
+        } catch (err) {
+            res.status(500).send({
+                message: 'Failed to get open forms sent',
+                error: `${err}`
+            })
+        }
+    }
     async createForm(req: Request, res: Response) {
         try {
             const reqData: ReceiverAgentFormValues = req.body;

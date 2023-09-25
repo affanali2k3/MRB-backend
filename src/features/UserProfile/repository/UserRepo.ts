@@ -47,6 +47,7 @@ export class UserRepo implements IUserRepo {
             updatedUser.address = user.address;
             updatedUser.completedDeals = user.completedDeals;
             updatedUser.yearsOfExperience = user.yearsOfExperience;
+            updatedUser.teamMembers = user.teamMembers;
 
             // Save the updated user
             updatedUser.save();
@@ -91,7 +92,6 @@ export class UserRepo implements IUserRepo {
     }
     async getUserByEmail(userEmail: string): Promise<User> {
         try {
-            console.log(userEmail)
             const user = await User.findOne({
                 where: {
                     email: userEmail

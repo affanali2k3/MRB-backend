@@ -3,7 +3,12 @@ import { User } from "../../UserProfile/model/User";
 import { SenderAgentOpenForm } from "../../SenderAgentForm/model/SenderAgentOpenForm";
 
 @Table({
-    tableName: ReceiverAgentOpenForm.TABLE_NAME
+    tableName: ReceiverAgentOpenForm.TABLE_NAME,
+    indexes: [{
+        name: ReceiverAgentOpenForm.UNIQUE_RECEIVER_AGENT_AND_SENDER_AGENT_FORM_ID_CONSTRAINT,
+        unique: true,
+        fields: [ReceiverAgentOpenForm.RECEIVER_AGENT, ReceiverAgentOpenForm.SENDER_AGENT_FORM_ID]
+    }],
 })
 
 export class ReceiverAgentOpenForm extends Model {
@@ -15,6 +20,8 @@ export class ReceiverAgentOpenForm extends Model {
     public static SENDER_AGENT_FORM_ID = 'sender_agent_open_form_id' as string
     // Specifying why you are good for this job
     public static PROPOSAL = 'receiver_agent_open_form_proposal' as string
+    public static STATUS = 'receiver_agent_open_form_status' as string
+    public static UNIQUE_RECEIVER_AGENT_AND_SENDER_AGENT_FORM_ID_CONSTRAINT = 'receiver_agent_unique_constraint' as string
 
     @Column({
         type: DataType.INTEGER,
@@ -48,5 +55,12 @@ export class ReceiverAgentOpenForm extends Model {
         allowNull: false
     })
     proposal!: string
+
+    @Column({
+        type: DataType.STRING,
+        field: ReceiverAgentOpenForm.STATUS,
+        allowNull: false
+    })
+    status!: string
 
 }

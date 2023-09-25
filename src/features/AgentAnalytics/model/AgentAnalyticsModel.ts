@@ -9,6 +9,9 @@ export class AgentAnalytic extends Model {
     public static ID = "agent_analytic_id" as string;
     public static REFERRALS_SENT = "agent_analytic_referrals_sent" as string;
     public static REFERRALS_RECEIVED = "agent_analytic_referrals_received" as string;
+    public static YEARS_OF_EXPERIENCE = "agent_analytic_years_of_experience" as string;
+    public static HOUSES_SOLD = "agent_analytic_houses_sold" as string;
+    public static LISTINGS_SOLD = "agent_analytic_listings_sold" as string;
     public static AGENT_TO_AGENT_RATING_SCORE = "agent_analytic_agent_to_agent_rating_score" as string;
     public static AGENT_TO_AGENT_RATING = "agent_analytic_agent_to_agent_rating" as string;
     public static CLIENT_TO_AGENT_RATING_SCORE = "agent_analytic_client_to_agent_rating_score" as string;
@@ -31,6 +34,27 @@ export class AgentAnalytic extends Model {
         allowNull: false,
     })
     referralsSent!: number;
+
+    @Column({
+        type: DataType.DOUBLE,
+        field: AgentAnalytic.YEARS_OF_EXPERIENCE,
+        allowNull: false,
+    })
+    yearsOfExperience!: number;
+
+    @Column({
+        type: DataType.INTEGER,
+        field: AgentAnalytic.LISTINGS_SOLD,
+        allowNull: false,
+    })
+    listingsSold!: number;
+
+    @Column({
+        type: DataType.INTEGER,
+        field: AgentAnalytic.HOUSES_SOLD,
+        allowNull: false,
+    })
+    housesSold!: number;
 
     @Column({
         type: DataType.INTEGER,
