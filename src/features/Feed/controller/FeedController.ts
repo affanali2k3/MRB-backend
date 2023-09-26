@@ -3,12 +3,15 @@ import { Post } from "../../Post/model/PostModel"; // Import the Post model
 import FeedRepo from "../repository/FeedRepository"; // Import the FeedRepository
 import PostRepository from "../../Post/repository/PostRepository"; // Import the PostRepository
 import LikeRepository from "../../Like/repository/LikeRepository"; // Import the LikeRepository
+import { User } from "../../UserProfile/model/User";
 
 // Class to represent a Post with associated images
 class PostWithImages {
-    constructor(postId: number, likes: number, likeId: number | null, text: string, name: string, userId: number, createdAt: string, updatedAt: string, imagesName: string[]) {
+    constructor(postId: number, comments: number, posterName: string, likes: number, likeId: number | null, text: string, name: string, userId: number, createdAt: string, updatedAt: string, imagesName: string[]) {
         this.postId = postId;
         this.likes = likes;
+        this.comments = comments;
+        this.posterName = posterName
         this.likeId = likeId;
         this.text = text;
         this.name = name;
@@ -18,6 +21,8 @@ class PostWithImages {
         this.imagesName = imagesName;
     }
     postId: number;
+    comments: number
+    posterName: string
     likes: number;
     likeId: number | null;
     text: string;
@@ -49,13 +54,15 @@ class FeedController {
 
             // Loop through each post to gather additional details and images
             for (const post of posts) {
+                const user = post.get('User') as User;
+
                 // Retrieve image names of the post using the PostRepository
                 const postImages: string[] = await PostRepository.getImageNamesOfPost({ postId: post.id });
                 // Retrieve like information for the post using the LikeRepository
                 const likeId: number | null = await LikeRepository.getLike({ postId: post.id, userId: userId });
                 // Create a PostWithImages object with the gathered details
                 const postWithImages: PostWithImages = new PostWithImages(
-                    post.id, post.likes, likeId, post.text, post.name, post.userId, post.createdAt, post.updatedAt, postImages
+                    post.id, post.comments, user.name, post.likes, likeId, post.text, post.name, post.userId, post.createdAt, post.updatedAt, postImages
                 );
                 postsWithImages.push(postWithImages);
             }
