@@ -13,7 +13,7 @@ class ReferralCenterRepo implements IReferralCenterRepo {
     async searchForLeads(data: SearchData): Promise<SenderAgentOpenForm[]> {
         try {
             const whereClause: any = {};
-            const userWhereClause: WhereOptions<User> = {};
+            // const userWhereClause: WhereOptions<User> = {};
             const analyticWhereClause: WhereOptions<AgentAnalytic> = {};
 
             if (data.state !== undefined) {
@@ -22,9 +22,9 @@ class ReferralCenterRepo implements IReferralCenterRepo {
             if (data.city !== undefined) {
                 whereClause.city = data.city;
             }
-            if (data.agentYearsOfExperience !== undefined) {
-                userWhereClause.yearsOfExperience = data.agentYearsOfExperience;
-            }
+            // if (data.agentYearsOfExperience !== undefined) {
+            //     userWhereClause.yearsOfExperience = data.agentYearsOfExperience;
+            // }
             // if (data.isAgentOnTeam !== undefined) {
             //     userWhereClause.isAgentOnTeam = data.isAgentOnTeam;
             // }
@@ -36,19 +36,19 @@ class ReferralCenterRepo implements IReferralCenterRepo {
 
             const results = await SenderAgentOpenForm.findAll({
                 where: whereClause,
-                include: [
-                    {
-                        model: User,
-                        attributes: [User.USER_NAME, User.ID],
-                        where: userWhereClause,
-                        include: [
-                            {
-                                model: AgentAnalytic,
-                                where: analyticWhereClause
-                            }
-                        ]
-                    },
-                ]
+                // include: [
+                //     {
+                //         model: User,
+                //         attributes: [User.USER_NAME, User.ID],
+                //         where: userWhereClause,
+                //         include: [
+                //             {
+                //                 model: AgentAnalytic,
+                //                 where: analyticWhereClause
+                //             }
+                //         ]
+                //     },
+                // ]
             });
 
             console.log(results);

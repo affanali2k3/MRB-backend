@@ -19,6 +19,7 @@ import AgentAnalyticRouter from "./features/AgentAnalytics/router/AgentAnalyticR
 import AgentReviewRouter from "./features/AgentReviews/router/AgentReviewRouter";
 import ReferralCenterRouter from "./features/ReferralCenter/router/ReferralCenterRouter";
 import RegistrationRouter from "./features/Registration/router/RegistrationRouter";
+import RecommendRouter from "./features/Recommendation/router/RecommendRouter";
 
 
 class App {
@@ -73,6 +74,7 @@ class App {
         this.app.use("/api/v1/agent-reviews", AgentReviewRouter);
         this.app.use("/api/v1/referral-center", ReferralCenterRouter);
         this.app.use("/api/v1/registration", RegistrationRouter);
+        this.app.use("/api/v1/recommend", RecommendRouter);
        
     }
 

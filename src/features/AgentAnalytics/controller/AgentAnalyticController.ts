@@ -94,12 +94,28 @@ class AgentAnalyticController {
             const agentAnalytic: AgentAnalytic = await AgentAnalyticsRepo.getAgentAnalytic({ userId: userId });
 
             res.status(200).json({
-                message: 'Analytic deleted succesfully',
+                message: 'Analytic recieved successfully',
                 data: agentAnalytic
             })
         } catch (err: any) {
             res.status(500).json({
-                message: 'Failed to delete analytic',
+                message: 'Failed to recieve analytics',
+                error: err.toString()
+            })
+        }
+    }
+
+    async getAllAgentAnalytics(req: Request, res: Response) {
+        try {
+            const agentAnalytics: AgentAnalytic[] = await AgentAnalyticsRepo.getAllAgentAnalytics();
+
+            res.status(200).json({
+                message: 'Analytics recieved successfully',
+                data: agentAnalytics
+            })
+        } catch (err: any) {
+            res.status(500).json({
+                message: 'Failed to recieve analytics',
                 error: err.toString()
             })
         }

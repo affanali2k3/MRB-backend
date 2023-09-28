@@ -94,6 +94,17 @@ class AgentAnalyticsRepo implements IAgentAnalyticsRepo {
             throw new Error(`${err}`)
         }
     }
+
+    async getAllAgentAnalytics(): Promise<AgentAnalytic[]> {
+        try {
+            const agentAnalytics: AgentAnalytic[] = await AgentAnalytic.findAll();
+
+            return agentAnalytics;
+        } catch (err) {
+            throw new Error(`${err}`)
+        }
+    }
+    
     async updateReferralsReceived({ analyticsId }: { analyticsId: number }): Promise<void> {
         try {
             const agentAnalytic: AgentAnalytic | null = await AgentAnalytic.findOne({ where: { id: analyticsId } });

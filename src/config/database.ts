@@ -53,7 +53,12 @@ class Database {
         });
 
         User.hasMany(SenderAgentOpenForm, { foreignKey: SenderAgentOpenForm.SENDER_AGENT });
+        User.hasMany(SenderAgentDirectForm, { foreignKey: SenderAgentDirectForm.SENDER_AGENT });
         SenderAgentOpenForm.belongsTo(User, { foreignKey: SenderAgentOpenForm.SENDER_AGENT });
+        SenderAgentDirectForm.belongsTo(User, { foreignKey: SenderAgentDirectForm.SENDER_AGENT });
+
+        UserAssociates.hasMany(UserAssociates, { foreignKey: UserAssociates.USER_ID });
+
         
         SenderAgentOpenForm.hasOne(ReceiverAgentOpenForm, { foreignKey: ReceiverAgentOpenForm.SENDER_AGENT_FORM_ID });
         ReceiverAgentOpenForm.belongsTo(SenderAgentOpenForm, { foreignKey: ReceiverAgentOpenForm.SENDER_AGENT_FORM_ID });
