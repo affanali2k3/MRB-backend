@@ -1,5 +1,6 @@
 import { Op, literal } from "sequelize"; // Import necessary modules
 import { Post } from "../../Post/model/PostModel"; // Import the Post model
+import { User } from "../../UserProfile/model/User";
 
 // Interface for the Feed Repository
 interface IFeedRepo {
@@ -28,6 +29,11 @@ class FeedRepo implements IFeedRepo {
                         ) ORDER BY "createdAt" DESC`),
                     },
                 },
+                include: [
+                    {
+                        model: User
+                    }
+                ],
                 offset: skipPosts, // Offset for pagination
                 limit: postsPerPage, // Limit for pagination
             });

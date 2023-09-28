@@ -102,7 +102,7 @@ export class SenderAgentOpenForm extends Model {
 
 
     @Column({
-        type: DataType.INTEGER,
+        type: DataType.DOUBLE,
         field: SenderAgentOpenForm.PRICE,
     })
     price!: number

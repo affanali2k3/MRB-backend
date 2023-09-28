@@ -3,19 +3,22 @@ import PostRepo from "../repository/PostRepository"; // Import the PostRepo for 
 import { Post } from "../model/PostModel"; // Import the Post model
 import path from "path"; // Import the path module for working with file paths
 import LikeRepository from "../../Like/repository/LikeRepository"; // Import the LikeRepository for managing likes
+import { User } from "../../UserProfile/model/User";
 
 // Create a class to represent a Post with associated image information
 class PostWithImages {
-    constructor(postId: string, likes: number, likeId: number | null, text: string, name: string, userEmail: string, createdAt: string, updatedAt: string, imagesName: string[]) {
+    constructor(postId: number, comments: number, posterName: string, likes: number, likeId: number | null, text: string, name: string, userId: number, createdAt: string, updatedAt: string, imagesName: string[]) {
         this.postId = postId, this.likes = likes, this.likeId = likeId; this.text = text, this.name = name
-            , this.userEmail = userEmail, this.createdAt = createdAt, this.updatedAt = updatedAt, this.imagesName = imagesName
+            , this.userId = userId, this.createdAt = createdAt, this.updatedAt = updatedAt, this.imagesName = imagesName, this.comments = comments, this.posterName = posterName
     }
-    postId: string;
+    postId: number;
+    comments: number
+    posterName: string
     likes: number;
     likeId: number | null;
     text: string;
     name: string;
-    userEmail: string;
+    userId: number;
     createdAt: string;
     updatedAt: string;
     imagesName: string[] | null;
@@ -60,10 +63,13 @@ class PostController {
 
     async getPostImage(req: Request, res: Response) {
         try {
-            const userEmail: string = req.params.userEmail;
-            const postName: string = req.params.postName;
-            const imageName: string = req.params.imageName;
-            res.sendFile(path.join('C:/Users/Affan/Desktop/MRB/backend/storage/', userEmail, 'postImages', postName, imageName));
+            const userIdString: string = req.query.userId as string;
+            const userId: number = parseInt(userIdString);
+
+            const postName: string = req.query.postName as string;
+            const imageName: string = req.query.imageName as string;
+
+            res.sendFile(path.join('C:/Users/Affan Ali/Desktop/MRB/backend-new/master/storage/', userId.toString(), 'postImages', postName, imageName));
         } catch (err) {
             res.status(500).json({
                 message: `Failed to get post image ${err}`,
@@ -73,16 +79,19 @@ class PostController {
 
     async getAllPosts(req: Request, res: Response) {
         try {
-            const userId: number = parseInt(req.params.userId);
+            const userIdString: string = req.query.userId as string;
+            const userId: number = parseInt(userIdString)
+
             const posts: Post[] = await PostRepo.getAllPosts({ userId: userId });
             const postsWithImages: PostWithImages[] = [];
 
             // Iterate through posts and retrieve associated image information
             for (const post of posts) {
+                const user = post.get('User') as User;
                 const postImages: string[] = await PostRepo.getImageNamesOfPost({ postId: post.id });
                 const likeId: number | null = await LikeRepository.getLike({ postId: post.id, userId: userId });
-                // const postWithImages: PostWithImages = new PostWithImages(post.id.toString(), post.likes, likeId, post.text, post.name, post.userId, post.createdAt, post.updatedAt, postImages);
-                // postsWithImages.push(postWithImages);
+                const postWithImages: PostWithImages = new PostWithImages(post.id, post.comments, user.name, post.likes, likeId, post.text, post.name, post.userId, post.createdAt, post.updatedAt, postImages);
+                postsWithImages.push(postWithImages);
             }
 
             res.status(200).json({

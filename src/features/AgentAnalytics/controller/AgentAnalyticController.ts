@@ -121,6 +121,60 @@ class AgentAnalyticController {
             })
         }
     }
+
+    async updateYearsOfExperience(req: Request, res: Response) {
+        try {
+            const analyticId: number = req.body.analyticId;
+            const yearsOfExperience: number = req.body.yearsOfExperience;
+
+            await AgentAnalyticsRepo.updateYearsOfExperience({ analyticsId: analyticId, yearsOfExperience: yearsOfExperience });
+
+            res.status(200).json({
+                message: 'Analytic years of experience updated succesfully',
+            })
+        } catch (err: any) {
+            res.status(500).json({
+                message: 'Failed to update analytic years of experience',
+                error: err.toString()
+            })
+        }
+    }
+
+    async updateListingsSold(req: Request, res: Response) {
+        try {
+            const analyticId: number = req.body.analyticId;
+            const listingsSold: number = req.body.listingsSold;
+
+            await AgentAnalyticsRepo.updateListingsSold({ analyticsId: analyticId, listingsSold: listingsSold });
+
+            res.status(200).json({
+                message: 'Analytic listings sold updated succesfully',
+            })
+        } catch (err: any) {
+            res.status(500).json({
+                message: 'Failed to update analytic listings sold',
+                error: err.toString()
+            })
+        }
+    }
+
+    async updateHousesSold(req: Request, res: Response) {
+        try {
+            const analyticId: number = req.body.analyticId;
+            const housesSold: number = req.body.housesSold;
+
+            await AgentAnalyticsRepo.updateHousesSold({ analyticsId: analyticId, housesSold: housesSold });
+
+            res.status(200).json({
+                message: 'Analytic houses sold updated succesfully',
+            })
+        } catch (err: any) {
+            res.status(500).json({
+                message: 'Failed to update analytic houses sold ',
+                error: err.toString()
+            })
+        }
+    }
 }
 
 export default new AgentAnalyticController

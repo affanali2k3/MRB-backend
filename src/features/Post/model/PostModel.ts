@@ -14,6 +14,7 @@ export class Post extends Model {
     public static POST_TEXT = "post_text" as string;
     public static POST_NAME = "post_name" as string;
     public static POST_LIKES = "post_likes" as string;
+    public static POST_COMMENTS = "post_comments" as string;
 
     // Define a column for the primary key (auto-incremented)
     @Column({
@@ -53,4 +54,11 @@ export class Post extends Model {
         field: Post.POST_LIKES,
     })
     likes!: number;
+
+    // Define a column for the number of likes the post has received
+    @Column({
+        type: DataType.INTEGER,
+        field: Post.POST_COMMENTS,
+    })
+    comments!: number;
 }
