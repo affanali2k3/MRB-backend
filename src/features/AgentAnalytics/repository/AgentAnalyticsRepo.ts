@@ -25,6 +25,9 @@ class AgentAnalyticsRepo implements IAgentAnalyticsRepo {
             agentAnalytic.clientToAgentRatingScore = 0;
             agentAnalytic.agentToAgentRating = 0;
             agentAnalytic.clientToAgentRating = 0;
+            agentAnalytic.yearsOfExperience = 0;
+            agentAnalytic.housesSold = 0;
+            agentAnalytic.listingsSold = 0;
 
             await agentAnalytic.save();
         } catch (err) {
@@ -112,6 +115,45 @@ class AgentAnalyticsRepo implements IAgentAnalyticsRepo {
             if (!agentAnalytic) throw new Error('Analytics not found');
 
             agentAnalytic.referralsReceived = agentAnalytic.referralsReceived + 1;
+
+            await agentAnalytic.save();
+        } catch (err) {
+            throw new Error(`${err}`)
+        }
+    }
+    async updateYearsOfExperience({ analyticsId, yearsOfExperience }: { analyticsId: number, yearsOfExperience:number }): Promise<void> {
+        try {
+            const agentAnalytic: AgentAnalytic | null = await AgentAnalytic.findOne({ where: { id: analyticsId } });
+
+            if (!agentAnalytic) throw new Error('Analytics not found');
+
+            agentAnalytic.yearsOfExperience = yearsOfExperience;
+
+            await agentAnalytic.save();
+        } catch (err) {
+            throw new Error(`${err}`)
+        }
+    }
+    async updateListingsSold({ analyticsId, listingsSold }: { analyticsId: number, listingsSold:number }): Promise<void> {
+        try {
+            const agentAnalytic: AgentAnalytic | null = await AgentAnalytic.findOne({ where: { id: analyticsId } });
+
+            if (!agentAnalytic) throw new Error('Analytics not found');
+
+            agentAnalytic.listingsSold = listingsSold;
+
+            await agentAnalytic.save();
+        } catch (err) {
+            throw new Error(`${err}`)
+        }
+    }
+    async updateHousesSold({ analyticsId, housesSold }: { analyticsId: number, housesSold:number }): Promise<void> {
+        try {
+            const agentAnalytic: AgentAnalytic | null = await AgentAnalytic.findOne({ where: { id: analyticsId } });
+
+            if (!agentAnalytic) throw new Error('Analytics not found');
+
+            agentAnalytic.housesSold = housesSold;
 
             await agentAnalytic.save();
         } catch (err) {

@@ -1,3 +1,4 @@
+import { User } from "../../UserProfile/model/User";
 import { PostImages } from "../model/PostImages";
 import { Post } from "../model/PostModel";
 
@@ -19,6 +20,7 @@ class PostRepo implements IPostRepo {
             post.userId = userId;
             post.name = postName;
             post.likes = 0;
+            post.comments = 0;
 
             // Save the post to the database
             const newPost = await post.save();
@@ -43,7 +45,9 @@ class PostRepo implements IPostRepo {
     // Method to retrieve all posts for a specific user
     async getAllPosts({ userId }: { userId: number }) {
         try {
-            const posts: Post[] = await Post.findAll({ where: { userId: userId } });
+            const posts: Post[] = await Post.findAll({ where: { userId: userId }, include: [{
+                model: User
+            }] });
             return posts;
         } catch (err) {
             throw new Error(`${err}`);

@@ -68,6 +68,10 @@ class Database {
         Chat.belongsTo(User, { foreignKey: Chat.USER_TWO_ID });
 
 
+        User.hasMany(Post, { foreignKey: Post.USER_ID });
+        Post.belongsTo(User, { foreignKey: Post.USER_ID });
+
+
 
         User.hasOne(AgentAnalytic, { foreignKey: AgentAnalytic.USER_ID });
         AgentAnalytic.belongsTo(User, { foreignKey: AgentAnalytic.USER_ID });

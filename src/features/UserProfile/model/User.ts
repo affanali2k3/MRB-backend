@@ -10,6 +10,7 @@ export class User extends Model {
     public static ID = "user_id" as string;
     public static EMAIL = "user_email" as string;
     public static USER_NAME = "user_name" as string;
+    public static TEAM_MEMBERS = "user_team_members" as string;
     public static LICENCE = "user_licence" as string;
     public static PHOTO = "user_photo" as string;
     public static PHONE = "user_phone" as string;
@@ -37,7 +38,6 @@ export class User extends Model {
 
     @Column({
         type: DataType.STRING,
-        // primaryKey: true,
         unique: true,
         field: User.EMAIL
     })
@@ -61,6 +61,12 @@ export class User extends Model {
         field: User.LICENCE_NUMBER
     })
     licenceNumber!: string;
+
+    @Column({
+        type: DataType.INTEGER,
+        field: User.TEAM_MEMBERS
+    })
+    teamMembers!: number;
 
     @Column({
         type: DataType.STRING,

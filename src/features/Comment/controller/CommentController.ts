@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import CommentRepository from "../repository/CommentRepository"; // Import the CommentRepository
 import { Comment } from "../model/CommentModel"; // Import the Comment model
+import { Post } from "../../Post/model/PostModel";
 
 // Interface to represent data required for saving a comment
 interface CommentData {
@@ -16,6 +17,15 @@ class CommentController {
         try {
             const data: CommentData = req.body; // Extract comment data from the request body
             const commentId: number = await CommentRepository.saveComment({ userId: data.userId, postId: data.postId, text: data.text }); // Call the CommentRepository method to save the comment
+
+
+            const post: Post | null = await Post.findOne({where: {id: data.postId}});
+
+            if(!post) throw new Error('Post does not exit');
+
+            post.comments = post.comments + 1;
+
+            await post.save();
 
             res.status(200).json({
                 message: 'Comment saved successfully',

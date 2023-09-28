@@ -6,9 +6,11 @@ import fs from "fs";
 // Configuration for storing uploaded images using multer
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        const userEmail: string = req.body.userEmail;
+        const userId: number = req.body.userId;
         const uniqueFolderName: string = req.body.uniqueFolderName;
-        const destinationPath = `./storage/${userEmail}/postImages/${uniqueFolderName}/`;
+        console.log(userId)
+        const destinationPath = `./storage/${userId}/postImages/${uniqueFolderName}/`;
+        console.log(destinationPath)
 
         // Create the directory if it doesn't exist
         if (!fs.existsSync(destinationPath)) {
@@ -34,8 +36,9 @@ const upload = multer({ storage });
 class PostRouter extends BaseRoutes {
     public routes(): void {
         this.router.post("/", upload.array('images'), PostController.savePost);//
-        this.router.get("/:userEmail", PostController.getAllPosts);//
-        this.router.get("/:userEmail/:postName/:imageName", PostController.getPostImage);//
+        // this.router.get("/:userEmail", PostController.getAllPosts);//
+        this.router.get("/get-all", PostController.getAllPosts);//
+        this.router.get("/post-image", PostController.getPostImage);//
     }
 }
 
