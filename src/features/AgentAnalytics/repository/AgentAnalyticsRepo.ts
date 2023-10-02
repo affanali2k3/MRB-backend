@@ -9,6 +9,11 @@ interface IAgentAnalyticsRepo {
     updateAgentToAgentRating({ userId, ratingScore }: { userId: number, ratingScore: number }): Promise<void>
     updateReferralsSent({ analyticsId }: { analyticsId: number }): Promise<void>
     updateReferralsReceived({ analyticsId }: { analyticsId: number }): Promise<void>
+
+    getAgentsByStateAndClientType(state: string, clientType: string): Promise<AgentAnalytic[]>;
+
+  // Add new method to fetch all agents
+  getAllAgents(): Promise<AgentAnalytic[]>;
 }
 
 class AgentAnalyticsRepo implements IAgentAnalyticsRepo {
@@ -28,6 +33,8 @@ class AgentAnalyticsRepo implements IAgentAnalyticsRepo {
             agentAnalytic.yearsOfExperience = 0;
             agentAnalytic.housesSold = 0;
             agentAnalytic.listingsSold = 0;
+            agentAnalytic.agentState = '';
+            
 
             await agentAnalytic.save();
         } catch (err) {
@@ -161,6 +168,29 @@ class AgentAnalyticsRepo implements IAgentAnalyticsRepo {
         }
     }
 
+    async getAgentsByStateAndClientType(state: string, clientType: string): Promise<AgentAnalytic[]> {
+        try {
+          const agentAnalytics: AgentAnalytic[] = await AgentAnalytic.findAll({
+            where: {
+                agentState: state,
+            },
+          });
+    
+          return agentAnalytics;
+        } catch (err) {
+          throw new Error(`${err}`);
+        }
+      }
+    
+      async getAllAgents(): Promise<AgentAnalytic[]> {
+        try {
+          const agentAnalytics: AgentAnalytic[] = await AgentAnalytic.findAll();
+    
+          return agentAnalytics;
+        } catch (err) {
+          throw new Error(`${err}`);
+        }
+      }
 }
 
 export default new AgentAnalyticsRepo

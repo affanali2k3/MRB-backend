@@ -19,6 +19,16 @@ export class AgentAnalytic extends Model {
     public static AGENT_TO_AGENT_RATING_NUMBER = "agent_analytic_agent_to_agent_rating_number" as string;
     public static CLIENT_TO_AGENT_RATING_NUMBER = "agent_analytic_client_to_agent_rating_number" as string;
     public static USER_ID = "agent_analytic_user_id" as string;
+    public static AGENT_STATE = "agent_analytic_agent_state" as string;
+
+    @Column({
+        type: DataType.STRING,
+        field: AgentAnalytic.AGENT_STATE,
+        allowNull: false,
+    })
+    agentState!: string;
+
+
 
     @Column({
         type: DataType.INTEGER,

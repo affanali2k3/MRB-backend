@@ -3,21 +3,44 @@ import AgentAnalyticsRepo from "../../AgentAnalytics/repository/AgentAnalyticsRe
 import { AgentAnalytic } from "../../AgentAnalytics/model/AgentAnalyticsModel";
 
 class RecommendationController {
-  async getBestAgent(req: Request, res: Response) {
+  async getBestAgents(req: Request, res: Response) {
     try {
-      const agentAnalytics: AgentAnalytic[] = await AgentAnalyticsRepo.getAllAgentAnalytics();
-      let bestAgent: AgentAnalytic = agentAnalytics[0];
-      for (let i = 1; i < agentAnalytics.length; i++) {
-        const currentAgent = agentAnalytics[i];
+      // Get the state from req.query
+      const state = req.query.state as string;
 
-        // only making comparisions based on referrals sent Ill add different ways to getBest agent if that is required
-        if (currentAgent.referralsSent > bestAgent.referralsSent) {
-          bestAgent = currentAgent;
+      // Get the client type from req.query
+      const clientType = req.query.clientType as string;
+
+      // Fetch all agent analytics for the specified state and client type
+      const agentAnalytics: AgentAnalytic[] = await AgentAnalyticsRepo.getAgentsByStateAndClientType(state, clientType);
+
+      // Sort agents based on your criteria (referralsSent, listingsSold, housesSold, yearsOfExperience, agentToAgentRatingScore, etc.)
+      agentAnalytics.sort((a, b) => {
+        // Customize this comparison based on your criteria
+        if (a.referralsSent !== b.referralsSent) {
+          return b.referralsSent - a.referralsSent;
         }
-      }
-      res.status(200).json({ message: 'Best agent found', data: bestAgent });
+        // Add more comparisons for other criteria here
+        return 0;
+      });
+
+      res.status(200).json({ message: 'Best agents found', data: agentAnalytics });
     } catch (err: any) {
-      res.status(500).json({ message: 'Failed to find best agent', error: err.toString() });
+      res.status(500).json({ message: 'Failed to find best agents', error: err.toString() });
+    }
+  }
+
+  async getAllAgents(req: Request, res: Response) {
+    try {
+      // Get the state from req.query
+      const state = req.query.state as string;
+
+      // Fetch agents based on the specified state
+      const agents: AgentAnalytic[] = await AgentAnalyticsRepo.getAllAgents();
+
+      res.status(200).json({ message: 'Agents found', data: agents });
+    } catch (err: any) {
+      res.status(500).json({ message: 'Failed to find agents', error: err.toString() });
     }
   }
 }

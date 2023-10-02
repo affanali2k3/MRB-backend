@@ -6,7 +6,8 @@ class RecommendRouter extends BaseRoutes {
 
     routes(): void {
 
-        this.router.get('/getBestAgent', RecommendController.getBestAgent);
+        this.router.get('/getAllAgents', RecommendController.getAllAgents);
+        this.router.get('/getBestAgents', RecommendController.getBestAgents);
     }
 }
 
