@@ -1,11 +1,12 @@
 import { AgentAnalytic } from "../../AgentAnalytics/model/AgentAnalyticsModel";
 import UserPreferences from "../../UserPreference/model/UserPreferenceModel";
+import { UpdateUserData } from "../controller/UserController";
 import { User } from "../model/User";
 
 // Define the interface for UserRepo
 interface IUserRepo {
     create(user: User): Promise<void>;
-    update(user: User): Promise<void>;
+    update(data: UpdateUserData): Promise<void>;
     delete(userSsn: string): Promise<void>;
     getUserByEmail(userEmail: string): Promise<User>;
     getUser(userId: number): Promise<User>;
@@ -13,7 +14,7 @@ interface IUserRepo {
 }
 
 // Implement the UserRepo class
-export class UserRepo implements IUserRepo {
+class UserRepo implements IUserRepo {
     // Create a new user
     async create(user: User): Promise<void> {
         try {
@@ -49,30 +50,52 @@ export class UserRepo implements IUserRepo {
     }
 
     // Update an existing user
-    async update(user: User): Promise<void> {
+    async update(data: UpdateUserData): Promise<void> {
         try {
             const updatedUser = await User.findOne({
                 where: {
-                    email: user.email
+                    id: data.id
                 }
             });
 
             if (!updatedUser) throw new Error("User not found");
 
-            // Update user properties
-            updatedUser.email = user.email;
-            updatedUser.name = user.name;
-            updatedUser.licence = user.licence;
-            updatedUser.photo = user.photo;
-            updatedUser.occupation = user.occupation;
-            updatedUser.gender = user.gender;
-            updatedUser.licenceNumber = user.licenceNumber;
-            updatedUser.licenceState = user.licenceState;
-            updatedUser.yearLicenced = user.yearLicenced;
-            updatedUser.address = user.address;
-            updatedUser.completedDeals = user.completedDeals;
-            updatedUser.yearsOfExperience = user.yearsOfExperience;
-            updatedUser.teamMembers = user.teamMembers;
+            if(data.biography !== undefined){
+                updatedUser.biography = data.biography;
+            }
+
+            if(data.photo !== undefined){
+                updatedUser.photo = data.photo;
+            }
+
+            if(data.coverPhoto !== undefined){
+                updatedUser.coverPhoto = data.coverPhoto;
+            }
+
+            if(data.gender !== undefined){
+                updatedUser.gender = data.gender;
+            }
+
+            if(data.licenseNumber !== undefined){
+                updatedUser.licenceNumber = data.licenseNumber;
+            }
+
+            if(data.licenseState !== undefined){
+                updatedUser.licenceState = data.licenseState;
+            }
+
+            if(data.yearLicensed !== undefined){
+                updatedUser.yearLicenced = data.yearLicensed;
+            }
+
+            if(data.address !== undefined){
+                updatedUser.address = data.address;
+            }
+
+            if(data.teamMembers !== undefined){
+                updatedUser.teamMembers = data.teamMembers;
+            }
+
 
             // Save the updated user
             updatedUser.save();
@@ -141,3 +164,5 @@ export class UserRepo implements IUserRepo {
         }
     }
 }
+
+export default new UserRepo;

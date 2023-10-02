@@ -10,19 +10,16 @@ export class User extends Model {
     public static ID = "user_id" as string;
     public static EMAIL = "user_email" as string;
     public static USER_NAME = "user_name" as string;
+    public static BIOGRAPHY = "user_biography" as string;
     public static TEAM_MEMBERS = "user_team_members" as string;
-    public static LICENCE = "user_licence" as string;
     public static PHOTO = "user_photo" as string;
+    public static COVER_PHOTO = "user_cover_photo" as string;
     public static PHONE = "user_phone" as string;
-    public static OCCUPATION = "user_occupation" as string;
     public static GENDER = "user_gender" as string;
     public static ADDRESS = "user_address" as string;
     public static LICENCE_STATE = "user_licence_state" as string;
     public static LICENCE_NUMBER = "user_licence_number" as string;
     public static YEAR_LICENCED = "user_year_licenced" as string;
-    public static YEARS_OF_EXPERIENCE = "user_years_of_experience" as string;
-    public static COMPLETED_DEALS = "user_completed_deals" as string;
-    public static PREVIOUS_DEALS = "user_previous_deals" as string;
 
 
 
@@ -39,7 +36,8 @@ export class User extends Model {
     @Column({
         type: DataType.STRING,
         unique: true,
-        field: User.EMAIL
+        field: User.EMAIL,
+        allowNull: false
     })
     email!: string;
 
@@ -51,10 +49,10 @@ export class User extends Model {
     name!: string;
 
     @Column({
-        type: DataType.STRING,
-        field: User.LICENCE
+        type: DataType.TEXT,
+        field: User.BIOGRAPHY,
     })
-    licence!: string;
+    biography!: string;
 
     @Column({
         type: DataType.STRING,
@@ -81,22 +79,10 @@ export class User extends Model {
     yearLicenced!: number;
 
     @Column({
-        type: DataType.INTEGER,
-        field: User.YEARS_OF_EXPERIENCE
-    })
-    yearsOfExperience!: number;
-
-    @Column({
         type: DataType.STRING,
         field: User.ADDRESS
     })
     address!: string;
-
-    @Column({
-        type: DataType.INTEGER,
-        field: User.COMPLETED_DEALS
-    })
-    completedDeals!: number;
 
     @Column({
         type: DataType.STRING,
@@ -106,15 +92,15 @@ export class User extends Model {
 
     @Column({
         type: DataType.STRING,
-        field: User.PHONE
+        field: User.COVER_PHOTO
     })
-    phone!: string;
+    coverPhoto!: string;
 
     @Column({
         type: DataType.STRING,
-        field: User.OCCUPATION
+        field: User.PHONE
     })
-    occupation!: string;
+    phone!: string;
 
     @Column({
         type: DataType.STRING,

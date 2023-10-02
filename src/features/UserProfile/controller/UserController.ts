@@ -1,8 +1,21 @@
 import { Request, Response } from "express";
 import { User } from "../model/User";
-import { UserRepo } from "../repository/UserRepo"; // Assuming you have imported the correct path
 import fs from "fs";
 import path from "path";
+import UserRepo from "../repository/UserRepo";
+
+export interface UpdateUserData{
+    id: number,
+    photo: string,
+    coverPhoto: string,
+    gender: string,
+    licenseNumber: string,
+    licenseState: string,
+    yearLicensed: number,
+    address: string,
+    teamMembers: number,
+    biography: string
+}
 
 class UserController {
     // Endpoint to create a new user
@@ -12,7 +25,7 @@ class UserController {
             const { email,name } = req.body;
             Object.assign(newUser, { email, name });
 
-            await new UserRepo().create(newUser.dataValues);
+            await UserRepo.create(newUser.dataValues);
             res.status(200).json({
                 message: "User created successfully"
             });
@@ -26,7 +39,7 @@ class UserController {
     // Endpoint to delete a user
     async delete(req: Request, res: Response) {
         try {
-            await new UserRepo().delete(req.body.userSsn);
+            await UserRepo.delete(req.body.userSsn);
             res.status(200).json({
                 message: "User deleted successfully"
             });
@@ -37,29 +50,53 @@ class UserController {
         }
     }
 
+    async getUserAvatar(req: Request, res: Response){
+        try{
+            const userId: string = req.query.userId as string;
+            const avatarName: string = req.query.avatarName as string;
+
+            res.sendFile(path.join('C:/Users/Affan Ali/Desktop/MRB/backend-new/master/storage/', userId, 'avatar', avatarName));
+        }catch(err: any){
+            res.status(500).json({
+                message: "Cannot get user avatar",
+                error: err.toString()
+            });
+        }
+    }
+
+    async getUserCoverPhoto(req: Request, res: Response){
+        try{
+            const userId: string = req.query.userId as string;
+            const coverPhotoName: string = req.query.coverPhotoName as string;
+
+            res.sendFile(path.join('C:/Users/Affan Ali/Desktop/MRB/backend-new/master/storage/', userId, 'coverPhoto', coverPhotoName));
+        }catch(err: any){
+            res.status(500).json({
+                message: "Cannot get user cover photo",
+                error: err.toString()
+            });
+        }
+    }
+
     // Endpoint to update user information
     async update(req: Request, res: Response) {
         try {
-            let userBucket;
-            if (req.file !== undefined) {
-                userBucket = `./storage/${req.body.email}/${req.file?.filename}`;
+            const reqBody: UpdateUserData = req.body;
+
+            console.log(req.files);
+
+            if(req.files !== undefined){
+                if ('avatar' in req.files) {
+                    reqBody.photo = req.files['avatar'][0].filename;
+                  }
+                if ('coverPhoto' in req.files) {
+                    reqBody.coverPhoto = req.files['coverPhoto'][0].filename;
+                  }
             }
+            
+            await UserRepo.update(reqBody);
 
-            const updatedUser = new User();
-            const { address, licenceState, licenceNumber, previousDeals, email, phone, occupation, name, gender, licence, teamMembers } = req.body;
-            var { yearLicenced, completedDeals, yearsOfExperience } = req.body;
 
-            yearLicenced = parseInt(yearLicenced);
-            completedDeals = parseInt(completedDeals);
-            yearsOfExperience = parseInt(yearsOfExperience);
-
-            if (Number.isNaN(yearLicenced) || Number.isNaN(completedDeals)) {
-                throw new Error('error');
-            }
-
-            Object.assign(updatedUser, { address, licenceState, teamMembers, yearsOfExperience, licenceNumber, yearLicenced, completedDeals, previousDeals, email, phone, occupation, photo: userBucket, name, gender, licence });
-
-            await new UserRepo().update(updatedUser);
             res.status(200).json({
                 message: "User updated successfully"
             });
@@ -70,24 +107,13 @@ class UserController {
         }
     }
 
-    // Endpoint to get the user's avatar
-    async getUserAvatar(req: Request, res: Response) {
-        try {
-            const userEmail: string = req.params.userEmail;
-            res.sendFile(path.join('C:/Users/Affan/Desktop/MRB/backend/storage/', userEmail, 'avatar.png'));
-        } catch (err) {
-            res.status(500).json({
-                message: `Failed to get user avatar ${err}`
-            });
-        }
-    }
 
     // Endpoint to get user information by email
     async getUser(req: Request, res: Response) {
         try {
             const userIdString: string = req.query.userId as string;
             const userId: number = parseInt(userIdString);
-            const user = await new UserRepo().getUser(userId);
+            const user = await UserRepo.getUser(userId);
             let file;
             try {
                 file = fs.readFileSync(user.photo);
@@ -109,7 +135,7 @@ class UserController {
             const userEmail: string = req.query.userEmail as string;
             console.log('A');
             console.log(userEmail);
-            const user = await new UserRepo().getUserByEmail(userEmail);
+            const user = await UserRepo.getUserByEmail(userEmail);
             let file;
             try {
                 file = fs.readFileSync(user.photo);
@@ -130,7 +156,7 @@ class UserController {
     // Endpoint to get all users
     async getAllUsers(req: Request, res: Response) {
         try {
-            const users = await new UserRepo().getAll();
+            const users = await UserRepo.getAll();
             res.status(200).json({
                 message: "Got all users successfully",
                 data: users
