@@ -6,22 +6,23 @@ import { Op, Sequelize } from "sequelize";
 import ReferralCenterRepo from "../repository/ReferralCenterRepo";
 
 
-export interface SearchData {
+export interface FiltersSearchData {
     state?: string,
     city?: string,
-    agentYearsOfExperience?: number,
-    isAgentOnTeam?: boolean,
-    rating?: number,
+    minTimeAmount?: number,
+    maxTimeAmount?: number,
+    minCost?: number,
+    maxCost?: number,
+    clientType?: string,
+    houseType?: string,
 }
 
 class ReferralCenterController {
 
     async searchForLeads(req: Request, res: Response) {
         try {
-            const reqBody: SearchData = req.query;
+            const reqBody: FiltersSearchData = req.query;
 
-
-            console.log(reqBody);
 
             const results: SenderAgentOpenForm[] = await ReferralCenterRepo.searchForLeads(reqBody);
 

@@ -18,6 +18,7 @@ import { AgentToAgentReview } from "../features/AgentReviews/model/AgentToAgentR
 import { ClientToAgentReview } from "../features/AgentReviews/model/ClientToAgentReviewModel";
 import { UsedInviteeCode } from "../features/AgentInviteCode/model/UsedInviteeCode";
 import { Chat } from "../features/Chat/model/ChatModel";
+import UserPreferences from "../features/UserPreference/model/UserPreferenceModel";
 
 
 dotenv.config(); // Load environment variables from .env file
@@ -49,7 +50,7 @@ class Database {
                 Like, Comment, SenderAgentDirectForm, SenderAgentOpenForm,
                 ReceiverAgentDirectForm, ReceiverAgentOpenForm, AgentInviteCode,
                 AgentInvitee, AgentAnalytic, AgentToAgentReview, ClientToAgentReview
-                , UsedInviteeCode, Chat]
+                , UsedInviteeCode, Chat, UserPreferences]
         });
 
         User.hasMany(SenderAgentOpenForm, { foreignKey: SenderAgentOpenForm.SENDER_AGENT });

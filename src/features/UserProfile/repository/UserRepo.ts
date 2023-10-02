@@ -1,3 +1,5 @@
+import { AgentAnalytic } from "../../AgentAnalytics/model/AgentAnalyticsModel";
+import UserPreferences from "../../UserPreference/model/UserPreferenceModel";
 import { User } from "../model/User";
 
 // Define the interface for UserRepo
@@ -15,9 +17,32 @@ export class UserRepo implements IUserRepo {
     // Create a new user
     async create(user: User): Promise<void> {
         try {
-            await User.create({
+            const newUser: User = await User.create({
                 ...user
             });
+
+            const agentAnalytic: AgentAnalytic = new AgentAnalytic();
+
+            agentAnalytic.referralsReceived = 0;
+            agentAnalytic.referralsSent = 0;
+            agentAnalytic.yearsOfExperience = 0;
+            agentAnalytic.listingsSold = 0;
+            agentAnalytic.housesSold = 0;
+            agentAnalytic.agentToAgentRatingNumber = 0;
+            agentAnalytic.agentToAgentRatingScore = 0;
+            agentAnalytic.agentToAgentRating = 0;
+            agentAnalytic.clientToAgentRating = 0;
+            agentAnalytic.clientToAgentRatingNumber = 0;
+            agentAnalytic.clientToAgentRatingScore = 0;
+            agentAnalytic.userId = newUser.id;
+
+            await agentAnalytic.save();
+
+            const agentPreference: UserPreferences = new UserPreferences();
+
+            agentPreference.userId = newUser.id;
+
+            await agentPreference.save();
         } catch (err) {
             throw new Error(`Failed to create user. ${err}`);
         }

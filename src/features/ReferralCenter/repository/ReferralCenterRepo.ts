@@ -2,19 +2,17 @@ import { Op, WhereOptions } from "sequelize";
 import { AgentAnalytic } from "../../AgentAnalytics/model/AgentAnalyticsModel";
 import { SenderAgentOpenForm } from "../../SenderAgentForm/model/SenderAgentOpenForm";
 import { User } from "../../UserProfile/model/User";
-import { SearchData } from "../controller/ReferralCenterController";
+import { FiltersSearchData } from "../controller/ReferralCenterController";
 
 
 interface IReferralCenterRepo {
-    searchForLeads(data: SearchData): Promise<SenderAgentOpenForm[]>
+    searchForLeads(data: FiltersSearchData): Promise<SenderAgentOpenForm[]>
 }
 
 class ReferralCenterRepo implements IReferralCenterRepo {
-    async searchForLeads(data: SearchData): Promise<SenderAgentOpenForm[]> {
+    async searchForLeads(data: FiltersSearchData): Promise<SenderAgentOpenForm[]> {
         try {
-            const whereClause: any = {};
-            // const userWhereClause: WhereOptions<User> = {};
-            const analyticWhereClause: WhereOptions<AgentAnalytic> = {};
+            const whereClause: WhereOptions<SenderAgentOpenForm> = {};
 
             if (data.state !== undefined) {
                 whereClause.state = data.state;
@@ -22,36 +20,56 @@ class ReferralCenterRepo implements IReferralCenterRepo {
             if (data.city !== undefined) {
                 whereClause.city = data.city;
             }
-            // if (data.agentYearsOfExperience !== undefined) {
-            //     userWhereClause.yearsOfExperience = data.agentYearsOfExperience;
-            // }
-            // if (data.isAgentOnTeam !== undefined) {
-            //     userWhereClause.isAgentOnTeam = data.isAgentOnTeam;
-            // }
-            if (data.rating !== undefined) {
-                analyticWhereClause.agentToAgentRating = { [Op.gte]: data.rating };
+            if(data.minTimeAmount !== undefined){
+                whereClause.timeAmount = {
+                    [Op.gte]: data.minTimeAmount
+                }
             }
+            if(data.maxTimeAmount !== undefined){
+                whereClause.timeAmount = {
+                    [Op.lte]: data.maxTimeAmount
+                }
+            }
+            if(data.minCost !== undefined){
+                whereClause.price = {
+                    [Op.gte]: data.minCost
+                }
+            }
+            if(data.maxCost !== undefined){
+                whereClause.price = {
+                    [Op.lte]: data.maxCost
+                }
+            }
+            if(data.clientType !== undefined){
+                if(data.clientType === 'buyer'){
+                    whereClause.isBuyer = true;
+                }
+                else{
+                    whereClause.isBuyer = false;
+                }
+            }
+            if(data.houseType !== undefined){
+                whereClause.typeOfHouse = data.houseType;
+            }
+       
 
             console.log(data);
 
             const results = await SenderAgentOpenForm.findAll({
                 where: whereClause,
-                // include: [
-                //     {
-                //         model: User,
-                //         attributes: [User.USER_NAME, User.ID],
-                //         where: userWhereClause,
-                //         include: [
-                //             {
-                //                 model: AgentAnalytic,
-                //                 where: analyticWhereClause
-                //             }
-                //         ]
-                //     },
-                // ]
+                include: [
+                    {
+                        model: User,
+                        attributes: [User.USER_NAME, User.ID],
+                        include: [
+                            {
+                                model: AgentAnalytic,
+                            }
+                        ]
+                    },
+                ]
             });
 
-            console.log(results);
 
             return results;
         } catch (err) {
