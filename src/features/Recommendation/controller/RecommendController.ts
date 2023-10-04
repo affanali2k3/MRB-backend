@@ -43,6 +43,38 @@ class RecommendationController {
       res.status(500).json({ message: 'Failed to find agents', error: err.toString() });
     }
   }
+
+  async getAgentsFiltered(req: Request, res: Response) {
+    try {
+      // Get the state from req.query
+      const state = req.query.state as string;
+  
+      // Get the client type from req.query
+      const clientType = req.query.clientType as string;
+  
+      // Get the minimum number of referrals sent from req.query
+      const minReferralsSent = parseInt(req.query.minReferralsSent as string);
+
+      // Get the minimum number of houses sold from req.query
+      const minHousesSold = parseInt(req.query.minHousesSold as string);
+
+      const minYearsOfExperience = parseInt(req.query.minYearsOfExperience as string);
+  
+  
+      // Fetch all agent analytics for the specified state and client type
+      const agentAnalytics: AgentAnalytic[] = await AgentAnalyticsRepo.getAgentsByStateAndClientType(state, clientType);
+  
+      // Filter agents based on the specified criteria
+      const filteredAgents = agentAnalytics.filter(agent => {
+
+        return agent.referralsSent >= minReferralsSent && agent.housesSold >= minHousesSold && agent.yearsOfExperience >= minYearsOfExperience
+      });
+  
+      res.status(200).json({ message: 'Filtered agents found', data: filteredAgents });
+    } catch (err: any) {
+      res.status(500).json({ message: 'Failed to find filtered agents', error: err.toString() });
+    }
+  }
 }
 
 export default new RecommendationController();

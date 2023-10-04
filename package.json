@@ -1,4 +1,5 @@
 {
+  "$schema": "./node_modules/@json-schema-org/json-schema-specification/draft-07/schema.json",
   "name": "mrb",
   "version": "1.0.0",
   "main": "index.js",
