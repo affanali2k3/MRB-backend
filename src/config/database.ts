@@ -19,71 +19,121 @@ import { ClientToAgentReview } from "../features/AgentReviews/model/ClientToAgen
 import { UsedInviteeCode } from "../features/AgentInviteCode/model/UsedInviteeCode";
 import { Chat } from "../features/Chat/model/ChatModel";
 import UserPreferences from "../features/UserPreference/model/UserPreferenceModel";
-
+import { LeadPostedNotification } from "../features/Notifications/model/LeadPostedNotificationModel";
+import { SentYouLeadNotification } from "../features/Notifications/model/SendYouLeadNotification";
+import { SentFriendRequestNotification } from "../features/Notifications/model/SentFriendRequestNotificaiton";
+import { YouGotInviteNotification } from "../features/Notifications/model/YouGotInviteNotificationModel";
 
 dotenv.config(); // Load environment variables from .env file
 
 class Database {
-    public sequelize: Sequelize | undefined;
+  public sequelize: Sequelize | undefined;
 
-    // Environment variables for PostgreSQL configuration
-    private POSTGRES_DB = process.env.POSTGRES_DB as string;
-    private POSTGRES_HOST = process.env.POSTGRES_HOST as string;
-    private POSTGRES_PORT = process.env.POSTGRES_PORT as unknown as number;
-    private POSTGRES_USER = process.env.POSTGRES_USER as string;
-    private POSTGRES_PASSWORD = process.env.POSTGRES_PASSWORD as string;
+  // Environment variables for PostgreSQL configuration
+  private POSTGRES_DB = process.env.POSTGRES_DB as string;
+  private POSTGRES_HOST = process.env.POSTGRES_HOST as string;
+  private POSTGRES_PORT = process.env.POSTGRES_PORT as unknown as number;
+  private POSTGRES_USER = process.env.POSTGRES_USER as string;
+  private POSTGRES_PASSWORD = process.env.POSTGRES_PASSWORD as string;
 
-    constructor() {
-        this.connectToPostgreSQL(); // Call the method to establish PostgreSQL connection
-    }
+  constructor() {
+    this.connectToPostgreSQL(); // Call the method to establish PostgreSQL connection
+  }
 
-    private async connectToPostgreSQL() {
-        // Create a Sequelize instance with PostgreSQL connection details and models
-        this.sequelize = new Sequelize({
-            database: this.POSTGRES_DB,
-            host: this.POSTGRES_HOST,
-            port: this.POSTGRES_PORT,
-            username: this.POSTGRES_USER,
-            password: this.POSTGRES_PASSWORD,
-            dialect: "postgres", // Use PostgreSQL dialect
-            models: [User, UserAssociates, Post, PostImages, Message,
-                Like, Comment, SenderAgentDirectForm, SenderAgentOpenForm,
-                ReceiverAgentDirectForm, ReceiverAgentOpenForm, AgentInviteCode,
-                AgentInvitee, AgentAnalytic, AgentToAgentReview, ClientToAgentReview
-                , UsedInviteeCode, Chat, UserPreferences]
-        });
+  private async connectToPostgreSQL() {
+    // Create a Sequelize instance with PostgreSQL connection details and models
+    this.sequelize = new Sequelize({
+      database: this.POSTGRES_DB,
+      host: this.POSTGRES_HOST,
+      port: this.POSTGRES_PORT,
+      logging: false,
+      username: this.POSTGRES_USER,
+      password: this.POSTGRES_PASSWORD,
+      dialect: "postgres", // Use PostgreSQL dialect
+      models: [
+        User,
+        UserAssociates,
+        Post,
+        PostImages,
+        Message,
+        Like,
+        Comment,
+        SenderAgentDirectForm,
+        SenderAgentOpenForm,
+        ReceiverAgentDirectForm,
+        ReceiverAgentOpenForm,
+        AgentInviteCode,
+        AgentInvitee,
+        AgentAnalytic,
+        AgentToAgentReview,
+        ClientToAgentReview,
+        UsedInviteeCode,
+        Chat,
+        UserPreferences,
+        LeadPostedNotification,
+        SentYouLeadNotification,
+        SentFriendRequestNotification,
+        YouGotInviteNotification,
+      ],
+    });
 
-        User.hasMany(SenderAgentOpenForm, { foreignKey: SenderAgentOpenForm.SENDER_AGENT });
-        User.hasMany(SenderAgentDirectForm, { foreignKey: SenderAgentDirectForm.SENDER_AGENT });
-        SenderAgentOpenForm.belongsTo(User, { foreignKey: SenderAgentOpenForm.SENDER_AGENT });
-        SenderAgentDirectForm.belongsTo(User, { foreignKey: SenderAgentDirectForm.SENDER_AGENT });
+    User.hasMany(SenderAgentOpenForm, {
+      foreignKey: SenderAgentOpenForm.SENDER_AGENT,
+    });
+    User.hasMany(SenderAgentDirectForm, {
+      foreignKey: SenderAgentDirectForm.SENDER_AGENT,
+    });
+    SenderAgentOpenForm.belongsTo(User, {
+      foreignKey: SenderAgentOpenForm.SENDER_AGENT,
+    });
+    SenderAgentDirectForm.belongsTo(User, {
+      foreignKey: SenderAgentDirectForm.SENDER_AGENT,
+    });
 
-        UserAssociates.hasMany(UserAssociates, { foreignKey: UserAssociates.USER_ID });
+    UserAssociates.hasMany(UserAssociates, {
+      foreignKey: UserAssociates.USER_ID,
+    });
 
-        
-        SenderAgentOpenForm.hasOne(ReceiverAgentOpenForm, { foreignKey: ReceiverAgentOpenForm.SENDER_AGENT_FORM_ID });
-        ReceiverAgentOpenForm.belongsTo(SenderAgentOpenForm, { foreignKey: ReceiverAgentOpenForm.SENDER_AGENT_FORM_ID });
+    SenderAgentOpenForm.hasOne(ReceiverAgentOpenForm, {
+      foreignKey: ReceiverAgentOpenForm.SENDER_AGENT_FORM_ID,
+    });
+    ReceiverAgentOpenForm.belongsTo(SenderAgentOpenForm, {
+      foreignKey: ReceiverAgentOpenForm.SENDER_AGENT_FORM_ID,
+    });
 
+    SenderAgentDirectForm.hasOne(ReceiverAgentDirectForm, {
+      foreignKey: ReceiverAgentDirectForm.SENDER_AGENT_DIRECT_FORM_ID,
+    });
+    ReceiverAgentDirectForm.belongsTo(SenderAgentDirectForm, {
+      foreignKey: ReceiverAgentDirectForm.SENDER_AGENT_DIRECT_FORM_ID,
+    });
 
-        User.hasMany(Chat, { foreignKey: Chat.USER_TWO_ID });
-        Chat.belongsTo(User, { foreignKey: Chat.USER_TWO_ID });
+    User.hasMany(Chat, { foreignKey: Chat.USER_TWO_ID });
+    Chat.belongsTo(User, { foreignKey: Chat.USER_TWO_ID });
 
+    User.hasMany(Post, { foreignKey: Post.USER_ID });
+    Post.belongsTo(User, { foreignKey: Post.USER_ID });
 
-        User.hasMany(Post, { foreignKey: Post.USER_ID });
-        Post.belongsTo(User, { foreignKey: Post.USER_ID });
+    User.hasOne(AgentAnalytic, { foreignKey: AgentAnalytic.USER_ID });
+    AgentAnalytic.belongsTo(User, { foreignKey: AgentAnalytic.USER_ID });
 
+    SenderAgentOpenForm.hasOne(LeadPostedNotification, {
+      foreignKey: LeadPostedNotification.LEAD_ID,
+    });
+    LeadPostedNotification.belongsTo(SenderAgentOpenForm, {
+      foreignKey: LeadPostedNotification.LEAD_ID,
+    });
 
-
-        User.hasOne(AgentAnalytic, { foreignKey: AgentAnalytic.USER_ID });
-        AgentAnalytic.belongsTo(User, { foreignKey: AgentAnalytic.USER_ID });
-
-        // Authenticate the connection and handle success or failure
-        this.sequelize.authenticate().then(() => {
-            console.log("Postgres has been connected");
-        }).catch((err) => {
-            console.log(`Postgres connection Failed. ${err}`);
-        });
-    }
+    // Authenticate the connection and handle success or failure
+    this.sequelize
+      .authenticate()
+      .then(() => {
+        console.log("Postgres has been connected");
+      })
+      .catch((err) => {
+        console.log(`Postgres connection Failed. ${err}`);
+      });
+  }
 }
 
 export default Database; // Export the Database class as the default export

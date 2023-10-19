@@ -5,164 +5,163 @@ import { User } from "../model/User";
 
 // Define the interface for UserRepo
 interface IUserRepo {
-    create(user: User): Promise<void>;
-    update(data: UpdateUserData): Promise<void>;
-    delete(userSsn: string): Promise<void>;
-    getUserByEmail(userEmail: string): Promise<User>;
-    getUser(userId: number): Promise<User>;
-    getAll(): Promise<User[]>;
+  create(user: User): Promise<void>;
+  update(data: UpdateUserData): Promise<void>;
+  delete(userSsn: string): Promise<void>;
+  getUserByEmail(userEmail: string): Promise<User>;
+  getUser(userId: number): Promise<User>;
+  getAll(): Promise<User[]>;
 }
 
 // Implement the UserRepo class
 class UserRepo implements IUserRepo {
-    // Create a new user
-    async create(user: User): Promise<void> {
-        try {
-            const newUser: User = await User.create({
-                ...user
-            });
+  // Create a new user
+  async create(user: User): Promise<void> {
+    try {
+      const newUser: User = await User.create({
+        ...user,
+      });
 
-            const agentAnalytic: AgentAnalytic = new AgentAnalytic();
+      const agentAnalytic: AgentAnalytic = new AgentAnalytic();
 
-            agentAnalytic.referralsReceived = 0;
-            agentAnalytic.referralsSent = 0;
-            agentAnalytic.yearsOfExperience = 0;
-            agentAnalytic.listingsSold = 0;
-            agentAnalytic.housesSold = 0;
-            agentAnalytic.agentToAgentRatingNumber = 0;
-            agentAnalytic.agentToAgentRatingScore = 0;
-            agentAnalytic.agentToAgentRating = 0;
-            agentAnalytic.clientToAgentRating = 0;
-            agentAnalytic.clientToAgentRatingNumber = 0;
-            agentAnalytic.clientToAgentRatingScore = 0;
-            agentAnalytic.userId = newUser.id;
+      agentAnalytic.referralsReceived = 0;
+      agentAnalytic.referralsSent = 0;
+      agentAnalytic.yearsOfExperience = 0;
+      agentAnalytic.listingsSold = 0;
+      agentAnalytic.housesSold = 0;
+      agentAnalytic.agentToAgentRatingNumber = 0;
+      agentAnalytic.agentToAgentRatingScore = 0;
+      agentAnalytic.agentToAgentRating = 0;
+      agentAnalytic.clientToAgentRating = 0;
+      agentAnalytic.clientToAgentRatingNumber = 0;
+      agentAnalytic.clientToAgentRatingScore = 0;
+      agentAnalytic.userId = newUser.id;
 
-            await agentAnalytic.save();
+      await agentAnalytic.save();
 
-            const agentPreference: UserPreferences = new UserPreferences();
+      const agentPreference: UserPreferences = new UserPreferences();
 
-            agentPreference.userId = newUser.id;
+      agentPreference.userId = newUser.id;
 
-            await agentPreference.save();
-        } catch (err) {
-            throw new Error(`Failed to create user. ${err}`);
-        }
+      await agentPreference.save();
+    } catch (err) {
+      throw new Error(`Failed to create user. ${err}`);
     }
+  }
 
-    // Update an existing user
-    async update(data: UpdateUserData): Promise<void> {
-        try {
-            const updatedUser = await User.findOne({
-                where: {
-                    id: data.id
-                }
-            });
+  // Update an existing user
+  async update(data: UpdateUserData): Promise<void> {
+    try {
+      const updatedUser = await User.findOne({
+        where: {
+          id: data.id,
+        },
+      });
 
-            if (!updatedUser) throw new Error("User not found");
+      if (!updatedUser) throw new Error("User not found");
 
-            if(data.biography !== undefined){
-                updatedUser.biography = data.biography;
-            }
+      if (data.biography !== undefined) {
+        updatedUser.biography = data.biography;
+      }
 
-            if(data.photo !== undefined){
-                updatedUser.photo = data.photo;
-            }
+      if (data.photo !== undefined) {
+        updatedUser.photo = data.photo;
+      }
 
-            if(data.coverPhoto !== undefined){
-                updatedUser.coverPhoto = data.coverPhoto;
-            }
+      if (data.coverPhoto !== undefined) {
+        updatedUser.coverPhoto = data.coverPhoto;
+      }
 
-            if(data.gender !== undefined){
-                updatedUser.gender = data.gender;
-            }
+      if (data.gender !== undefined) {
+        updatedUser.gender = data.gender;
+      }
 
-            if(data.licenseNumber !== undefined){
-                updatedUser.licenceNumber = data.licenseNumber;
-            }
+      if (data.licenseNumber !== undefined) {
+        updatedUser.licenceNumber = data.licenseNumber;
+      }
 
-            if(data.licenseState !== undefined){
-                updatedUser.licenceState = data.licenseState;
-            }
+      if (data.licenseState !== undefined) {
+        updatedUser.licenceState = data.licenseState;
+      }
 
-            if(data.yearLicensed !== undefined){
-                updatedUser.yearLicenced = data.yearLicensed;
-            }
+      if (data.yearLicensed !== undefined) {
+        updatedUser.yearLicenced = data.yearLicensed;
+      }
 
-            if(data.address !== undefined){
-                updatedUser.address = data.address;
-            }
+      if (data.address !== undefined) {
+        updatedUser.address = data.address;
+      }
 
-            if(data.teamMembers !== undefined){
-                updatedUser.teamMembers = data.teamMembers;
-            }
+      if (data.teamMembers !== undefined) {
+        updatedUser.teamMembers = data.teamMembers;
+      }
 
-
-            // Save the updated user
-            updatedUser.save();
-        } catch (err) {
-            throw new Error(`Failed to update user. ${err}`);
-        }
+      // Save the updated user
+      updatedUser.save();
+    } catch (err) {
+      throw new Error(`Failed to update user. ${err}`);
     }
+  }
 
-    // Delete a user
-    async delete(userSsn: string): Promise<void> {
-        try {
-            const user = await User.findOne({
-                where: {
-                    ssn: userSsn
-                }
-            });
+  // Delete a user
+  async delete(userSsn: string): Promise<void> {
+    try {
+      const user = await User.findOne({
+        where: {
+          ssn: userSsn,
+        },
+      });
 
-            if (!user) throw new Error("User not found");
+      if (!user) throw new Error("User not found");
 
-            // Delete the user
-            await user.destroy();
-        } catch (err) {
-            throw new Error("Failed to delete user.");
-        }
+      // Delete the user
+      await user.destroy();
+    } catch (err) {
+      throw new Error("Failed to delete user.");
     }
+  }
 
-    // Get user by email
-    async getUser(userId: number): Promise<User> {
-        try {
-            const user = await User.findOne({
-                where: {
-                    id: userId
-                }
-            });
+  // Get user by email
+  async getUser(userId: number): Promise<User> {
+    try {
+      const user = await User.findOne({
+        where: {
+          id: userId,
+        },
+      });
 
-            if (!user) throw new Error("User not found");
+      if (!user) throw new Error("User not found");
 
-            return user;
-        } catch (err) {
-            throw new Error(`Failed to get user. ${err}`);
-        }
+      return user;
+    } catch (err) {
+      throw new Error(`Failed to get user. ${err}`);
     }
-    async getUserByEmail(userEmail: string): Promise<User> {
-        try {
-            const user = await User.findOne({
-                where: {
-                    email: userEmail
-                }
-            });
+  }
+  async getUserByEmail(userEmail: string): Promise<User> {
+    try {
+      const user = await User.findOne({
+        where: {
+          email: userEmail,
+        },
+      });
 
-            if (!user) throw new Error("User not found");
+      if (!user) throw new Error("User not found");
 
-            return user;
-        } catch (err) {
-            throw new Error(`Failed to get user. ${err}`);
-        }
+      return user;
+    } catch (err) {
+      throw new Error(`Failed to get user. ${err}`);
     }
+  }
 
-    // Get all users
-    async getAll(): Promise<User[]> {
-        try {
-            const users = await User.findAll();
-            return users;
-        } catch (err) {
-            throw new Error("Failed to get users.");
-        }
+  // Get all users
+  async getAll(): Promise<User[]> {
+    try {
+      const users = await User.findAll();
+      return users;
+    } catch (err) {
+      throw new Error("Failed to get users.");
     }
+  }
 }
 
-export default new UserRepo;
+export default new UserRepo();

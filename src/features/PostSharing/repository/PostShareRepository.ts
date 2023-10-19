@@ -1,14 +1,9 @@
 import { PostShare } from "../model/PostSharingModel";
 
-
 // Interface that defines the methods of the PostShareRepo class
 interface IPostShareRepo {
   // Method to retrieve all posts shared by a specific user
-  getAllPostsbyUser({
-    user_id,
-  }: {
-    user_id: number;
-  }): Promise<PostShare[]>;
+  getAllPostsbyUser({ user_id }: { user_id: number }): Promise<PostShare[]>;
 }
 
 class PostShareRepo implements IPostShareRepo {
