@@ -5,12 +5,12 @@ import LikeController from "../controller/LikeController"; // Import the LikeCon
 
 // Create a LikeRouter class that extends the BaseRoutes class
 class LikeRouter extends BaseRoutes {
-    public routes(): void {
-        // Define routes for saving likes, getting post likes, and removing likes
-        this.router.post("/", LikeController.saveLike); // Route for saving a like
-        this.router.get("/:postId", LikeController.getPostLikes); // Route for getting post likes
-        this.router.delete("/delete", LikeController.removeLike); // Route for removing a like
-    }
+  public routes(): void {
+    // Define routes for saving likes, getting post likes, and removing likes
+    this.router.post("/", LikeController.saveLike); // Route for saving a like
+    this.router.get("/:postId", LikeController.getPostLikes); // Route for getting post likes
+    this.router.delete("/delete", LikeController.removeLike); // Route for removing a like
+  }
 }
 
 export default new LikeRouter().router; // Export an instance of the LikeRouter class with defined routes
