@@ -14,7 +14,8 @@ class UserMiddleware {
 
       const userToken: string | undefined = req.headers.authorization;
 
-      if (!userToken) throw new Error("No authorization token provided");
+      if (!userToken)
+        throw new Error("Failed to get User: No authorization token provided");
 
       const user: User = await UserRepo.getUser(userId);
 
@@ -40,7 +41,8 @@ class UserMiddleware {
       const userEmail: string = req.query.userEmail as string;
       const userToken: string | undefined = req.headers.authorization;
 
-      if (!userToken) throw new Error("No authorization token provided");
+      if (!userToken)
+        throw new Error("Failed to get user: No authorization token provided");
 
       const decodedIdToken = await auth.verifyIdToken(userToken);
 

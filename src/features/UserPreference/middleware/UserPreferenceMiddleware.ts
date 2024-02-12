@@ -13,7 +13,10 @@ class UserPreferenceMiddleware {
       const userId: number = req.body.userId;
       const userToken: string | undefined = req.headers.authorization;
 
-      if (!userToken) throw new Error("No authorization token provided");
+      if (!userToken)
+        throw new Error(
+          "Failed to update preferences: No authorization token provided"
+        );
 
       const user: User = await UserRepo.getUser(userId);
 
@@ -41,7 +44,10 @@ class UserPreferenceMiddleware {
 
       const userToken: string | undefined = req.headers.authorization;
 
-      if (!userToken) throw new Error("No authorization token provided");
+      if (!userToken)
+        throw new Error(
+          "Failed to get preferences: No authorization token provided"
+        );
 
       const user: User = await UserRepo.getUser(userId);
 
