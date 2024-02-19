@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import ReceiverAgentFormRepo from "../repository/ReceiverAgentFormRepo";
 import { ReceiverAgentOpenForm } from "../model/ReceiverAgentOpenForm";
 import { ReceiverAgentDirectForm } from "../model/ReceiverAgentDirectFormModel";
+import { SenderAgentFormType } from "../../SenderAgentForm/controller/SenderAgentFormController";
 
 // Form can be either be direct (to a specific agent) or open(to all agents)
 export enum ReceiverAgentFormType {
@@ -23,15 +24,13 @@ class SenderAgentFormController {
       const userIdString: string = req.query.userId as string;
       const userId: number = parseInt(userIdString);
 
-      const openFormsProposalsReceivedByUser: ReceiverAgentOpenForm[] =
-        await ReceiverAgentFormRepo.getOpenFormsProposalsReceivedByUser({
-          userId: userId,
-        });
+      const openFormsProposalsReceivedByUser: ReceiverAgentOpenForm[] = await ReceiverAgentFormRepo.getOpenFormsProposalsReceivedByUser({
+        userId: userId,
+      });
 
-      const directFormsProposalsReceivedByUser: ReceiverAgentDirectForm[] =
-        await ReceiverAgentFormRepo.getDirectFormsProposalsReceivedByUser({
-          userId: userId,
-        });
+      const directFormsProposalsReceivedByUser: ReceiverAgentDirectForm[] = await ReceiverAgentFormRepo.getDirectFormsProposalsReceivedByUser({
+        userId: userId,
+      });
 
       res.status(200).send({
         message: "Got proposals successfully",
@@ -50,10 +49,9 @@ class SenderAgentFormController {
       const userIdString: string = req.query.userId as string;
       const userId: number = parseInt(userIdString);
 
-      const directFormsProposalsReceivedByUser: ReceiverAgentDirectForm[] =
-        await ReceiverAgentFormRepo.getDirectFormsProposalsReceivedByUser({
-          userId: userId,
-        });
+      const directFormsProposalsReceivedByUser: ReceiverAgentDirectForm[] = await ReceiverAgentFormRepo.getDirectFormsProposalsReceivedByUser({
+        userId: userId,
+      });
 
       res.status(200).send({
         message: "Got proposals successfully",
@@ -66,6 +64,7 @@ class SenderAgentFormController {
       });
     }
   }
+
   async changeOpenFormConsideringStatus(req: Request, res: Response) {
     try {
       const receiverAgentOpenFormId: number = req.body.receiverAgentOpenFormId;
@@ -86,10 +85,49 @@ class SenderAgentFormController {
       });
     }
   }
+  async rejectReceivedProposal(req: Request, res: Response) {
+    try {
+      const receiverAgentFormId: number = req.body.receiverAgentFormId;
+      const formType: SenderAgentFormType = req.body.formType;
+
+      await ReceiverAgentFormRepo.rejectReceivedProposal({
+        receiverAgentFormId: receiverAgentFormId,
+        formType: formType,
+      });
+
+      res.status(200).send({
+        message: "Rejected proposal succesfully",
+      });
+    } catch (err) {
+      res.status(500).send({
+        message: "Failed to reject proposal",
+        error: `${err}`,
+      });
+    }
+  }
+  async acceptReceivedProposal(req: Request, res: Response) {
+    try {
+      const receiverAgentFormId: number = req.body.receiverAgentFormId;
+      const formType: SenderAgentFormType = req.body.formType;
+
+      await ReceiverAgentFormRepo.acceptReceivedProposal({
+        receiverAgentFormId: receiverAgentFormId,
+        formType: formType,
+      });
+
+      res.status(200).send({
+        message: "Accepted proposal succesfully",
+      });
+    } catch (err) {
+      res.status(500).send({
+        message: "Failed to accept proposal",
+        error: `${err}`,
+      });
+    }
+  }
   async changeDirectFormConsideringStatus(req: Request, res: Response) {
     try {
-      const receiverAgentDirectFormId: number =
-        req.body.receiverAgentDirectFormId;
+      const receiverAgentDirectFormId: number = req.body.receiverAgentDirectFormId;
       const status: string = req.body.status;
 
       await ReceiverAgentFormRepo.changeDirectFormConsideringStatus({
@@ -113,8 +151,7 @@ class SenderAgentFormController {
       const userIdString: string = req.query.userId as string;
       const userId: number = parseInt(userIdString);
 
-      const openFormsSent: ReceiverAgentOpenForm[] =
-        await ReceiverAgentFormRepo.getOpenFormsSent({ userId: userId });
+      const openFormsSent: ReceiverAgentOpenForm[] = await ReceiverAgentFormRepo.getOpenFormsSent({ userId: userId });
 
       res.status(200).send({
         message: "Got open forms sent successfully",

@@ -6,10 +6,7 @@ import { User } from "../../UserProfile/model/User";
     {
       name: ClientToAgentReview.UNIQUE_CONSTRAINT_CLIENT_SUBJECT,
       unique: true,
-      fields: [
-        ClientToAgentReview.CLIENT_EMAIL,
-        ClientToAgentReview.SUBJECT_ID,
-      ],
+      fields: [ClientToAgentReview.CLIENT_EMAIL, ClientToAgentReview.SUBJECT_ID],
     },
   ],
   tableName: ClientToAgentReview.TABLE_NAME,
@@ -21,8 +18,7 @@ export class ClientToAgentReview extends Model {
   public static RATING = "client_to_agent_review_rating" as string;
   public static SUBJECT_ID = "client_to_agent_review_subject_id" as string;
   public static CLIENT_EMAIL = "client_to_agent_review_client_email" as string;
-  public static UNIQUE_CONSTRAINT_CLIENT_SUBJECT =
-    "unique_constraint_client_subject" as string;
+  public static UNIQUE_CONSTRAINT_CLIENT_SUBJECT = "unique_constraint_client_subject" as string;
 
   @Column({
     type: DataType.INTEGER,

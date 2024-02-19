@@ -6,16 +6,8 @@ import { ClientToAgentReview } from "../model/ClientToAgentReviewModel";
 interface IAgentReviewRepo {
   createAgentToAgentReview(data: AgentReviewData): Promise<void>;
   createClientToAgentReview(data: AgentReviewData): Promise<void>;
-  getAgentToAgentReviews({
-    agentId,
-  }: {
-    agentId: number;
-  }): Promise<AgentToAgentReview[]>;
-  getClientToAgentReviews({
-    agentId,
-  }: {
-    agentId: number;
-  }): Promise<ClientToAgentReview[]>;
+  getAgentToAgentReviews({ agentId }: { agentId: number }): Promise<AgentToAgentReview[]>;
+  getClientToAgentReviews({ agentId }: { agentId: number }): Promise<ClientToAgentReview[]>;
   deleteAgentToAgentReview({ reviewId }: { reviewId: number }): Promise<void>;
   deleteClientToAgentReview({ reviewId }: { reviewId: number }): Promise<void>;
 }
@@ -38,13 +30,9 @@ class AgentReviewRepo implements IAgentReviewRepo {
 
       if (!agentAnalytic) throw new Error("Agent analytics does not exist");
 
-      agentAnalytic.agentToAgentRatingNumber =
-        agentAnalytic.agentToAgentRatingNumber + 1;
-      agentAnalytic.agentToAgentRatingScore =
-        agentAnalytic.agentToAgentRatingScore + data.rating;
-      agentAnalytic.agentToAgentRating =
-        agentAnalytic.agentToAgentRatingScore /
-        agentAnalytic.agentToAgentRatingNumber;
+      agentAnalytic.agentToAgentRatingNumber = agentAnalytic.agentToAgentRatingNumber + 1;
+      agentAnalytic.agentToAgentRatingScore = agentAnalytic.agentToAgentRatingScore + data.rating;
+      agentAnalytic.agentToAgentRating = agentAnalytic.agentToAgentRatingScore / agentAnalytic.agentToAgentRatingNumber;
 
       agentAnalytic.save();
     } catch (err) {
@@ -53,8 +41,7 @@ class AgentReviewRepo implements IAgentReviewRepo {
   }
   async createClientToAgentReview(data: AgentReviewData): Promise<void> {
     try {
-      const clientToAgentReview: ClientToAgentReview =
-        new ClientToAgentReview();
+      const clientToAgentReview: ClientToAgentReview = new ClientToAgentReview();
 
       clientToAgentReview.review = data.review;
       clientToAgentReview.rating = data.rating;
@@ -69,56 +56,37 @@ class AgentReviewRepo implements IAgentReviewRepo {
 
       if (!agentAnalytic) throw new Error("Agent analytics does not exist");
 
-      agentAnalytic.clientToAgentRatingNumber =
-        agentAnalytic.clientToAgentRatingNumber + 1;
-      agentAnalytic.clientToAgentRatingScore =
-        agentAnalytic.clientToAgentRatingScore + data.rating;
+      agentAnalytic.clientToAgentRatingNumber = agentAnalytic.clientToAgentRatingNumber + 1;
+      agentAnalytic.clientToAgentRatingScore = agentAnalytic.clientToAgentRatingScore + data.rating;
 
-      agentAnalytic.clientToAgentRating =
-        agentAnalytic.clientToAgentRating /
-        agentAnalytic.clientToAgentRatingNumber;
+      agentAnalytic.clientToAgentRating = agentAnalytic.clientToAgentRating / agentAnalytic.clientToAgentRatingNumber;
 
       agentAnalytic.save();
     } catch (err) {
       throw new Error(`${err}`);
     }
   }
-  async getAgentToAgentReviews({
-    agentId,
-  }: {
-    agentId: number;
-  }): Promise<AgentToAgentReview[]> {
+  async getAgentToAgentReviews({ agentId }: { agentId: number }): Promise<AgentToAgentReview[]> {
     try {
-      const agentToAgentReviews: AgentToAgentReview[] =
-        await AgentToAgentReview.findAll({ where: { subjectId: agentId } });
+      const agentToAgentReviews: AgentToAgentReview[] = await AgentToAgentReview.findAll({ where: { subjectId: agentId } });
 
       return agentToAgentReviews;
     } catch (err) {
       throw new Error(`${err}`);
     }
   }
-  async getClientToAgentReviews({
-    agentId,
-  }: {
-    agentId: number;
-  }): Promise<ClientToAgentReview[]> {
+  async getClientToAgentReviews({ agentId }: { agentId: number }): Promise<ClientToAgentReview[]> {
     try {
-      const clientToAgentReviews: ClientToAgentReview[] =
-        await ClientToAgentReview.findAll({ where: { subjectId: agentId } });
+      const clientToAgentReviews: ClientToAgentReview[] = await ClientToAgentReview.findAll({ where: { subjectId: agentId } });
 
       return clientToAgentReviews;
     } catch (err) {
       throw new Error(`${err}`);
     }
   }
-  async deleteAgentToAgentReview({
-    reviewId,
-  }: {
-    reviewId: number;
-  }): Promise<void> {
+  async deleteAgentToAgentReview({ reviewId }: { reviewId: number }): Promise<void> {
     try {
-      const agentToAgentReview: AgentToAgentReview | null =
-        await AgentToAgentReview.findOne({ where: { id: reviewId } });
+      const agentToAgentReview: AgentToAgentReview | null = await AgentToAgentReview.findOne({ where: { id: reviewId } });
 
       if (!agentToAgentReview) throw new Error("Review does not exist");
 
@@ -127,14 +95,9 @@ class AgentReviewRepo implements IAgentReviewRepo {
       throw new Error(`${err}`);
     }
   }
-  async deleteClientToAgentReview({
-    reviewId,
-  }: {
-    reviewId: number;
-  }): Promise<void> {
+  async deleteClientToAgentReview({ reviewId }: { reviewId: number }): Promise<void> {
     try {
-      const clientToAgentReview: ClientToAgentReview | null =
-        await ClientToAgentReview.findOne({ where: { id: reviewId } });
+      const clientToAgentReview: ClientToAgentReview | null = await ClientToAgentReview.findOne({ where: { id: reviewId } });
 
       if (!clientToAgentReview) throw new Error("Review does not exist");
 
