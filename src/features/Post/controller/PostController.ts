@@ -90,13 +90,7 @@ class PostController {
       const imageName: string = req.query.imageName as string;
 
       res.sendFile(
-        path.join(
-          "C:/Users/Affan Ali/Desktop/MRB/backend-new/master/storage/",
-          userId.toString(),
-          "postImages",
-          postName,
-          imageName
-        )
+        path.join("C:/Users/Affan Ali/Desktop/MRB/backend-new/master/storage/", userId.toString(), "postImages", postName, imageName)
       );
     } catch (err) {
       res.status(500).json({

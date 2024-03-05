@@ -23,6 +23,7 @@ import RecommendRouter from "./features/Recommendation/router/RecommendRouter";
 import UserPreferencesRouter from "./features/UserPreference/router/UserPreferencesRouter";
 import NotificationsRouter from "./features/Notifications/router/NotificationsRouter";
 import AgreementRouter from "./features/Agreement/router/AgreementRouter";
+import AgreementStatusRouter from "./features/AgreementStatus/router/AgreementStatusRouter";
 
 class App {
   public app: Application;
@@ -80,6 +81,7 @@ class App {
     this.app.use("/api/v1/preferences", UserPreferencesRouter);
     this.app.use("/api/v1/notifications", NotificationsRouter);
     this.app.use("/api/v1/agreement", AgreementRouter);
+    this.app.use("/api/v1/agreement-status", AgreementStatusRouter);
   }
 
   protected setupSocketIO(): void {
@@ -97,11 +99,14 @@ class App {
         this.activeClientsOnSocket.set(email, socket.id); // Update the Map with user's email and socket ID
       });
 
-      socket.on("message", async ({ message, senderEmail, receiverEmail }: { message: string; senderEmail: string; receiverEmail: string }) => {
-        console.log("Message received:", message);
-        console.log("Sender email:", senderEmail);
-        console.log("Receiver Email:", receiverEmail);
-      });
+      socket.on(
+        "message",
+        async ({ message, senderEmail, receiverEmail }: { message: string; senderEmail: string; receiverEmail: string }) => {
+          console.log("Message received:", message);
+          console.log("Sender email:", senderEmail);
+          console.log("Receiver Email:", receiverEmail);
+        }
+      );
     });
   }
 }

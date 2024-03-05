@@ -19,10 +19,9 @@ import { ClientToAgentReview } from "../features/AgentReviews/model/ClientToAgen
 import { UsedInviteeCode } from "../features/AgentInviteCode/model/UsedInviteeCode";
 import { Chat } from "../features/Chat/model/ChatModel";
 import UserPreferences from "../features/UserPreference/model/UserPreferenceModel";
-import { LeadPostedNotification } from "../features/Notifications/model/LeadPostedNotificationModel";
-import { SentYouLeadNotification } from "../features/Notifications/model/SendYouLeadNotification";
-import { SentFriendRequestNotification } from "../features/Notifications/model/SentFriendRequestNotificaiton";
-import { YouGotInviteNotification } from "../features/Notifications/model/YouGotInviteNotificationModel";
+import { Agreement } from "../features/Agreement/model/AgreementModel";
+import { Notification } from "../features/Notifications/model/NotificationModel";
+import { AgreementStatus } from "../features/AgreementStatus/model/AgreementStatusModel";
 
 dotenv.config(); // Load environment variables from .env file
 
@@ -70,10 +69,9 @@ class Database {
         UsedInviteeCode,
         Chat,
         UserPreferences,
-        LeadPostedNotification,
-        SentYouLeadNotification,
-        SentFriendRequestNotification,
-        YouGotInviteNotification,
+        Agreement,
+        AgreementStatus,
+        Notification,
       ],
     });
 
@@ -116,13 +114,6 @@ class Database {
 
     User.hasOne(AgentAnalytic, { foreignKey: AgentAnalytic.USER_ID });
     AgentAnalytic.belongsTo(User, { foreignKey: AgentAnalytic.USER_ID });
-
-    SenderAgentOpenForm.hasOne(LeadPostedNotification, {
-      foreignKey: LeadPostedNotification.LEAD_ID,
-    });
-    LeadPostedNotification.belongsTo(SenderAgentOpenForm, {
-      foreignKey: LeadPostedNotification.LEAD_ID,
-    });
 
     // Authenticate the connection and handle success or failure
     this.sequelize

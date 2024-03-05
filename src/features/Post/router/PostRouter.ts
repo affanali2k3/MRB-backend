@@ -36,18 +36,9 @@ const upload = multer({ storage });
 
 class PostRouter extends BaseRoutes {
   public routes(): void {
-    this.router.post(
-      "/",
-      upload.array("images"),
-      PostMiddleware.savePostVerify,
-      PostController.savePost
-    ); //
+    this.router.post("/", upload.array("images"), PostMiddleware.savePostVerify, PostController.savePost); //
     // this.router.get("/:userEmail", PostController.getAllPosts);//
-    this.router.get(
-      "/get-all",
-      PostMiddleware.getPostsVerify,
-      PostController.getAllPosts
-    ); //
+    this.router.get("/get-all", PostMiddleware.getPostsVerify, PostController.getAllPosts); //
     this.router.get("/post-image", PostController.getPostImage); //
   }
 }
