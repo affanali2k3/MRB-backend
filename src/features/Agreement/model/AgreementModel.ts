@@ -8,8 +8,8 @@ import { AgreementStatus } from "../controller/AgreementController";
 export class Agreement extends Model {
   public static TABLE_NAME = "agreements" as string;
   public static ID = "agreement_id" as string;
-  public static REFERRAL_SENDER_ID = "agreement_referral_sender_id" as string;
-  public static REFERRAL_RECEIVER_ID = "agreement_referral_receiver_id" as string;
+  public static REFERRAL_SENDER_ID = "referral_sender_id" as string;
+  public static REFERRAL_RECEIVER_ID = "referral_receiver_id" as string;
 
   public static SENDER_BROKER_NAME = "sender_broker_name" as string;
   public static SENDER_BROKER_EMAIL = "sender_broker_email" as string;
@@ -19,8 +19,8 @@ export class Agreement extends Model {
 
   public static REFERRAL_FEE_PERCENTAGE = "agreement_referral_fee_percentage" as string;
 
-  public static ACCEPTED_BY_SENDER = "agreement_accepted_by_sender" as string;
-  public static ACCEPTED_BY_RECEIVER = "agreement_accepted_by_receiver" as string;
+  public static SENDER_CHECK_RECEIVED_PROOF = "sender_check_received_proof" as string;
+  public static RECEIVER_PROPERTY_CLOSED_PROOF = "receiver_property_closed_proof" as string;
 
   /*
     Specifies after how much time(in days) the receiver will receiver notification to update the status of agreement
@@ -66,11 +66,10 @@ export class Agreement extends Model {
   referralReceiverId!: number;
 
   @Column({
-    type: DataType.BOOLEAN,
-    field: Agreement.ACCEPTED_BY_SENDER,
-    defaultValue: false,
+    type: DataType.TEXT,
+    field: Agreement.SENDER_CHECK_RECEIVED_PROOF,
   })
-  acceptedBySender!: boolean;
+  senderCheckReceivedProof!: string;
 
   @Column({
     type: DataType.TEXT,
@@ -80,11 +79,11 @@ export class Agreement extends Model {
   status!: string;
 
   @Column({
-    type: DataType.BOOLEAN,
-    field: Agreement.ACCEPTED_BY_RECEIVER,
+    type: DataType.TEXT,
+    field: Agreement.RECEIVER_PROPERTY_CLOSED_PROOF,
     defaultValue: false,
   })
-  acceptedByReceiver!: boolean;
+  receiverPropertyClosedProof!: string;
 
   @Column({
     type: DataType.INTEGER,

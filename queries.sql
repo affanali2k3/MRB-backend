@@ -1,10 +1,8 @@
-
 -- SELECT QUERIES
 SELECT * FROM users;
 SELECT * FROM agreements;
 SELECT * FROM agreements_status;
 SELECT * FROM notifications;
-
 
 
 -- DROP TABLES
