@@ -17,15 +17,18 @@ export interface UpdateUserData {
   biography: string;
 }
 
+export interface CreateUserData {
+  email: string;
+  name: string;
+}
+
 class UserController {
   // Endpoint to create a new user
   async create(req: Request, res: Response) {
     try {
-      const newUser = new User();
-      const { email, name } = req.body;
-      Object.assign(newUser, { email, name });
+      const reqBody = req.body as CreateUserData;
 
-      await UserRepo.create(newUser.dataValues);
+      await UserRepo.create(reqBody);
       res.status(200).json({
         message: "User created successfully",
       });
@@ -55,22 +58,14 @@ class UserController {
       const userId: string = req.query.userId as string;
       const avatarName: string = req.query.avatarName as string;
 
-      res.sendFile(
-        path.join(
-          "C:/Users/Affan Ali/Desktop/MRB/backend-new/master/storage/",
-          userId,
-          "avatar",
-          avatarName
-        ),
-        (err) => {
-          if (!err) return;
+      res.sendFile(path.join("C:/Users/Affan Ali/Desktop/MRB/backend-new/master/storage/", userId, "avatar", avatarName), (err) => {
+        if (!err) return;
 
-          res.status(200).json({
-            message: "Cannot get user avatar",
-            error: "No cover photo exists for user",
-          });
-        }
-      );
+        res.status(200).json({
+          message: "Cannot get user avatar",
+          error: "No cover photo exists for user",
+        });
+      });
     } catch (err: any) {
       res.status(500).json({
         message: "Cannot get user avatar",
@@ -84,22 +79,14 @@ class UserController {
       const userId: string = req.query.userId as string;
       const coverPhotoName: string = req.query.coverPhotoName as string;
 
-      res.sendFile(
-        path.join(
-          "C:/Users/Affan Ali/Desktop/MRB/backend-new/master/storage/",
-          userId,
-          "coverPhoto",
-          coverPhotoName
-        ),
-        (err) => {
-          if (!err) return;
+      res.sendFile(path.join("C:/Users/Affan Ali/Desktop/MRB/backend-new/master/storage/", userId, "coverPhoto", coverPhotoName), (err) => {
+        if (!err) return;
 
-          res.status(200).json({
-            message: "Cannot get user avatar",
-            error: "No cover photo exists for user",
-          });
-        }
-      );
+        res.status(200).json({
+          message: "Cannot get user avatar",
+          error: "No cover photo exists for user",
+        });
+      });
     } catch (err: any) {
       res.status(500).json({
         message: "Cannot get user cover photo",

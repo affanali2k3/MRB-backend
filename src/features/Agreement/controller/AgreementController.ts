@@ -9,6 +9,7 @@ export interface CreateAgreementData {
 
 export interface UpdateSenderAgreementData {
   id: number;
+  senderEmail: string; // Will be used against firebase token to verify only this person can modify the agreement
   referralFeePercentage: number;
   statusUpdateInterval: number;
   senderBrokerName: string;
@@ -18,6 +19,7 @@ export interface UpdateSenderAgreementData {
 
 export interface UpdateReceiverAgreementData {
   id: number;
+  receiverEmail: string; // Will be used against firebase token to verify only this person can modify the agreement
   receiverBrokerName: string;
   receiverBrokerEmail: string;
   signature: string;

@@ -54,6 +54,8 @@ class AgreementRepo implements IAgreementRepo {
 
       if (!agreement) throw new Error("Agreement does not exist");
 
+      if (agreement.status !== AgreementStatus.Waiting) throw new Error("Agreement already started");
+
       agreement.referralFeePercentage = data.referralFeePercentage;
       agreement.statusUpdateInterval = data.statusUpdateInterval;
       agreement.senderBrokerName = data.senderBrokerName;
@@ -76,6 +78,8 @@ class AgreementRepo implements IAgreementRepo {
       const agreement: Agreement | null = await Agreement.findOne({ where: { id: data.id } });
 
       if (!agreement) throw new Error("Agreement does not exist");
+
+      if (agreement.status !== AgreementStatus.Waiting) throw new Error("Agreement already started");
 
       agreement.receiverBrokerName = data.receiverBrokerName;
       agreement.receiverBrokerEmail = data.receiverBrokerEmail;
@@ -128,6 +132,8 @@ class AgreementRepo implements IAgreementRepo {
 
       if (!agreement) throw new Error("Agreement does not exist");
 
+      if (agreement.status !== AgreementStatus.Waiting) throw new Error("Agreement already started");
+
       agreement.senderBrokerSignature = data.signature;
 
       await agreement.save();
@@ -140,6 +146,8 @@ class AgreementRepo implements IAgreementRepo {
       const agreement: Agreement | null = await Agreement.findOne({ where: { id: data.id } });
 
       if (!agreement) throw new Error("Agreement does not exist");
+
+      if (agreement.status !== AgreementStatus.Waiting) throw new Error("Agreement already started");
 
       agreement.receiverBrokerSignature = data.signature;
 
@@ -156,8 +164,7 @@ class AgreementRepo implements IAgreementRepo {
 
       if (data.agentId !== agreement.referralSenderId) throw new Error("Only referral sender can start the agreement");
 
-      // if (!agreement.acceptedBySender || !agreement.acceptedByReceiver)
-      //   throw new Error("The agreement has to be accepted by both sender and receiver before it can be started");
+      if (agreement.status !== AgreementStatus.Waiting) throw new Error("Agreement already started");
 
       if (
         !agreement.senderSignature ||

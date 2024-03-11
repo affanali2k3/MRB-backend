@@ -1,6 +1,6 @@
 import { AgentAnalytic } from "../../AgentAnalytics/model/AgentAnalyticsModel";
 import UserPreferences from "../../UserPreference/model/UserPreferenceModel";
-import { UpdateUserData } from "../controller/UserController";
+import { CreateUserData, UpdateUserData } from "../controller/UserController";
 import { User } from "../model/User";
 
 // Define the interface for UserRepo
@@ -16,11 +16,14 @@ interface IUserRepo {
 // Implement the UserRepo class
 class UserRepo implements IUserRepo {
   // Create a new user
-  async create(user: User): Promise<void> {
+  async create(data: CreateUserData): Promise<void> {
     try {
-      const newUser: User = await User.create({
-        ...user,
-      });
+      const user = new User();
+
+      user.email = data.email;
+      user.name = data.name;
+
+      const newUser = await user.save();
 
       const agentAnalytic: AgentAnalytic = new AgentAnalytic();
 
@@ -72,12 +75,8 @@ class UserRepo implements IUserRepo {
         updatedUser.coverPhoto = data.coverPhoto;
       }
 
-      if (data.gender !== undefined) {
-        updatedUser.gender = data.gender;
-      }
-
       if (data.licenseNumber !== undefined) {
-        updatedUser.licenceNumber = data.licenseNumber;
+        updatedUser.licenseNumber = data.licenseNumber;
       }
 
       if (data.licenseState !== undefined) {
@@ -85,11 +84,7 @@ class UserRepo implements IUserRepo {
       }
 
       if (data.yearLicensed !== undefined) {
-        updatedUser.yearLicenced = data.yearLicensed;
-      }
-
-      if (data.address !== undefined) {
-        updatedUser.address = data.address;
+        updatedUser.licenseYear = data.yearLicensed;
       }
 
       if (data.teamMembers !== undefined) {

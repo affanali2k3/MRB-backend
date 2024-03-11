@@ -1,24 +1,20 @@
-import {
-  Model,
-  Table,
-  Column,
-  DataType,
-  ForeignKey,
-  BelongsTo,
-  Unique,
-  Index,
-} from "sequelize-typescript"; // Import necessary modules
+import { Model, Table, Column, DataType } from "sequelize-typescript";
 import { User } from "../../UserProfile/model/User";
 
 @Table({
-  tableName: AgentInviteCode.TABLE_NAME, // Set the table name for the Like model
+  tableName: AgentInviteCode.TABLE_NAME,
 })
 export class AgentInviteCode extends Model {
-  public static TABLE_NAME = "agent_invite_codes" as string; // Define the table name constant for the Like model
-  public static ID = "agent_invite_code_id" as string; // Define the column name constant for the ID field
-  public static CODE = "agent_invite_code" as string; // Define the column name constant for the POST_ID field
-  public static USER_EMAIL = "agent_invite_code_user_email" as string; // Define the column name constant for the USER_EMAIL field
-  public static SHARED_EMAIL = "agent_invite_code_shared_email" as string; // Define the column name constant for the USER_EMAIL field
+  public static TABLE_NAME = "agent_invite_codes" as string;
+  public static ID = "id" as string;
+  public static CODE = "code" as string;
+
+  // Email of the person who is going to send the invite
+  public static USER_EMAIL = "user_email" as string;
+
+  // The email of the person who is off-platform and is invited to the platform
+  public static INVITEE_EMAIL = "invitee_email" as string;
+  public static IS_USED = "is_used" as string;
 
   @Column({
     type: DataType.INTEGER,
@@ -26,14 +22,14 @@ export class AgentInviteCode extends Model {
     primaryKey: true,
     autoIncrement: true,
   })
-  id!: number; // Define the ID field with auto-incrementing primary key
+  id!: number;
 
   @Column({
     type: DataType.TEXT,
     field: AgentInviteCode.CODE,
     allowNull: false,
   })
-  code!: string; // Define the POST_ID field with a foreign key reference to the 'posts' table
+  code!: string;
 
   @Column({
     type: DataType.STRING,
@@ -41,11 +37,18 @@ export class AgentInviteCode extends Model {
     allowNull: false,
     references: { model: User.TABLE_NAME, key: User.EMAIL },
   })
-  userEmail!: string; // Define the USER_EMAIL field with a foreign key reference to the 'users' table
+  userEmail!: string;
 
   @Column({
     type: DataType.STRING,
-    field: AgentInviteCode.SHARED_EMAIL,
+    field: AgentInviteCode.INVITEE_EMAIL,
   })
-  sharedEmail!: string; // Define the USER_EMAIL field with a foreign key reference to the 'users' table
+  sharedEmail!: string;
+
+  @Column({
+    type: DataType.BOOLEAN,
+    field: AgentInviteCode.IS_USED,
+    defaultValue: false,
+  })
+  isUsed!: boolean;
 }

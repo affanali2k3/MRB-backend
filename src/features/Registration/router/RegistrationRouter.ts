@@ -3,12 +3,8 @@ import RegistrationController from "../controller/RegistrationController";
 
 class RegistrationRouter extends BaseRoutes {
   routes(): void {
-    this.router.post("/check-email", RegistrationController.checkEmail);
-    this.router.post(
-      "/check-referral-code",
-      RegistrationController.checkReferralCode
-    );
-    this.router.post("/create-user", RegistrationController.createUser);
+    this.router.patch("/update", RegistrationController.update);
+    this.router.post("/create", RegistrationController.createUser);
   }
 }
 

@@ -9,4 +9,4 @@ SELECT * FROM notifications;
 DROP TABLE agreements CASCADE;
 DROP TABLE notifications;
 DROP TABLE agreements_status;
-DROP TABLE users;
+DROP TABLE users CASCADE;

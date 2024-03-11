@@ -1,65 +1,48 @@
 import { Request, Response } from "express";
 import RegistrationRepo from "../repository/RegistrationRepo";
-import { User } from "../../UserProfile/model/User";
 
-export interface createAccountData {
-  name: string;
+export interface UpdateAccountData {
   email: string;
-  city: string;
-  state: string;
   phone: string;
+  licenseState: string;
+  licenseNumber: string;
+  licenseYear: number;
+}
+export interface CreateUserData {
+  email: string;
+  name: string;
+  code: string;
 }
 
 class RegistrationController {
-  async checkEmail(req: Request, res: Response) {
+  async update(req: Request, res: Response) {
     try {
-      const sharedEmail: string = req.body.sharedEmail;
+      const reqBody = req.body as UpdateAccountData;
 
-      await RegistrationRepo.checkEmail({ sharedEmail: sharedEmail });
+      await RegistrationRepo.update(reqBody);
 
       res.status(200).json({
-        message: "Checked email successfuly",
+        message: "Updated user succesfully",
       });
     } catch (err: any) {
       res.status(500).json({
-        message: "Error checking email",
-        error: err.toString(),
-      });
-    }
-  }
-  async checkReferralCode(req: Request, res: Response) {
-    try {
-      const referralCode: string = req.body.referralCode;
-      const sharedEmail: string = req.body.sharedEmail;
-
-      await RegistrationRepo.checkReferralCode({
-        sharedEmail: sharedEmail,
-        referralCode: referralCode,
-      });
-
-      res.status(200).json({
-        message: "Checked code successfuly",
-      });
-    } catch (err: any) {
-      res.status(500).json({
-        message: "Error checking code",
+        message: "Failed to update user",
         error: err.toString(),
       });
     }
   }
   async createUser(req: Request, res: Response) {
     try {
-      const reqBody: createAccountData = req.body;
+      const reqBody = req.body as CreateUserData;
 
-      const user: User = await RegistrationRepo.createUser(reqBody);
+      await RegistrationRepo.createUser(reqBody);
 
       res.status(200).json({
-        message: "Created user successfuly",
-        data: user,
+        message: "Created user succesfully",
       });
     } catch (err: any) {
       res.status(500).json({
-        message: "Error creating user",
+        message: "Failed to create user",
         error: err.toString(),
       });
     }

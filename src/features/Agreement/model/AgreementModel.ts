@@ -7,7 +7,7 @@ import { AgreementStatus } from "../controller/AgreementController";
 })
 export class Agreement extends Model {
   public static TABLE_NAME = "agreements" as string;
-  public static ID = "agreement_id" as string;
+  public static ID = "id" as string;
   public static REFERRAL_SENDER_ID = "referral_sender_id" as string;
   public static REFERRAL_RECEIVER_ID = "referral_receiver_id" as string;
 
@@ -17,7 +17,7 @@ export class Agreement extends Model {
   public static RECEIVER_BROKER_NAME = "receiver_broker_name" as string;
   public static RECEIVER_BROKER_EMAIL = "receiver_broker_email" as string;
 
-  public static REFERRAL_FEE_PERCENTAGE = "agreement_referral_fee_percentage" as string;
+  public static REFERRAL_FEE_PERCENTAGE = "referral_fee_percentage" as string;
 
   public static SENDER_CHECK_RECEIVED_PROOF = "sender_check_received_proof" as string;
   public static RECEIVER_PROPERTY_CLOSED_PROOF = "receiver_property_closed_proof" as string;
@@ -25,7 +25,7 @@ export class Agreement extends Model {
   /*
     Specifies after how much time(in days) the receiver will receiver notification to update the status of agreement
   */
-  public static STATUS_UPDATES_INTERVAL = "agreement_referral_status_updates_interval" as string;
+  public static STATUS_UPDATES_INTERVAL = "referral_status_updates_interval" as string;
 
   /*
     This status is different from the above one because this is the overall agreement status and has only three values
@@ -33,7 +33,7 @@ export class Agreement extends Model {
     2. Started
     3. Closed
   */
-  public static STATUS = "agreement_status" as string;
+  public static STATUS = "status" as string;
 
   /* The following will store paths to the signatures of sender, receiver and both of their brokers*/
   public static SENDER_SIGNATURE = "sender_signature";

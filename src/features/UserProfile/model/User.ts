@@ -1,37 +1,34 @@
-import { Model, Table, Column, DataType, HasMany } from "sequelize-typescript";
+import { Model, Table, Column, DataType } from "sequelize-typescript";
 
 @Table({
   tableName: User.TABLE_NAME,
 })
 export class User extends Model {
   public static TABLE_NAME = "users" as string;
-  public static ID = "user_id" as string;
-  public static EMAIL = "user_email" as string;
-  public static USER_NAME = "user_name" as string;
-  public static BIOGRAPHY = "user_biography" as string;
-  public static TEAM_MEMBERS = "user_team_members" as string;
-  public static PHOTO = "user_photo" as string;
-  public static COVER_PHOTO = "user_cover_photo" as string;
-  public static PHONE = "user_phone" as string;
-  public static GENDER = "user_gender" as string;
-  public static ADDRESS = "user_address" as string;
-  public static LICENCE_STATE = "user_licence_state" as string;
-  public static LICENCE_NUMBER = "user_licence_number" as string;
-  public static YEAR_LICENCED = "user_year_licenced" as string;
+  public static ID = "id" as string;
+  public static EMAIL = "email" as string;
+  public static USER_NAME = "name" as string;
+  public static BIOGRAPHY = "biography" as string;
+  public static TEAM_MEMBERS = "team_members" as string;
+  public static PHOTO = "photo" as string;
+  public static COVER_PHOTO = "cover_photo" as string;
+  public static PHONE = "phone" as string;
+  public static LICENSE_STATE = "license_state" as string;
+  public static LICENSE_NUMBER = "license_number" as string;
+  public static LICENSE_YEAR = "license_year" as string;
 
   @Column({
     type: DataType.INTEGER,
-    primaryKey: true,
-    unique: true,
-    autoIncrement: true,
     field: User.ID,
+    primaryKey: true,
+    autoIncrement: true,
   })
   id!: number;
 
   @Column({
     type: DataType.STRING,
-    unique: true,
     field: User.EMAIL,
+    unique: true,
     allowNull: false,
   })
   email!: string;
@@ -51,9 +48,9 @@ export class User extends Model {
 
   @Column({
     type: DataType.STRING,
-    field: User.LICENCE_NUMBER,
+    field: User.LICENSE_NUMBER,
   })
-  licenceNumber!: string;
+  licenseNumber!: string;
 
   @Column({
     type: DataType.INTEGER,
@@ -63,21 +60,15 @@ export class User extends Model {
 
   @Column({
     type: DataType.STRING,
-    field: User.LICENCE_STATE,
+    field: User.LICENSE_STATE,
   })
   licenceState!: string;
 
   @Column({
     type: DataType.INTEGER,
-    field: User.YEAR_LICENCED,
+    field: User.LICENSE_YEAR,
   })
-  yearLicenced!: number;
-
-  @Column({
-    type: DataType.STRING,
-    field: User.ADDRESS,
-  })
-  address!: string;
+  licenseYear!: number;
 
   @Column({
     type: DataType.STRING,
@@ -96,10 +87,4 @@ export class User extends Model {
     field: User.PHONE,
   })
   phone!: string;
-
-  @Column({
-    type: DataType.STRING,
-    field: User.GENDER,
-  })
-  gender!: string;
 }

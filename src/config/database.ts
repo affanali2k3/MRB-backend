@@ -15,8 +15,6 @@ import { AgentInviteCode } from "../features/AgentInviteCode/model/AgentInviteCo
 import { AgentInvitee } from "../features/AgentInvitee/model/AgentInviteeModel";
 import { AgentAnalytic } from "../features/AgentAnalytics/model/AgentAnalyticsModel";
 import { AgentToAgentReview } from "../features/AgentReviews/model/AgentToAgentReviewModel";
-import { ClientToAgentReview } from "../features/AgentReviews/model/ClientToAgentReviewModel";
-import { UsedInviteeCode } from "../features/AgentInviteCode/model/UsedInviteeCode";
 import { Chat } from "../features/Chat/model/ChatModel";
 import UserPreferences from "../features/UserPreference/model/UserPreferenceModel";
 import { Agreement } from "../features/Agreement/model/AgreementModel";
@@ -65,8 +63,6 @@ class Database {
         AgentInvitee,
         AgentAnalytic,
         AgentToAgentReview,
-        ClientToAgentReview,
-        UsedInviteeCode,
         Chat,
         UserPreferences,
         Agreement,

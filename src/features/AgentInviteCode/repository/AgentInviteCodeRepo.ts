@@ -4,18 +4,8 @@ import crypto from "crypto";
 
 interface IAgentInviteCodeRepo {
   createCode({ userEmail }: { userEmail: string }): Promise<void>;
-  shareCode({
-    codeId,
-    sharedEmail,
-  }: {
-    codeId: number;
-    sharedEmail: string;
-  }): Promise<void>;
-  getAllCodesForUser({
-    userEmail,
-  }: {
-    userEmail: string;
-  }): Promise<AgentInviteCode[]>;
+  shareCode({ codeId, sharedEmail }: { codeId: number; sharedEmail: string }): Promise<void>;
+  getAllCodesForUser({ userEmail }: { userEmail: string }): Promise<AgentInviteCode[]>;
   deleteCode({ codeId }: { codeId: number }): Promise<void>;
 }
 
@@ -31,24 +21,15 @@ class AgentInviteCodeRepo implements IAgentInviteCodeRepo {
       throw new Error(`${err}`);
     }
   }
-  async shareCode({
-    codeId,
-    sharedEmail,
-  }: {
-    codeId: number;
-    sharedEmail: string;
-  }): Promise<void> {
+  async shareCode({ codeId, sharedEmail }: { codeId: number; sharedEmail: string }): Promise<void> {
     try {
-      const agentInviteCode: AgentInviteCode | null =
-        await AgentInviteCode.findOne({ where: { id: codeId } });
+      const agentInviteCode: AgentInviteCode | null = await AgentInviteCode.findOne({ where: { id: codeId } });
 
       if (!agentInviteCode) throw new Error("Invite code not found");
 
-      if (sharedEmail === agentInviteCode.userEmail)
-        throw new Error("Cannot share code with yourself");
+      if (sharedEmail === agentInviteCode.userEmail) throw new Error("Cannot share code with yourself");
 
-      if (agentInviteCode.sharedEmail !== null)
-        throw new Error("Code has already been shared");
+      if (agentInviteCode.sharedEmail !== null) throw new Error("Code has already been shared");
 
       const user = await User.findOne({ where: { email: sharedEmail } });
 
@@ -63,8 +44,7 @@ class AgentInviteCodeRepo implements IAgentInviteCodeRepo {
   }
   async deleteCode({ codeId }: { codeId: number }): Promise<void> {
     try {
-      const agentInviteCode: AgentInviteCode | null =
-        await AgentInviteCode.findOne({ where: { id: codeId } });
+      const agentInviteCode: AgentInviteCode | null = await AgentInviteCode.findOne({ where: { id: codeId } });
 
       if (!agentInviteCode) throw new Error("Invite code not found");
 
@@ -73,15 +53,9 @@ class AgentInviteCodeRepo implements IAgentInviteCodeRepo {
       throw new Error(`${err}`);
     }
   }
-  async getAllCodesForUser({
-    userEmail,
-  }: {
-    userEmail: string;
-  }): Promise<AgentInviteCode[]> {
+  async getAllCodesForUser({ userEmail }: { userEmail: string }): Promise<AgentInviteCode[]> {
     try {
-      const agentInviteCodes: AgentInviteCode[] = await AgentInviteCode.findAll(
-        { where: { userEmail: userEmail } }
-      );
+      const agentInviteCodes: AgentInviteCode[] = await AgentInviteCode.findAll({ where: { userEmail: userEmail } });
 
       return agentInviteCodes;
     } catch (err) {
