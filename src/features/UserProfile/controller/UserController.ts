@@ -8,13 +8,11 @@ export interface UpdateUserData {
   id: number;
   photo: string;
   coverPhoto: string;
-  gender: string;
   licenseNumber: string;
   licenseState: string;
-  yearLicensed: number;
-  address: string;
-  teamMembers: number;
+  licenseYear: number;
   biography: string;
+  phone: string;
 }
 
 export interface CreateUserData {
@@ -39,31 +37,17 @@ class UserController {
     }
   }
 
-  // Endpoint to delete a user
-  async delete(req: Request, res: Response) {
-    try {
-      await UserRepo.delete(req.body.userSsn);
-      res.status(200).json({
-        message: "User deleted successfully",
-      });
-    } catch (err) {
-      res.status(500).json({
-        message: "Cannot delete user",
-      });
-    }
-  }
-
   async getUserAvatar(req: Request, res: Response) {
     try {
       const userId: string = req.query.userId as string;
       const avatarName: string = req.query.avatarName as string;
 
-      res.sendFile(path.join("C:/Users/Affan Ali/Desktop/MRB/backend-new/master/storage/", userId, "avatar", avatarName), (err) => {
+      res.sendFile(path.join("C:/Users/Affan Ali/Desktop/MRB/backend-new/master/storage/", userId, "photo", avatarName), (err) => {
         if (!err) return;
 
         res.status(200).json({
-          message: "Cannot get user avatar",
-          error: "No cover photo exists for user",
+          message: "Cannot get user photo",
+          error: "No photo exists for user",
         });
       });
     } catch (err: any) {
@@ -83,7 +67,7 @@ class UserController {
         if (!err) return;
 
         res.status(200).json({
-          message: "Cannot get user avatar",
+          message: "Cannot get user cover photo",
           error: "No cover photo exists for user",
         });
       });
@@ -100,11 +84,9 @@ class UserController {
     try {
       const reqBody: UpdateUserData = req.body;
 
-      console.log(req.files);
-
       if (req.files !== undefined) {
-        if ("avatar" in req.files) {
-          reqBody.photo = req.files["avatar"][0].filename;
+        if ("photo" in req.files) {
+          reqBody.photo = req.files["photo"][0].filename;
         }
         if ("coverPhoto" in req.files) {
           reqBody.coverPhoto = req.files["coverPhoto"][0].filename;

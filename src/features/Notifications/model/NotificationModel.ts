@@ -76,7 +76,7 @@ export class Notification extends Model {
   @Column({
     type: DataType.INTEGER,
     field: Notification.AGREEMENT_UPDATED_ID,
-    references: { model: Agreement, key: Agreement.ID },
+    // references: { model: Agreement, key: Agreement.ID },
   })
   agreementUpdatedId!: number;
 }

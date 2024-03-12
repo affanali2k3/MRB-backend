@@ -67,6 +67,7 @@ export class User extends Model {
   @Column({
     type: DataType.INTEGER,
     field: User.LICENSE_YEAR,
+    validate: { min: 1920, max: 2026 }, // License year can only be between 1920 and 2026
   })
   licenseYear!: number;
 

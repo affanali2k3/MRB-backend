@@ -40,7 +40,7 @@ export interface BrokerSignAgreementData {
   signature: string;
 }
 
-export enum AgreementStatus {
+export enum AgreementStatusType {
   Waiting = "waiting",
   Started = "started",
   Closed = "closed",

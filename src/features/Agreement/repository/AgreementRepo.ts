@@ -4,7 +4,7 @@ import { NotificationTypes } from "../../Notifications/controller/NotificationCo
 import NotificationsRepo from "../../Notifications/repository/NotificationsRepo";
 import {
   AcceptAgreementData,
-  AgreementStatus,
+  AgreementStatusType,
   BrokerSignAgreementData,
   CreateAgreementData,
   StartAgreementData,
@@ -54,7 +54,7 @@ class AgreementRepo implements IAgreementRepo {
 
       if (!agreement) throw new Error("Agreement does not exist");
 
-      if (agreement.status !== AgreementStatus.Waiting) throw new Error("Agreement already started");
+      if (agreement.status !== AgreementStatusType.Waiting) throw new Error("Agreement already started");
 
       agreement.referralFeePercentage = data.referralFeePercentage;
       agreement.statusUpdateInterval = data.statusUpdateInterval;
@@ -79,7 +79,7 @@ class AgreementRepo implements IAgreementRepo {
 
       if (!agreement) throw new Error("Agreement does not exist");
 
-      if (agreement.status !== AgreementStatus.Waiting) throw new Error("Agreement already started");
+      if (agreement.status !== AgreementStatusType.Waiting) throw new Error("Agreement already started");
 
       agreement.receiverBrokerName = data.receiverBrokerName;
       agreement.receiverBrokerEmail = data.receiverBrokerEmail;
@@ -132,7 +132,7 @@ class AgreementRepo implements IAgreementRepo {
 
       if (!agreement) throw new Error("Agreement does not exist");
 
-      if (agreement.status !== AgreementStatus.Waiting) throw new Error("Agreement already started");
+      if (agreement.status !== AgreementStatusType.Waiting) throw new Error("Agreement already started");
 
       agreement.senderBrokerSignature = data.signature;
 
@@ -147,7 +147,7 @@ class AgreementRepo implements IAgreementRepo {
 
       if (!agreement) throw new Error("Agreement does not exist");
 
-      if (agreement.status !== AgreementStatus.Waiting) throw new Error("Agreement already started");
+      if (agreement.status !== AgreementStatusType.Waiting) throw new Error("Agreement already started");
 
       agreement.receiverBrokerSignature = data.signature;
 
@@ -164,7 +164,7 @@ class AgreementRepo implements IAgreementRepo {
 
       if (data.agentId !== agreement.referralSenderId) throw new Error("Only referral sender can start the agreement");
 
-      if (agreement.status !== AgreementStatus.Waiting) throw new Error("Agreement already started");
+      if (agreement.status !== AgreementStatusType.Waiting) throw new Error("Agreement already started");
 
       if (
         !agreement.senderSignature ||
@@ -175,7 +175,7 @@ class AgreementRepo implements IAgreementRepo {
         throw new Error("Agreement must be signed by all parties for it to be started");
       }
 
-      agreement.status = AgreementStatus.Started;
+      agreement.status = AgreementStatusType.Started;
 
       await agreement.save();
     } catch (err) {

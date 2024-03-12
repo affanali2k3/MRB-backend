@@ -7,7 +7,6 @@ import { User } from "../model/User";
 interface IUserRepo {
   create(user: User): Promise<void>;
   update(data: UpdateUserData): Promise<void>;
-  delete(userSsn: string): Promise<void>;
   getUserByEmail(userEmail: string): Promise<User>;
   getUser(userId: number): Promise<User>;
   getAll(): Promise<User[]>;
@@ -83,36 +82,18 @@ class UserRepo implements IUserRepo {
         updatedUser.licenceState = data.licenseState;
       }
 
-      if (data.yearLicensed !== undefined) {
-        updatedUser.licenseYear = data.yearLicensed;
+      if (data.licenseYear !== undefined) {
+        updatedUser.licenseYear = data.licenseYear;
       }
 
-      if (data.teamMembers !== undefined) {
-        updatedUser.teamMembers = data.teamMembers;
+      if (data.phone !== undefined) {
+        updatedUser.phone = data.phone;
       }
 
       // Save the updated user
-      updatedUser.save();
+      await updatedUser.save();
     } catch (err) {
       throw new Error(`Failed to update user. ${err}`);
-    }
-  }
-
-  // Delete a user
-  async delete(userSsn: string): Promise<void> {
-    try {
-      const user = await User.findOne({
-        where: {
-          ssn: userSsn,
-        },
-      });
-
-      if (!user) throw new Error("User not found");
-
-      // Delete the user
-      await user.destroy();
-    } catch (err) {
-      throw new Error("Failed to delete user.");
     }
   }
 

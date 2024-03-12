@@ -1,6 +1,6 @@
 import { Model, Table, Column, DataType } from "sequelize-typescript";
 import { User } from "../../UserProfile/model/User";
-import { AgreementStatus } from "../controller/AgreementController";
+import { AgreementStatusType } from "../controller/AgreementController";
 
 @Table({
   tableName: Agreement.TABLE_NAME,
@@ -74,7 +74,7 @@ export class Agreement extends Model {
   @Column({
     type: DataType.TEXT,
     field: Agreement.STATUS,
-    defaultValue: "waiting",
+    defaultValue: AgreementStatusType.Waiting,
   })
   status!: string;
 

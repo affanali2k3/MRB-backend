@@ -12,8 +12,8 @@ const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     const userId: number = req.body.id; // Get the value of 'email' from req.body
     let folder;
-    if (file.fieldname === "avatar") {
-      folder = "avatar";
+    if (file.fieldname === "photo") {
+      folder = "photo";
     } else {
       folder = "coverPhoto";
     }
@@ -43,24 +43,14 @@ class UserRoutes extends BaseRoutes {
     this.router.patch(
       "/update",
       upload.fields([
-        { name: "avatar", maxCount: 1 },
+        { name: "photo", maxCount: 1 },
         { name: "coverPhoto", maxCount: 1 },
       ]),
-      UserMiddleware.verifyUserById,
       UserController.update
     ); // Update user with email
-    this.router.delete(
-      "/:email",
-      UserMiddleware.verifyUserById,
-      UserController.delete
-    ); // Delete user with email
     this.router.get("/get-all", UserController.getAllUsers); // Get all users
-    this.router.get("/get", UserValidator.validate, UserController.getUser); // Get user by email
-    this.router.get(
-      "/get/email",
-      UserMiddleware.verifyUserByEmail,
-      UserController.getUserByEmail
-    ); // Get user by email
+    this.router.get("/get", UserController.getUser); // Get user by email
+    this.router.get("/get/email", UserController.getUserByEmail); // Get user by email
     this.router.get("/avatar", UserController.getUserAvatar); // Get user avatar by userEmail
     this.router.get("/cover-photo", UserController.getUserCoverPhoto); // Get user avatar by userEmail
   }

@@ -3,6 +3,8 @@ import { AgentAnalytic } from "../../AgentAnalytics/model/AgentAnalyticsModel";
 import { Agreement } from "../../Agreement/model/AgreementModel";
 import { AgentReviewData } from "../controller/AgentReviewController";
 import { AgentToAgentReview } from "../model/AgentToAgentReviewModel";
+import { AgreementStatus } from "../../AgreementStatus/model/AgreementStatusModel";
+import { AgreementStatusType } from "../../Agreement/controller/AgreementController";
 
 interface IAgentReviewRepo {
   createAgentToAgentReview(data: AgentReviewData): Promise<void>;
@@ -12,6 +14,13 @@ interface IAgentReviewRepo {
 class AgentReviewRepo implements IAgentReviewRepo {
   async createAgentToAgentReview(data: AgentReviewData): Promise<void> {
     try {
+      /*
+        An agent can only give review to another agent if:
+        1. The agreement exists between those two agents
+        2. Agreement status is closed
+        3. Sender has not uploaded proof of payment received
+        4. Receiver has not uploaded proof of property closed
+      */
       const agreement: Agreement | null = await Agreement.findOne({
         where: {
           [Op.and]: [
@@ -22,7 +31,9 @@ class AgentReviewRepo implements IAgentReviewRepo {
               ],
             },
             { id: data.agreementId },
-            { status: "started" },
+            { status: AgreementStatusType.Started },
+            { senderCheckReceivedProof: { [Op.not]: null } },
+            { receiverPropertyClosedProof: { [Op.not]: null } },
           ],
         },
       });
