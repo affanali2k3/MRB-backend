@@ -12,11 +12,7 @@ class RecommendationController {
       const clientType = req.query.clientType as string;
 
       // Fetch all agent analytics for the specified state and client type
-      const agentAnalytics: AgentAnalytic[] =
-        await AgentAnalyticsRepo.getAgentsByStateAndClientType(
-          state,
-          clientType
-        );
+      const agentAnalytics: AgentAnalytic[] = await AgentAnalyticsRepo.getAgentsByStateAndClientType(state, clientType);
 
       // Sort agents based on your criteria (referralsSent, listingsSold, housesSold, yearsOfExperience, agentToAgentRatingScore, etc.)
       if (clientType === "buyer") {
@@ -31,7 +27,7 @@ class RecommendationController {
       } else {
         agentAnalytics.sort((a, b) => {
           // Customize this comparison based on your criteria
-          if (a.listingsSold < b.listingsSold) {
+          if (a.housesBought < b.housesBought) {
             return -1;
           } else {
             return 1;
@@ -39,13 +35,9 @@ class RecommendationController {
         });
       }
 
-      res
-        .status(200)
-        .json({ message: "Best agents found", data: agentAnalytics });
+      res.status(200).json({ message: "Best agents found", data: agentAnalytics });
     } catch (err: any) {
-      res
-        .status(500)
-        .json({ message: "Failed to find best agents", error: err.toString() });
+      res.status(500).json({ message: "Failed to find best agents", error: err.toString() });
     }
   }
 
@@ -59,9 +51,7 @@ class RecommendationController {
 
       res.status(200).json({ message: "Agents found", data: agents });
     } catch (err: any) {
-      res
-        .status(500)
-        .json({ message: "Failed to find agents", error: err.toString() });
+      res.status(500).json({ message: "Failed to find agents", error: err.toString() });
     }
   }
 
@@ -69,10 +59,10 @@ class RecommendationController {
     try {
       // Get the state from req.query
       const state = req.query.state as string;
-  
+
       // Get the client type from req.query
       const clientType = req.query.clientType as string;
-  
+
       // Get the minimum number of referrals sent from req.query
       const minReferralsSent = parseInt(req.query.minReferralsSent as string);
 
@@ -80,20 +70,38 @@ class RecommendationController {
       const minHousesSold = parseInt(req.query.minHousesSold as string);
 
       const minYearsOfExperience = parseInt(req.query.minYearsOfExperience as string);
-  
-  
+
       // Fetch all agent analytics for the specified state and client type
       const agentAnalytics: AgentAnalytic[] = await AgentAnalyticsRepo.getAgentsByStateAndClientType(state, clientType);
-  
-      // Filter agents based on the specified criteria
-      const filteredAgents = agentAnalytics.filter(agent => {
 
-        return agent.referralsSent >= minReferralsSent && agent.housesSold >= minHousesSold && agent.yearsOfExperience >= minYearsOfExperience
+      // Filter agents based on the specified criteria
+      const filteredAgents = agentAnalytics.filter((agent) => {
+        return (
+          agent.referralsSent >= minReferralsSent && agent.housesSold >= minHousesSold && agent.yearsOfExperience >= minYearsOfExperience
+        );
       });
-  
-      res.status(200).json({ message: 'Filtered agents found', data: filteredAgents });
+
+      if (clientType === "buyer") {
+        filteredAgents.sort((a, b) => {
+          if (a.housesBought > b.housesBought) {
+            return -1;
+          } else {
+            return 1;
+          }
+        });
+      } else {
+        filteredAgents.sort((a, b) => {
+          if (a.housesSold > b.housesSold) {
+            return -1;
+          } else {
+            return 1;
+          }
+        });
+      }
+
+      res.status(200).json({ message: "Filtered agents found", data: filteredAgents });
     } catch (err: any) {
-      res.status(500).json({ message: 'Failed to find filtered agents', error: err.toString() });
+      res.status(500).json({ message: "Failed to find filtered agents", error: err.toString() });
     }
   }
 }

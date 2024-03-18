@@ -3,11 +3,11 @@ import NotificationsRepo from "../repository/NotificationsRepo";
 import { Notification } from "../model/NotificationModel";
 
 export enum NotificationTypes {
-  REFERRAL_POSTED_IN_YOUR_AREA,
-  SENT_YOU_REFERRAL,
-  GOT_INVITE_CODE,
-  ASSOCIATION_REQUEST,
-  AGREEMENT_UPDATED,
+  REFERRAL_POSTED_IN_YOUR_AREA = "REFERRAL_POSTED_IN_YOUR_AREA",
+  SENT_YOU_REFERRAL = "SENT_YOU_REFERRAL",
+  GOT_INVITE_CODE = "GOT_INVITE_CODE",
+  ASSOCIATION_REQUEST = "ASSOCIATION_REQUEST",
+  AGREEMENT_UPDATED = "AGREEMENT_UPDATED",
 }
 
 export interface NotificationData {

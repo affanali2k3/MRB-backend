@@ -3,6 +3,10 @@ import UserAssociatesRepo from "../repository/UserAssociatesRepo"; // Assuming y
 import { User } from "../../UserProfile/model/User";
 import { UserAssociates } from "../model/UserAssociates";
 
+export enum AssociationStatus {
+  PENDING = "Pending",
+  ACCEPTED = "Accepted",
+}
 interface RequestBody {
   senderId: number;
   receiverId: number;
@@ -19,8 +23,7 @@ class UserAssociatesController {
     try {
       const reqBody: RequestBody = req.body;
 
-      if (reqBody.senderId === reqBody.receiverId)
-        throw new Error("Cannot be associate with yourself");
+      if (reqBody.senderId === reqBody.receiverId) throw new Error("Cannot be associate with yourself");
 
       await new UserAssociatesRepo().sendRequest({
         senderId: reqBody.senderId,
@@ -81,11 +84,8 @@ class UserAssociatesController {
       const userIdString: string = req.query.userId as string;
       const userId: number = parseInt(userIdString);
 
-      const associates: User[] =
-        await new UserAssociatesRepo().getAllAssociates({ userId: userId });
-      res
-        .status(200)
-        .json({ message: `Got associates successfully`, data: associates });
+      const associates: User[] = await new UserAssociatesRepo().getAllAssociates({ userId: userId });
+      res.status(200).json({ message: `Got associates successfully`, data: associates });
     } catch (err) {
       res.status(500).send({ message: `Failed to get associates ${err}` });
     }
@@ -109,14 +109,11 @@ class UserAssociatesController {
   async checkRequestStatusWithUser(req: Request, res: Response) {
     try {
       const reqBody: AssociateBody = req.body;
-      const userAssociate: UserAssociates | null =
-        await new UserAssociatesRepo().checkRequestStatusWithUser({
-          userId: reqBody.userId,
-          associateId: reqBody.associateId,
-        });
-      res
-        .status(200)
-        .json({ message: "Got status successfully", data: userAssociate });
+      const userAssociate: UserAssociates | null = await new UserAssociatesRepo().checkRequestStatusWithUser({
+        userId: reqBody.userId,
+        associateId: reqBody.associateId,
+      });
+      res.status(200).json({ message: "Got status successfully", data: userAssociate });
     } catch (err) {
       res.status(500).send({ message: `Failed to get request status ${err}` });
     }

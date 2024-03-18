@@ -39,11 +39,11 @@ export class Notification extends Model {
   userId!: number;
 
   @Column({
-    type: DataType.INTEGER,
+    type: DataType.STRING,
     field: Notification.TYPE,
     allowNull: false,
   })
-  type!: number;
+  type!: string;
 
   @Column({
     type: DataType.INTEGER,

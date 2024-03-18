@@ -73,7 +73,13 @@ class SenderAgentFormRepo implements IReceiverAgentFormRepo {
       throw new Error(`${err}`);
     }
   }
-  async rejectReceivedProposal({ receiverAgentFormId, formType }: { receiverAgentFormId: number; formType: SenderAgentFormType }): Promise<void> {
+  async rejectReceivedProposal({
+    receiverAgentFormId,
+    formType,
+  }: {
+    receiverAgentFormId: number;
+    formType: SenderAgentFormType;
+  }): Promise<void> {
     try {
       if (formType == SenderAgentFormType.Direct) {
         const form: ReceiverAgentDirectForm | null = await ReceiverAgentDirectForm.findOne({
@@ -100,7 +106,13 @@ class SenderAgentFormRepo implements IReceiverAgentFormRepo {
       throw new Error(`${err}`);
     }
   }
-  async acceptReceivedProposal({ receiverAgentFormId, formType }: { receiverAgentFormId: number; formType: SenderAgentFormType }): Promise<void> {
+  async acceptReceivedProposal({
+    receiverAgentFormId,
+    formType,
+  }: {
+    receiverAgentFormId: number;
+    formType: SenderAgentFormType;
+  }): Promise<void> {
     try {
       if (formType == SenderAgentFormType.Direct) {
         const form: ReceiverAgentDirectForm | null = await ReceiverAgentDirectForm.findOne({
@@ -127,40 +139,40 @@ class SenderAgentFormRepo implements IReceiverAgentFormRepo {
       throw new Error(`${err}`);
     }
   }
-  async changeOpenFormConsideringStatus({ receiverAgentOpenFormId, status }: { receiverAgentOpenFormId: number; status: string }): Promise<void> {
-    try {
-      const openFormsProposalsReceived: ReceiverAgentOpenForm | null = await ReceiverAgentOpenForm.findOne({
-        where: {
-          id: receiverAgentOpenFormId,
-        },
-      });
+  // async changeOpenFormConsideringStatus({ receiverAgentOpenFormId, status }: { receiverAgentOpenFormId: number; status: string }): Promise<void> {
+  //   try {
+  //     const openFormsProposalsReceived: ReceiverAgentOpenForm | null = await ReceiverAgentOpenForm.findOne({
+  //       where: {
+  //         id: receiverAgentOpenFormId,
+  //       },
+  //     });
 
-      if (!openFormsProposalsReceived) throw new Error("The form does not exist");
+  //     if (!openFormsProposalsReceived) throw new Error("The form does not exist");
 
-      openFormsProposalsReceived.consideringStatus = status;
+  //     openFormsProposalsReceived.consideringStatus = status;
 
-      await openFormsProposalsReceived.save();
-    } catch (err) {
-      throw new Error(`${err}`);
-    }
-  }
-  async changeDirectFormConsideringStatus({ receiverAgentDirectFormId, status }: { receiverAgentDirectFormId: number; status: string }): Promise<void> {
-    try {
-      const directFormsProposalsReceived: ReceiverAgentDirectForm | null = await ReceiverAgentDirectForm.findOne({
-        where: {
-          id: receiverAgentDirectFormId,
-        },
-      });
+  //     await openFormsProposalsReceived.save();
+  //   } catch (err) {
+  //     throw new Error(`${err}`);
+  //   }
+  // }
+  // async changeDirectFormConsideringStatus({ receiverAgentDirectFormId, status }: { receiverAgentDirectFormId: number; status: string }): Promise<void> {
+  //   try {
+  //     const directFormsProposalsReceived: ReceiverAgentDirectForm | null = await ReceiverAgentDirectForm.findOne({
+  //       where: {
+  //         id: receiverAgentDirectFormId,
+  //       },
+  //     });
 
-      if (!directFormsProposalsReceived) throw new Error("The form does not exist");
+  //     if (!directFormsProposalsReceived) throw new Error("The form does not exist");
 
-      directFormsProposalsReceived.consideringStatus = status;
+  //     directFormsProposalsReceived.consideringStatus = status;
 
-      await directFormsProposalsReceived.save();
-    } catch (err) {
-      throw new Error(`${err}`);
-    }
-  }
+  //     await directFormsProposalsReceived.save();
+  //   } catch (err) {
+  //     throw new Error(`${err}`);
+  //   }
+  // }
   async getOpenFormsSent({ userId }: { userId: number }): Promise<ReceiverAgentOpenForm[]> {
     try {
       const formsSent: ReceiverAgentOpenForm[] = await ReceiverAgentOpenForm.findAll({

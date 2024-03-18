@@ -18,8 +18,8 @@ export interface SenderAgentFormValues {
   city: string;
   state: string;
   providence: string;
-  time_amount: number;
-  time_unit: string;
+  timeAmount: number;
+  timeUnit: string;
   details: string;
   typeOfHouse: string;
   price: number;
@@ -46,8 +46,7 @@ class SenderAgentFormController {
     try {
       const userIdString: string = req.query.userId as string;
       const userId: number = parseInt(userIdString);
-      const directFormsSent: SenderAgentDirectForm[] =
-        await SenderAgentFormRepo.getDirectFormsSentByUser({ userId: userId });
+      const directFormsSent: SenderAgentDirectForm[] = await SenderAgentFormRepo.getDirectFormsSentByUser({ userId: userId });
 
       res.status(200).send({
         message: "Got forms succesfully",
@@ -64,8 +63,7 @@ class SenderAgentFormController {
     try {
       const userIdString: string = req.query.userId as string;
       const userId: number = parseInt(userIdString);
-      const openFormsSent: SenderAgentOpenForm[] =
-        await SenderAgentFormRepo.getOpenFormsSentByUser({ userId: userId });
+      const openFormsSent: SenderAgentOpenForm[] = await SenderAgentFormRepo.getOpenFormsSentByUser({ userId: userId });
 
       res.status(200).send({
         message: "Got forms succesfully",
@@ -82,8 +80,7 @@ class SenderAgentFormController {
     try {
       const userIdString: string = req.query.userId as string;
       const userId: number = parseInt(userIdString);
-      const formsReceived: SenderAgentDirectForm[] =
-        await SenderAgentFormRepo.getFormsReceivedByUser({ userId: userId });
+      const formsReceived: SenderAgentDirectForm[] = await SenderAgentFormRepo.getFormsReceivedByUser({ userId: userId });
 
       res.status(200).send({
         message: "Got forms succesfully",

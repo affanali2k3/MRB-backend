@@ -4,11 +4,11 @@ import ReceiverAgentFormMiddleware from "../middleware/ReceiverAgentFormMiddlewa
 
 class ReceiverAgentFormRouter extends BaseRoutes {
   routes(): void {
-    this.router.post("/create", ReceiverAgentFormMiddleware.createFormVerify, ReceiverAgentFormController.createForm);
-    this.router.patch("/change-direct-form-considering-status", ReceiverAgentFormController.changeDirectFormConsideringStatus);
-    this.router.patch("/change-open-form-considering-status", ReceiverAgentFormController.changeOpenFormConsideringStatus);
-    this.router.get("/forms-proposal-received", ReceiverAgentFormMiddleware.getFormsVerify, ReceiverAgentFormController.getFormsProposalsReceivedByUser);
-    this.router.get("/open-forms-sent", ReceiverAgentFormMiddleware.getFormsVerify, ReceiverAgentFormController.getOpenFormsSentByUser);
+    this.router.post("/create", ReceiverAgentFormController.createForm);
+    // this.router.patch("/change-direct-form-considering-status", ReceiverAgentFormController.changeDirectFormConsideringStatus);
+    // this.router.patch("/change-open-form-considering-status", ReceiverAgentFormController.changeOpenFormConsideringStatus);
+    this.router.get("/forms-proposal-received", ReceiverAgentFormController.getFormsProposalsReceivedByUser);
+    this.router.get("/open-forms-sent", ReceiverAgentFormController.getOpenFormsSentByUser);
     // this.router.get(
     //   "/direct-forms-received",
     //   ReceiverAgentFormMiddleware.getFormsVerify,

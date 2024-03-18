@@ -1,4 +1,5 @@
 import { AgentAnalytic } from "../../AgentAnalytics/model/AgentAnalyticsModel";
+import PostRepository from "../../Post/repository/PostRepository";
 import UserPreferences from "../../UserPreference/model/UserPreferenceModel";
 import { CreateUserData, UpdateUserData } from "../controller/UserController";
 import { User } from "../model/User";
@@ -29,14 +30,11 @@ class UserRepo implements IUserRepo {
       agentAnalytic.referralsReceived = 0;
       agentAnalytic.referralsSent = 0;
       agentAnalytic.yearsOfExperience = 0;
-      agentAnalytic.listingsSold = 0;
+      agentAnalytic.housesBought = 0;
       agentAnalytic.housesSold = 0;
       agentAnalytic.agentToAgentRatingNumber = 0;
       agentAnalytic.agentToAgentRatingScore = 0;
       agentAnalytic.agentToAgentRating = 0;
-      agentAnalytic.clientToAgentRating = 0;
-      agentAnalytic.clientToAgentRatingNumber = 0;
-      agentAnalytic.clientToAgentRatingScore = 0;
       agentAnalytic.userId = newUser.id;
 
       await agentAnalytic.save();
@@ -89,6 +87,8 @@ class UserRepo implements IUserRepo {
       if (data.phone !== undefined) {
         updatedUser.phone = data.phone;
       }
+
+      await PostRepository.createUpdatedProfilePost({ userId: data.id });
 
       // Save the updated user
       await updatedUser.save();

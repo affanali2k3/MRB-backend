@@ -5,31 +5,12 @@ interface IAgentAnalyticsRepo {
   createAnalytic({ userId }: { userId: number }): Promise<void>;
   deleteAnalytic({ analyticsId }: { analyticsId: number }): Promise<void>;
   getAgentAnalytic({ userId }: { userId: number }): Promise<AgentAnalytic>;
-  updateAgentToAgentRating({
-    userId,
-    ratingScore,
-  }: {
-    userId: number;
-    ratingScore: number;
-  }): Promise<void>;
-  updateAgentToAgentRating({
-    userId,
-    ratingScore,
-  }: {
-    userId: number;
-    ratingScore: number;
-  }): Promise<void>;
+  updateAgentToAgentRating({ userId, ratingScore }: { userId: number; ratingScore: number }): Promise<void>;
+  updateAgentToAgentRating({ userId, ratingScore }: { userId: number; ratingScore: number }): Promise<void>;
   updateReferralsSent({ analyticsId }: { analyticsId: number }): Promise<void>;
-  updateReferralsReceived({
-    analyticsId,
-  }: {
-    analyticsId: number;
-  }): Promise<void>;
+  updateReferralsReceived({ userId }: { userId: number }): Promise<void>;
 
-  getAgentsByStateAndClientType(
-    state: string,
-    clientType: string
-  ): Promise<AgentAnalytic[]>;
+  getAgentsByStateAndClientType(state: string, clientType: string): Promise<AgentAnalytic[]>;
 
   // Add new method to fetch all agents
   getAllAgents(): Promise<AgentAnalytic[]>;
@@ -44,25 +25,18 @@ class AgentAnalyticsRepo implements IAgentAnalyticsRepo {
       agentAnalytic.referralsReceived = 0;
       agentAnalytic.referralsSent = 0;
       agentAnalytic.agentToAgentRatingNumber = 0;
-      agentAnalytic.clientToAgentRatingNumber = 0;
       agentAnalytic.agentToAgentRatingScore = 0;
-      agentAnalytic.clientToAgentRatingScore = 0;
       agentAnalytic.agentToAgentRating = 0;
-      agentAnalytic.clientToAgentRating = 0;
       agentAnalytic.yearsOfExperience = 0;
       agentAnalytic.housesSold = 0;
-      agentAnalytic.listingsSold = 0;
+      agentAnalytic.housesBought = 0;
 
       await agentAnalytic.save();
     } catch (err) {
       throw new Error(`${err}`);
     }
   }
-  async updateReferralsSent({
-    analyticsId,
-  }: {
-    analyticsId: number;
-  }): Promise<void> {
+  async updateReferralsSent({ analyticsId }: { analyticsId: number }): Promise<void> {
     try {
       const agentAnalytic: AgentAnalytic | null = await AgentAnalytic.findOne({
         where: { id: analyticsId },
@@ -77,13 +51,7 @@ class AgentAnalyticsRepo implements IAgentAnalyticsRepo {
       throw new Error(`${err}`);
     }
   }
-  async updateAgentToAgentRating({
-    userId,
-    ratingScore,
-  }: {
-    userId: number;
-    ratingScore: number;
-  }): Promise<void> {
+  async updateAgentToAgentRating({ userId, ratingScore }: { userId: number; ratingScore: number }): Promise<void> {
     try {
       const agentAnalytic: AgentAnalytic | null = await AgentAnalytic.findOne({
         where: { id: userId },
@@ -91,45 +59,16 @@ class AgentAnalyticsRepo implements IAgentAnalyticsRepo {
 
       if (!agentAnalytic) throw new Error("Analytics not found");
 
-      agentAnalytic.agentToAgentRatingScore =
-        agentAnalytic.agentToAgentRatingScore + ratingScore;
-      agentAnalytic.agentToAgentRatingNumber =
-        agentAnalytic.agentToAgentRatingNumber + 1;
+      agentAnalytic.agentToAgentRatingScore = agentAnalytic.agentToAgentRatingScore + ratingScore;
+      agentAnalytic.agentToAgentRatingNumber = agentAnalytic.agentToAgentRatingNumber + 1;
 
       await agentAnalytic.save();
     } catch (err) {
       throw new Error(`${err}`);
     }
   }
-  async updateClientToAgentRating({
-    userId,
-    ratingScore,
-  }: {
-    userId: number;
-    ratingScore: number;
-  }): Promise<void> {
-    try {
-      const agentAnalytic: AgentAnalytic | null = await AgentAnalytic.findOne({
-        where: { id: userId },
-      });
 
-      if (!agentAnalytic) throw new Error("Analytics not found");
-
-      agentAnalytic.clientToAgentRatingScore =
-        agentAnalytic.clientToAgentRatingScore + ratingScore;
-      agentAnalytic.clientToAgentRatingNumber =
-        agentAnalytic.clientToAgentRatingNumber + 1;
-
-      await agentAnalytic.save();
-    } catch (err) {
-      throw new Error(`${err}`);
-    }
-  }
-  async deleteAnalytic({
-    analyticsId,
-  }: {
-    analyticsId: number;
-  }): Promise<void> {
+  async deleteAnalytic({ analyticsId }: { analyticsId: number }): Promise<void> {
     try {
       const agentAnalytic: AgentAnalytic | null = await AgentAnalytic.findOne({
         where: { id: analyticsId },
@@ -142,11 +81,7 @@ class AgentAnalyticsRepo implements IAgentAnalyticsRepo {
       throw new Error(`${err}`);
     }
   }
-  async getAgentAnalytic({
-    userId,
-  }: {
-    userId: number;
-  }): Promise<AgentAnalytic> {
+  async getAgentAnalytic({ userId }: { userId: number }): Promise<AgentAnalytic> {
     try {
       const agentAnalytic: AgentAnalytic | null = await AgentAnalytic.findOne({
         where: { userId: userId },
@@ -170,14 +105,15 @@ class AgentAnalyticsRepo implements IAgentAnalyticsRepo {
     }
   }
 
-  async updateReferralsReceived({
-    analyticsId,
-  }: {
-    analyticsId: number;
-  }): Promise<void> {
+  async updateReferralsReceived({ userId }: { userId: number }): Promise<void> {
     try {
       const agentAnalytic: AgentAnalytic | null = await AgentAnalytic.findOne({
-        where: { id: analyticsId },
+        include: [
+          {
+            model: User,
+            where: { id: userId },
+          },
+        ],
       });
 
       if (!agentAnalytic) throw new Error("Analytics not found");
@@ -189,13 +125,7 @@ class AgentAnalyticsRepo implements IAgentAnalyticsRepo {
       throw new Error(`${err}`);
     }
   }
-  async updateYearsOfExperience({
-    analyticsId,
-    yearsOfExperience,
-  }: {
-    analyticsId: number;
-    yearsOfExperience: number;
-  }): Promise<void> {
+  async updateYearsOfExperience({ analyticsId, yearsOfExperience }: { analyticsId: number; yearsOfExperience: number }): Promise<void> {
     try {
       const agentAnalytic: AgentAnalytic | null = await AgentAnalytic.findOne({
         where: { id: analyticsId },
@@ -210,42 +140,40 @@ class AgentAnalyticsRepo implements IAgentAnalyticsRepo {
       throw new Error(`${err}`);
     }
   }
-  async updateListingsSold({
-    analyticsId,
-    listingsSold,
-  }: {
-    analyticsId: number;
-    listingsSold: number;
-  }): Promise<void> {
+  async incrementHousesBought({ userId }: { userId: number }): Promise<void> {
     try {
       const agentAnalytic: AgentAnalytic | null = await AgentAnalytic.findOne({
-        where: { id: analyticsId },
+        include: [
+          {
+            model: User,
+            where: { id: userId },
+          },
+        ],
       });
 
       if (!agentAnalytic) throw new Error("Analytics not found");
 
-      agentAnalytic.listingsSold = listingsSold;
+      agentAnalytic.housesBought = agentAnalytic.housesBought + 1;
 
       await agentAnalytic.save();
     } catch (err) {
       throw new Error(`${err}`);
     }
   }
-  async updateHousesSold({
-    analyticsId,
-    housesSold,
-  }: {
-    analyticsId: number;
-    housesSold: number;
-  }): Promise<void> {
+  async incrementHousesSold({ userId }: { userId: number }): Promise<void> {
     try {
       const agentAnalytic: AgentAnalytic | null = await AgentAnalytic.findOne({
-        where: { id: analyticsId },
+        include: [
+          {
+            model: User,
+            where: { id: userId },
+          },
+        ],
       });
 
       if (!agentAnalytic) throw new Error("Analytics not found");
 
-      agentAnalytic.housesSold = housesSold;
+      agentAnalytic.housesSold = agentAnalytic.housesSold + 1;
 
       await agentAnalytic.save();
     } catch (err) {
@@ -253,10 +181,7 @@ class AgentAnalyticsRepo implements IAgentAnalyticsRepo {
     }
   }
 
-  async getAgentsByStateAndClientType(
-    state: string,
-    clientType: string
-  ): Promise<AgentAnalytic[]> {
+  async getAgentsByStateAndClientType(state: string, clientType: string): Promise<AgentAnalytic[]> {
     try {
       const agentAnalytics: AgentAnalytic[] = await AgentAnalytic.findAll({
         include: [
@@ -275,7 +200,14 @@ class AgentAnalyticsRepo implements IAgentAnalyticsRepo {
 
   async getAllAgents(): Promise<AgentAnalytic[]> {
     try {
-      const agentAnalytics: AgentAnalytic[] = await AgentAnalytic.findAll();
+      const agentAnalytics: AgentAnalytic[] = await AgentAnalytic.findAll({
+        include: [
+          {
+            attributes: [User.USER_NAME],
+            model: User,
+          },
+        ],
+      });
 
       return agentAnalytics;
     } catch (err) {

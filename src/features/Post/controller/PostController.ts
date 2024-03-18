@@ -43,15 +43,36 @@ class PostWithImages {
   imagesName: string[] | null;
 }
 
+export interface PostSaveData {
+  userId: number;
+  postText: string;
+  uniquePostName: string;
+  postType: string;
+  madeReferralId: number;
+  updatedProfileId: number;
+  sharedLikedCommentedId: number;
+}
+
+export interface PostShareData {
+  userId: number;
+  postText: string;
+  sharedLikedCommentedId: number;
+}
+
 // Create a PostController class for handling post-related operations
 class PostController {
   async savePost(req: Request, res: Response) {
     try {
+      console.log(req.files);
       console.log(req.body);
       // Retrieve post data from request body
       const postText: string = req.body.postText;
       const userId: number = req.body.userId;
+      const uniquePostName: string = req.body.uniqueFolderName;
+
       let fileNames: string[] | null = null;
+
+      console.log(req.files);
 
       // Extract filenames from uploaded files
       if (req.files !== undefined) {
@@ -60,8 +81,6 @@ class PostController {
           fileNames?.push(file.filename);
         });
       }
-
-      const uniquePostName: string = req.body.uniqueFolderName;
 
       // Save the post to the database
       await PostRepo.savePost({
@@ -77,6 +96,36 @@ class PostController {
     } catch (err) {
       res.status(500).json({
         message: `Failed to save post ${err}`,
+      });
+    }
+  }
+  async sharePost(req: Request, res: Response) {
+    try {
+      const reqBody = req.body as PostShareData;
+
+      await PostRepo.sharePost(reqBody);
+
+      res.status(200).json({
+        message: "Post shared successfully",
+      });
+    } catch (err) {
+      res.status(500).json({
+        message: `Failed to share post ${err}`,
+      });
+    }
+  }
+  async deletePost(req: Request, res: Response) {
+    try {
+      const postId: number = parseInt(req.params.postId);
+
+      await PostRepo.deletePost({ postId: postId });
+
+      res.status(200).json({
+        message: "Post deleted successfully",
+      });
+    } catch (err) {
+      res.status(500).json({
+        message: `Failed to delete post ${err}`,
       });
     }
   }

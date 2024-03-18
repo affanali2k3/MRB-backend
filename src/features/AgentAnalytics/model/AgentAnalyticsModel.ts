@@ -6,27 +6,16 @@ import { User } from "../../UserProfile/model/User";
 })
 export class AgentAnalytic extends Model {
   public static TABLE_NAME = "agent_analytics" as string;
-  public static ID = "agent_analytic_id" as string;
-  public static REFERRALS_SENT = "agent_analytic_referrals_sent" as string;
-  public static REFERRALS_RECEIVED =
-    "agent_analytic_referrals_received" as string;
-  public static YEARS_OF_EXPERIENCE =
-    "agent_analytic_years_of_experience" as string;
-  public static HOUSES_SOLD = "agent_analytic_houses_sold" as string;
-  public static LISTINGS_SOLD = "agent_analytic_listings_sold" as string;
-  public static AGENT_TO_AGENT_RATING_SCORE =
-    "agent_analytic_agent_to_agent_rating_score" as string;
-  public static AGENT_TO_AGENT_RATING =
-    "agent_analytic_agent_to_agent_rating" as string;
-  public static CLIENT_TO_AGENT_RATING_SCORE =
-    "agent_analytic_client_to_agent_rating_score" as string;
-  public static CLIENT_TO_AGENT_RATING =
-    "agent_analytic_client_to_agent_rating" as string;
-  public static AGENT_TO_AGENT_RATING_NUMBER =
-    "agent_analytic_agent_to_agent_rating_number" as string;
-  public static CLIENT_TO_AGENT_RATING_NUMBER =
-    "agent_analytic_client_to_agent_rating_number" as string;
-  public static USER_ID = "agent_analytic_user_id" as string;
+  public static ID = "id" as string;
+  public static USER_ID = "user_id" as string;
+  public static REFERRALS_SENT = "referrals_sent" as string;
+  public static REFERRALS_RECEIVED = "referrals_received" as string;
+  public static YEARS_OF_EXPERIENCE = "years_of_experience" as string;
+  public static HOUSES_SOLD = "houses_sold" as string;
+  public static HOUSES_BOUGHT = "houses_bought" as string;
+  public static AGENT_TO_AGENT_RATING_SCORE = "agent_to_agent_rating_score" as string;
+  public static AGENT_TO_AGENT_RATING = "agent_to_agent_rating" as string;
+  public static AGENT_TO_AGENT_RATING_NUMBER = "agent_to_agent_rating_number" as string;
 
   @Column({
     type: DataType.INTEGER,
@@ -52,10 +41,10 @@ export class AgentAnalytic extends Model {
 
   @Column({
     type: DataType.INTEGER,
-    field: AgentAnalytic.LISTINGS_SOLD,
+    field: AgentAnalytic.HOUSES_BOUGHT,
     allowNull: false,
   })
-  listingsSold!: number;
+  housesBought!: number;
 
   @Column({
     type: DataType.INTEGER,
@@ -86,32 +75,11 @@ export class AgentAnalytic extends Model {
   agentToAgentRating!: number;
 
   @Column({
-    type: DataType.FLOAT,
-    field: AgentAnalytic.CLIENT_TO_AGENT_RATING,
-    allowNull: false,
-  })
-  clientToAgentRating!: number;
-
-  @Column({
-    type: DataType.FLOAT,
-    field: AgentAnalytic.CLIENT_TO_AGENT_RATING_SCORE,
-    allowNull: false,
-  })
-  clientToAgentRatingScore!: number;
-
-  @Column({
     type: DataType.INTEGER,
     field: AgentAnalytic.AGENT_TO_AGENT_RATING_NUMBER,
     allowNull: false,
   })
   agentToAgentRatingNumber!: number;
-
-  @Column({
-    type: DataType.INTEGER,
-    field: AgentAnalytic.CLIENT_TO_AGENT_RATING_NUMBER,
-    allowNull: false,
-  })
-  clientToAgentRatingNumber!: number;
 
   @Column({
     type: DataType.INTEGER,

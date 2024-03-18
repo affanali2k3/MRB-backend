@@ -42,6 +42,25 @@ class CommentController {
       });
     }
   }
+  async deleteComment(req: Request, res: Response) {
+    try {
+      const commentId: number = parseInt(req.query.commentId as string);
+      const postId: number = parseInt(req.query.postId as string);
+
+      await CommentRepository.deleteComment({
+        commentId: commentId,
+        postId: postId,
+      });
+
+      res.status(200).json({
+        message: "Comment deleted successfully",
+      });
+    } catch (err) {
+      res.status(500).json({
+        message: `Failed to delete Comment ${err}`,
+      });
+    }
+  }
 
   // Method to get comments for a specific post
   async getPostComments(req: Request, res: Response) {

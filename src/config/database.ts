@@ -84,7 +84,11 @@ class Database {
       foreignKey: SenderAgentDirectForm.SENDER_AGENT,
     });
 
-    UserAssociates.hasMany(UserAssociates, {
+    User.hasMany(UserAssociates, {
+      foreignKey: UserAssociates.USER_ID,
+    });
+
+    UserAssociates.belongsTo(User, {
       foreignKey: UserAssociates.USER_ID,
     });
 

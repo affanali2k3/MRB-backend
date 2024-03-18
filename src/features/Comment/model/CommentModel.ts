@@ -24,8 +24,8 @@ export class Comment extends Model {
   @Column({
     type: DataType.INTEGER,
     field: Comment.POST_ID,
+    references: { model: Post, key: Post.ID }, // Set up a foreign key relationship with the "posts" table
     allowNull: false,
-    references: { model: Post.POST_TABLE_NAME, key: Post.POST_ID }, // Set up a foreign key relationship with the "posts" table
   })
   postId!: number; // Define the post ID column
 

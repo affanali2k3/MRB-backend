@@ -1,18 +1,11 @@
 import { User } from "../../UserProfile/model/User";
+import { PostShareData } from "../controller/PostController";
 import { PostImages } from "../model/PostImages";
-import { Post } from "../model/PostModel";
+import { Post, PostTypes } from "../model/PostModel";
 
 // Interface that defines the methods of the PostRepo class
 interface IPostRepo {
-  savePost({
-    userId,
-    postText,
-    postName,
-  }: {
-    userId: number;
-    postText: string;
-    postName: string | null;
-  }): Promise<void>;
+  savePost({ userId, postText, postName }: { userId: number; postText: string; postName: string | null }): Promise<void>;
   getAllPosts({ userId }: { userId: number }): Promise<Post[]>;
   getImageNamesOfPost({ postId }: { postId: number }): Promise<string[]>;
 }
@@ -37,8 +30,7 @@ class PostRepo implements IPostRepo {
       post.text = postText;
       post.userId = userId;
       post.name = postName;
-      post.likes = 0;
-      post.comments = 0;
+      post.type = PostTypes.DEFAULT;
 
       // Save the post to the database
       const newPost = await post.save();
@@ -47,11 +39,83 @@ class PostRepo implements IPostRepo {
       if (fileNames === null) return;
 
       for (const fileName of fileNames) {
+        console.log(fileName);
         const postImage = new PostImages();
         postImage.postId = newPost.id;
         postImage.image_name = fileName;
         await postImage.save();
       }
+    } catch (err) {
+      throw new Error(`${err}`);
+    }
+  }
+
+  async sharePost(data: PostShareData): Promise<void> {
+    try {
+      const post = new Post();
+
+      post.text = data.postText;
+      post.userId = data.userId;
+      post.sharedLikedCommentedId = data.sharedLikedCommentedId;
+      post.type = PostTypes.SHARED_POST;
+
+      await post.save();
+    } catch (err) {
+      throw new Error(`${err}`);
+    }
+  }
+
+  async createMadeReferralPost({ userId, referralId }: { userId: number; referralId: number }): Promise<void> {
+    try {
+      const post = new Post();
+
+      post.userId = userId;
+      post.madeReferralId = referralId;
+      post.type = PostTypes.MADE_REFERRAL;
+
+      await post.save();
+    } catch (err) {
+      throw new Error(`${err}`);
+    }
+  }
+
+  async createUpdatedProfilePost({ userId }: { userId: number }): Promise<void> {
+    try {
+      const post = new Post();
+
+      post.userId = userId;
+      post.type = PostTypes.UPDATED_PROFILE;
+
+      await post.save();
+    } catch (err) {
+      throw new Error(`${err}`);
+    }
+  }
+
+  async createLikedPost({ userId, postId }: { userId: number; postId: number }): Promise<void> {
+    try {
+      const post = new Post();
+
+      post.userId = userId;
+      post.sharedLikedCommentedId = postId;
+      post.type = PostTypes.LIKED_POST;
+
+      await post.save();
+    } catch (err) {
+      throw new Error(`${err}`);
+    }
+  }
+
+  async createCommentedOnPost({ userId, postId, comment }: { userId: number; postId: number; comment: string }): Promise<void> {
+    try {
+      const post = new Post();
+
+      post.userId = userId;
+      post.text = comment;
+      post.sharedLikedCommentedId = postId;
+      post.type = PostTypes.COMMENTED_ON_POST;
+
+      await post.save();
     } catch (err) {
       throw new Error(`${err}`);
     }
@@ -84,6 +148,18 @@ class PostRepo implements IPostRepo {
         })
       ).map((postImage) => postImage.image_name);
       return imageNames;
+    } catch (err) {
+      throw new Error(`${err}`);
+    }
+  }
+
+  async deletePost({ postId }: { postId: number }) {
+    try {
+      const post: Post | null = await Post.findOne({ where: { id: postId } });
+
+      if (!post) throw new Error("Post does not exist");
+
+      await post.destroy();
     } catch (err) {
       throw new Error(`${err}`);
     }

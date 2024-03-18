@@ -28,9 +28,10 @@ class SenderAgentFormController {
         userId: userId,
       });
 
-      const directFormsProposalsReceivedByUser: ReceiverAgentDirectForm[] = await ReceiverAgentFormRepo.getDirectFormsProposalsReceivedByUser({
-        userId: userId,
-      });
+      const directFormsProposalsReceivedByUser: ReceiverAgentDirectForm[] =
+        await ReceiverAgentFormRepo.getDirectFormsProposalsReceivedByUser({
+          userId: userId,
+        });
 
       res.status(200).send({
         message: "Got proposals successfully",
@@ -49,9 +50,10 @@ class SenderAgentFormController {
       const userIdString: string = req.query.userId as string;
       const userId: number = parseInt(userIdString);
 
-      const directFormsProposalsReceivedByUser: ReceiverAgentDirectForm[] = await ReceiverAgentFormRepo.getDirectFormsProposalsReceivedByUser({
-        userId: userId,
-      });
+      const directFormsProposalsReceivedByUser: ReceiverAgentDirectForm[] =
+        await ReceiverAgentFormRepo.getDirectFormsProposalsReceivedByUser({
+          userId: userId,
+        });
 
       res.status(200).send({
         message: "Got proposals successfully",
@@ -65,26 +67,26 @@ class SenderAgentFormController {
     }
   }
 
-  async changeOpenFormConsideringStatus(req: Request, res: Response) {
-    try {
-      const receiverAgentOpenFormId: number = req.body.receiverAgentOpenFormId;
-      const status: string = req.body.status;
+  // async changeOpenFormConsideringStatus(req: Request, res: Response) {
+  //   try {
+  //     const receiverAgentOpenFormId: number = req.body.receiverAgentOpenFormId;
+  //     const status: string = req.body.status;
 
-      await ReceiverAgentFormRepo.changeOpenFormConsideringStatus({
-        receiverAgentOpenFormId: receiverAgentOpenFormId,
-        status: status,
-      });
+  //     await ReceiverAgentFormRepo.changeOpenFormConsideringStatus({
+  //       receiverAgentOpenFormId: receiverAgentOpenFormId,
+  //       status: status,
+  //     });
 
-      res.status(200).send({
-        message: "Changed form considering status succesfully",
-      });
-    } catch (err) {
-      res.status(500).send({
-        message: "Changing form considering status failed",
-        error: `${err}`,
-      });
-    }
-  }
+  //     res.status(200).send({
+  //       message: "Changed form considering status succesfully",
+  //     });
+  //   } catch (err) {
+  //     res.status(500).send({
+  //       message: "Changing form considering status failed",
+  //       error: `${err}`,
+  //     });
+  //   }
+  // }
   async rejectReceivedProposal(req: Request, res: Response) {
     try {
       const receiverAgentFormId: number = req.body.receiverAgentFormId;
@@ -125,26 +127,26 @@ class SenderAgentFormController {
       });
     }
   }
-  async changeDirectFormConsideringStatus(req: Request, res: Response) {
-    try {
-      const receiverAgentDirectFormId: number = req.body.receiverAgentDirectFormId;
-      const status: string = req.body.status;
+  // async changeDirectFormConsideringStatus(req: Request, res: Response) {
+  //   try {
+  //     const receiverAgentDirectFormId: number = req.body.receiverAgentDirectFormId;
+  //     const status: string = req.body.status;
 
-      await ReceiverAgentFormRepo.changeDirectFormConsideringStatus({
-        receiverAgentDirectFormId: receiverAgentDirectFormId,
-        status: status,
-      });
+  //     await ReceiverAgentFormRepo.changeDirectFormConsideringStatus({
+  //       receiverAgentDirectFormId: receiverAgentDirectFormId,
+  //       status: status,
+  //     });
 
-      res.status(200).send({
-        message: "Changed form considering status succesfully",
-      });
-    } catch (err) {
-      res.status(500).send({
-        message: "Changing form considering status failed",
-        error: `${err}`,
-      });
-    }
-  }
+  //     res.status(200).send({
+  //       message: "Changed form considering status succesfully",
+  //     });
+  //   } catch (err) {
+  //     res.status(500).send({
+  //       message: "Changing form considering status failed",
+  //       error: `${err}`,
+  //     });
+  //   }
+  // }
 
   async getOpenFormsSentByUser(req: Request, res: Response) {
     try {
@@ -167,7 +169,6 @@ class SenderAgentFormController {
   async createForm(req: Request, res: Response) {
     try {
       const reqData: ReceiverAgentFormValues = req.body;
-      console.log(reqData);
       await ReceiverAgentFormRepo.createForm(reqData);
 
       res.status(200).send({

@@ -50,6 +50,7 @@ class SenderAgentFormRepo implements ISenderAgentFormRepo {
   async createForm(values: SenderAgentFormValues): Promise<void> {
     try {
       if (values.formType === SenderAgentFormType.Direct) {
+        if (values.senderAgent === values.receiverAgent) throw new Error("Cannot share form with yourself");
         const senderAgentDirectForm = new SenderAgentDirectForm();
 
         senderAgentDirectForm.senderAgent = values.senderAgent;
@@ -58,7 +59,7 @@ class SenderAgentFormRepo implements ISenderAgentFormRepo {
         senderAgentDirectForm.isBuyer = values.isBuyer;
         senderAgentDirectForm.city = values.city;
         senderAgentDirectForm.state = values.state;
-        senderAgentDirectForm.timeAmount = values.time_amount;
+        senderAgentDirectForm.timeAmount = values.timeAmount;
         senderAgentDirectForm.details = values.details;
         senderAgentDirectForm.typeOfHouse = values.typeOfHouse;
 
@@ -74,7 +75,7 @@ class SenderAgentFormRepo implements ISenderAgentFormRepo {
         senderAgentopenForm.isBuyer = values.isBuyer;
         senderAgentopenForm.city = values.city;
         senderAgentopenForm.state = values.state;
-        senderAgentopenForm.timeAmount = values.time_amount;
+        senderAgentopenForm.timeAmount = values.timeAmount;
         senderAgentopenForm.providence = values.providence;
         senderAgentopenForm.details = values.details;
         senderAgentopenForm.typeOfHouse = values.typeOfHouse;

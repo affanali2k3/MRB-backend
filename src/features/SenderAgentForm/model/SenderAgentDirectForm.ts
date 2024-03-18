@@ -6,29 +6,26 @@ import { User } from "../../UserProfile/model/User";
 })
 export class SenderAgentDirectForm extends Model {
   public static TABLE_NAME = "sender_agent_direct_forms" as string;
-  public static ID = "sender_agent_direct_forms_id" as string;
+  public static ID = "id" as string;
   // The email of the agent who has sent the lead
-  public static SENDER_AGENT =
-    "sender_agent_direct_forms_sender_agent" as string;
+  public static SENDER_AGENT = "sender_agent" as string;
   // The email of the agent who will receive this lead
-  public static RECEIVER_AGENT =
-    "sender_agent_direct_forms_receiver_agent" as string;
+  public static RECEIVER_AGENT = "receiver_agent" as string;
   // Specify if the lead is a buyer or seller
-  public static IS_BUYER = "sender_agent_direct_forms_is_buyer" as string;
+  public static IS_BUYER = "client_is_buyer" as string;
   // Lead address
-  public static CITY = "sender_agent_direct_forms_city" as string;
-  public static STATE = "sender_agent_direct_forms_state" as string;
-  public static PROVIDENCE = "sender_agent_direct_forms_providence" as string;
+  public static CITY = "client_city" as string;
+  public static STATE = "client_state" as string;
+  public static PROVIDENCE = "client_providence" as string;
   // When is the lead looking to purchase or sell a home
-  public static time_amount = "sender_agent_direct_forms_time_amount" as string;
-  public static time_unit = "sender_agent_direct_forms_time_unit" as string;
+  public static TIME_AMOUNT = "time_amount" as string;
+  public static TIME_UNIT = "time_unit" as string;
 
   // The approximate price of the home
-  public static PRICE = "sender_agent_direct_forms_price" as string;
+  public static PRICE = "price" as string;
 
-  public static details = "sender_agent_direct_forms_details" as string;
-  public static typeOfHouse =
-    "sender_agent_direct_forms_type_of_house" as string;
+  public static DETAILS = "details" as string;
+  public static TYPE_OF_HOUSE = "type_of_house" as string;
 
   @Column({
     type: DataType.INTEGER,
@@ -64,21 +61,21 @@ export class SenderAgentDirectForm extends Model {
   isBuyer!: boolean;
 
   @Column({
-    type: DataType.TEXT,
+    type: DataType.STRING,
     field: SenderAgentDirectForm.CITY,
     allowNull: false,
   })
   city!: string;
 
   @Column({
-    type: DataType.TEXT,
+    type: DataType.STRING,
     field: SenderAgentDirectForm.STATE,
     allowNull: false,
   })
   state!: string;
 
   @Column({
-    type: DataType.TEXT,
+    type: DataType.STRING,
     field: SenderAgentDirectForm.PROVIDENCE,
     allowNull: false,
   })
@@ -87,19 +84,20 @@ export class SenderAgentDirectForm extends Model {
   // Only this value can be null
   @Column({
     type: DataType.INTEGER,
-    field: SenderAgentDirectForm.time_amount,
+    field: SenderAgentDirectForm.TIME_AMOUNT,
     allowNull: false,
   })
   timeAmount!: number | null;
 
   @Column({
     type: DataType.TEXT,
-    field: SenderAgentDirectForm.details,
+    field: SenderAgentDirectForm.DETAILS,
   })
   details!: string | null;
+
   @Column({
-    type: DataType.TEXT,
-    field: SenderAgentDirectForm.typeOfHouse,
+    type: DataType.STRING,
+    field: SenderAgentDirectForm.TYPE_OF_HOUSE,
     allowNull: false,
   })
   typeOfHouse!: string | null;

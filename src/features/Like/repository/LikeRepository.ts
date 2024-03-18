@@ -1,4 +1,5 @@
 import { Post } from "../../Post/model/PostModel"; // Import the Post model
+import PostRepository from "../../Post/repository/PostRepository";
 import { Like } from "../model/LikeModel"; // Import the Like model
 
 // Interface for the Like Repository
@@ -25,6 +26,8 @@ class LikeRepo implements ILikeRepo {
 
       // Save the like
       await like.save();
+
+      await PostRepository.createLikedPost({ userId: userId, postId: postId });
 
       // Find the post related to the like
       const post = await Post.findOne({ where: { id: postId } });
@@ -68,6 +71,8 @@ class LikeRepo implements ILikeRepo {
       const post = await Post.findOne({ where: { id: postId } });
 
       if (!post) return;
+
+      if (like.postId !== postId) throw new Error("Like post id does not match the real post id");
 
       // Decrement the post's likes count
       post.likes = post.likes - 1;

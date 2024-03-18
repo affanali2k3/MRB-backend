@@ -10,6 +10,7 @@ class CommentRouter extends BaseRoutes {
 
     // Define a GET route to get comments for a specific post, using the getPostComments method from the CommentController
     this.router.get("/:postId", CommentController.getPostComments);
+    this.router.delete("/delete", CommentController.deleteComment);
   }
 }
 

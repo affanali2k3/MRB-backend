@@ -8,7 +8,7 @@ import PostMiddleware from "../middleware/PostMiddleware";
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     const userId: number = req.body.userId;
-    const uniqueFolderName: string = req.body.uniqueFolderName;
+    const uniqueFolderName = req.body.uniqueFolderName;
     console.log(userId);
     const destinationPath = `./storage/${userId}/postImages/${uniqueFolderName}/`;
     console.log(destinationPath);
@@ -36,9 +36,11 @@ const upload = multer({ storage });
 
 class PostRouter extends BaseRoutes {
   public routes(): void {
-    this.router.post("/", upload.array("images"), PostMiddleware.savePostVerify, PostController.savePost); //
+    this.router.post("/create", upload.array("images"), PostController.savePost);
+    this.router.post("/delete", PostController.savePost);
+    this.router.post("/share", PostController.sharePost); //
     // this.router.get("/:userEmail", PostController.getAllPosts);//
-    this.router.get("/get-all", PostMiddleware.getPostsVerify, PostController.getAllPosts); //
+    this.router.get("/get-all", PostController.getAllPosts); //
     this.router.get("/post-image", PostController.getPostImage); //
   }
 }

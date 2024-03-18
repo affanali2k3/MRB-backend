@@ -1,4 +1,5 @@
 import { User } from "../../UserProfile/model/User";
+import { AssociationStatus } from "../controller/UserAssociatesController";
 import { UserAssociates } from "../model/UserAssociates";
 import { Op, Sequelize, UniqueConstraintError, literal } from "sequelize"; // Import the error class
 
@@ -43,7 +44,7 @@ export class UserAssociatesRepo implements IUserAssociatesRepo {
       const newAssociation = new UserAssociates();
       newAssociation.userId = senderId;
       newAssociation.associateId = receiverId;
-      newAssociation.status = "Pending";
+      newAssociation.status = AssociationStatus.PENDING;
 
       // Save the new association
       await newAssociation.save();
@@ -62,8 +63,10 @@ export class UserAssociatesRepo implements IUserAssociatesRepo {
 
       if (!association) throw new Error("There is no friend request");
 
+      if (association.status === AssociationStatus.ACCEPTED) throw new Error("Already associated");
+
       // Update the association's status to "Accepted"
-      association.status = "Accepted";
+      association.status = AssociationStatus.ACCEPTED;
 
       // Save the updated association
       await association.save();
@@ -109,16 +112,15 @@ export class UserAssociatesRepo implements IUserAssociatesRepo {
 
   async getAllAssociates({ userId }: { userId: number }) {
     try {
-      // Fetch all users associated with the provided user's email and with "Accepted" status
       const usersWithAcceptedAssociates = await User.findAll({
         where: {
           id: {
             [Op.in]: literal(`(
                       SELECT ${UserAssociates.ASSOCIATE_ID}
                       FROM ${UserAssociates.TABLE_NAME}
-                      WHERE ${User.ID} = '${userId}' AND ${UserAssociates.ASSOCIATION_STATUS} = 'Accepted'
+                      WHERE ${UserAssociates.USER_ID} = '${userId}' AND ${UserAssociates.ASSOCIATION_STATUS} = 'Accepted'
                       UNION
-                      SELECT ${User.ID}
+                      SELECT ${UserAssociates.USER_ID}
                       FROM ${UserAssociates.TABLE_NAME}
                       WHERE ${UserAssociates.ASSOCIATE_ID} = '${userId}' AND ${UserAssociates.ASSOCIATION_STATUS} = 'Accepted'
                       )
@@ -126,6 +128,7 @@ export class UserAssociatesRepo implements IUserAssociatesRepo {
           },
         },
       });
+
       return usersWithAcceptedAssociates;
     } catch (err) {
       throw new Error(`${err}`);

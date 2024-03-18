@@ -50,11 +50,8 @@ class FeedController {
   // Method to get the feed for a specific user
   async getFeedForUser(req: Request, res: Response) {
     try {
-      const userIdString: string = req.query.userId as string;
-      const userId: number = parseInt(userIdString);
-
-      const pageString: string = req.query.page as string;
-      const page: number = parseInt(pageString);
+      const userId: number = parseInt(req.query.userId as string);
+      const page: number = parseInt(req.query.page as string);
 
       const postsPerPage: number = 3;
 

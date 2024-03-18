@@ -3,23 +3,6 @@ import AgentAnalyticsRepo from "../repository/AgentAnalyticsRepo";
 import { AgentAnalytic } from "../model/AgentAnalyticsModel";
 
 class AgentAnalyticController {
-  async createAnalytic(req: Request, res: Response) {
-    try {
-      const userId: number = req.body.userId;
-
-      await AgentAnalyticsRepo.createAnalytic({ userId: userId });
-
-      res.status(200).json({
-        message: "Analytic created succesfully",
-      });
-    } catch (err: any) {
-      res.status(500).json({
-        message: "Failed to create analytic ",
-        error: err.toString(),
-      });
-    }
-  }
-
   async updateReferralsSent(req: Request, res: Response) {
     try {
       const analyticId: number = req.body.analyticId;
@@ -36,6 +19,7 @@ class AgentAnalyticController {
       });
     }
   }
+
   async updateAgentToAgentRating(req: Request, res: Response) {
     try {
       const userId: number = req.body.userId;
@@ -56,49 +40,13 @@ class AgentAnalyticController {
       });
     }
   }
-  async updateClientToAgentRating(req: Request, res: Response) {
-    try {
-      const userId: number = req.body.userId;
-      const ratingScore: number = req.body.ratingScore;
 
-      await AgentAnalyticsRepo.updateClientToAgentRating({
-        userId: userId,
-        ratingScore: ratingScore,
-      });
-
-      res.status(200).json({
-        message: "Client to agent review updated succesfully",
-      });
-    } catch (err: any) {
-      res.status(500).json({
-        message: "Failed to update client to agent review",
-        error: err.toString(),
-      });
-    }
-  }
-  async deleteAnalytic(req: Request, res: Response) {
-    try {
-      const analyticId: number = parseInt(req.params.analyticId);
-
-      await AgentAnalyticsRepo.deleteAnalytic({ analyticsId: analyticId });
-
-      res.status(200).json({
-        message: "Analytic deleted succesfully",
-      });
-    } catch (err: any) {
-      res.status(500).json({
-        message: "Failed to delete analytic",
-        error: err.toString(),
-      });
-    }
-  }
   async getAgentAnalytic(req: Request, res: Response) {
     try {
       const userIdString: string = req.query.userId as string;
       const userId: number = parseInt(userIdString);
 
-      const agentAnalytic: AgentAnalytic =
-        await AgentAnalyticsRepo.getAgentAnalytic({ userId: userId });
+      const agentAnalytic: AgentAnalytic = await AgentAnalyticsRepo.getAgentAnalytic({ userId: userId });
 
       res.status(200).json({
         message: "Analytic recieved successfully",
@@ -112,29 +60,28 @@ class AgentAnalyticController {
     }
   }
 
-  async getAllAgentAnalytics(req: Request, res: Response) {
-    try {
-      const agentAnalytics: AgentAnalytic[] =
-        await AgentAnalyticsRepo.getAllAgentAnalytics();
+  // async getAllAgentAnalytics(req: Request, res: Response) {
+  //   try {
+  //     const agentAnalytics: AgentAnalytic[] = await AgentAnalyticsRepo.getAllAgentAnalytics();
 
-      res.status(200).json({
-        message: "Analytics recieved successfully",
-        data: agentAnalytics,
-      });
-    } catch (err: any) {
-      res.status(500).json({
-        message: "Failed to recieve analytics",
-        error: err.toString(),
-      });
-    }
-  }
+  //     res.status(200).json({
+  //       message: "Analytics recieved successfully",
+  //       data: agentAnalytics,
+  //     });
+  //   } catch (err: any) {
+  //     res.status(500).json({
+  //       message: "Failed to recieve analytics",
+  //       error: err.toString(),
+  //     });
+  //   }
+  // }
 
   async updateReferralsReceived(req: Request, res: Response) {
     try {
-      const analyticId: number = req.body.analyticId;
+      const userId: number = req.body.userId;
 
       await AgentAnalyticsRepo.updateReferralsReceived({
-        analyticsId: analyticId,
+        userId: userId,
       });
 
       res.status(200).json({
@@ -169,35 +116,31 @@ class AgentAnalyticController {
     }
   }
 
-  async updateListingsSold(req: Request, res: Response) {
+  async incrementHousesBought(req: Request, res: Response) {
     try {
-      const analyticId: number = req.body.analyticId;
-      const listingsSold: number = req.body.listingsSold;
+      const userId: number = req.body.userId;
 
-      await AgentAnalyticsRepo.updateListingsSold({
-        analyticsId: analyticId,
-        listingsSold: listingsSold,
+      await AgentAnalyticsRepo.incrementHousesBought({
+        userId: userId,
       });
 
       res.status(200).json({
-        message: "Analytic listings sold updated succesfully",
+        message: "Analytic houses bought updated succesfully",
       });
     } catch (err: any) {
       res.status(500).json({
-        message: "Failed to update analytic listings sold",
+        message: "Failed to update analytic houses bought",
         error: err.toString(),
       });
     }
   }
 
-  async updateHousesSold(req: Request, res: Response) {
+  async incrementHousesSold(req: Request, res: Response) {
     try {
-      const analyticId: number = req.body.analyticId;
-      const housesSold: number = req.body.housesSold;
+      const userId: number = req.body.userId;
 
-      await AgentAnalyticsRepo.updateHousesSold({
-        analyticsId: analyticId,
-        housesSold: housesSold,
+      await AgentAnalyticsRepo.incrementHousesSold({
+        userId: userId,
       });
 
       res.status(200).json({

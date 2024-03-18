@@ -1,71 +1,96 @@
-import {
-  Model,
-  Table,
-  Column,
-  DataType,
-  ForeignKey,
-  BelongsTo,
-} from "sequelize-typescript";
+import { Model, Table, Column, DataType, ForeignKey, BelongsTo } from "sequelize-typescript";
 import { User } from "../../UserProfile/model/User";
+import { Comment } from "../../Comment/model/CommentModel";
 
+export enum PostTypes {
+  DEFAULT = "DEFAULT",
+  MADE_REFERRAL = "MADE_REFERRAL",
+  UPDATED_PROFILE = "UPDATED_PROFILE",
+  LIKED_POST = "LIKED_POST",
+  COMMENTED_ON_POST = "COMMENTED_ON_POST",
+  SHARED_POST = "SHARED_POST",
+}
 @Table({
-  tableName: Post.POST_TABLE_NAME,
+  tableName: Post.TABLE_NAME,
 })
 export class Post extends Model {
   // Define the table name for the Post model
-  public static POST_TABLE_NAME = "posts" as string;
+  public static TABLE_NAME = "posts" as string;
 
-  // Define the column names for various attributes
-  public static POST_ID = "post_id" as string;
+  public static ID = "id" as string;
   public static USER_ID = "user_id" as string;
-  public static POST_TEXT = "post_text" as string;
-  public static POST_NAME = "post_name" as string;
-  public static POST_LIKES = "post_likes" as string;
-  public static POST_COMMENTS = "post_comments" as string;
+  public static TEXT = "text" as string;
+  public static NAME = "name" as string;
+  public static LIKES = "likes" as string;
+  public static COMMENTS = "comments" as string;
+  public static TYPE = "type" as string;
+  public static MADE_REFERRAL_ID = "made_referral_id" as string;
+  public static UPDATED_PROFILE_ID = "updated_profile_user_id" as string;
+  public static SHARED_LIKED_COMMENTED_ID = "shared_liked_commented_post_id" as string;
+  public static COMMENTED_ID = "commented_id" as string;
 
-  // Define a column for the primary key (auto-incremented)
   @Column({
     type: DataType.INTEGER,
-    field: Post.POST_ID,
+    field: Post.ID,
     primaryKey: true,
     autoIncrement: true,
   })
   id!: number;
 
-  // Define a column for the post's text content
-  @Column({
-    type: DataType.STRING,
-    field: Post.POST_TEXT,
-    allowNull: false,
-  })
-  text!: string;
-
-  // Define a column for the user's email associated with the post
   @Column({
     type: DataType.INTEGER,
     field: Post.USER_ID,
+    references: { model: User, key: User.ID },
     allowNull: false,
   })
   userId!: number;
 
-  // Define a column for the post's name
+  @Column({
+    type: DataType.TEXT,
+    field: Post.TEXT,
+  })
+  text!: string;
+
   @Column({
     type: DataType.STRING,
-    field: Post.POST_NAME,
+    field: Post.NAME,
   })
   name!: string;
 
-  // Define a column for the number of likes the post has received
   @Column({
     type: DataType.INTEGER,
-    field: Post.POST_LIKES,
+    field: Post.LIKES,
+    allowNull: false,
+    defaultValue: 0,
   })
   likes!: number;
 
-  // Define a column for the number of likes the post has received
   @Column({
     type: DataType.INTEGER,
-    field: Post.POST_COMMENTS,
+    field: Post.COMMENTS,
+    allowNull: false,
+    defaultValue: 0,
   })
   comments!: number;
+
+  @Column({
+    type: DataType.STRING,
+    field: Post.TYPE,
+    allowNull: false,
+  })
+  type!: string;
+
+  @Column({
+    type: DataType.INTEGER,
+    field: Post.MADE_REFERRAL_ID,
+    // references: { model: , key: User.ID },
+  })
+  madeReferralId!: number;
+
+  @Column({
+    type: DataType.INTEGER,
+    field: Post.SHARED_LIKED_COMMENTED_ID,
+    references: { model: Post, key: Post.ID },
+  })
+  sharedLikedCommentedId!: number;
 }
