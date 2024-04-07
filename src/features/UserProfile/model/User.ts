@@ -62,7 +62,7 @@ export class User extends Model {
     type: DataType.STRING,
     field: User.LICENSE_STATE,
   })
-  licenceState!: string;
+  licenseState!: string;
 
   @Column({
     type: DataType.INTEGER,

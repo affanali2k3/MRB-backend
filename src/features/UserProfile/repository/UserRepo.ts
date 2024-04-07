@@ -7,7 +7,7 @@ import { User } from "../model/User";
 // Define the interface for UserRepo
 interface IUserRepo {
   create(user: User): Promise<void>;
-  update(data: UpdateUserData): Promise<void>;
+  update(data: UpdateUserData): Promise<User>;
   getUserByEmail(userEmail: string): Promise<User>;
   getUser(userId: number): Promise<User>;
   getAll(): Promise<User[]>;
@@ -50,7 +50,7 @@ class UserRepo implements IUserRepo {
   }
 
   // Update an existing user
-  async update(data: UpdateUserData): Promise<void> {
+  async update(data: UpdateUserData): Promise<User> {
     try {
       const updatedUser = await User.findOne({
         where: {
@@ -60,6 +60,10 @@ class UserRepo implements IUserRepo {
 
       if (!updatedUser) throw new Error("User not found");
 
+      if (data.name !== undefined) {
+        updatedUser.name = data.name;
+      }
+
       if (data.biography !== undefined) {
         updatedUser.biography = data.biography;
       }
@@ -68,20 +72,16 @@ class UserRepo implements IUserRepo {
         updatedUser.photo = data.photo;
       }
 
-      if (data.coverPhoto !== undefined) {
-        updatedUser.coverPhoto = data.coverPhoto;
-      }
-
       if (data.licenseNumber !== undefined) {
         updatedUser.licenseNumber = data.licenseNumber;
       }
 
       if (data.licenseState !== undefined) {
-        updatedUser.licenceState = data.licenseState;
+        updatedUser.licenseState = data.licenseState;
       }
 
       if (data.licenseYear !== undefined) {
-        updatedUser.licenseYear = data.licenseYear;
+        updatedUser.licenseYear = parseInt(data.licenseYear.toString());
       }
 
       if (data.phone !== undefined) {
@@ -92,6 +92,8 @@ class UserRepo implements IUserRepo {
 
       // Save the updated user
       await updatedUser.save();
+
+      return updatedUser;
     } catch (err) {
       throw new Error(`Failed to update user. ${err}`);
     }
@@ -101,6 +103,11 @@ class UserRepo implements IUserRepo {
   async getUser(userId: number): Promise<User> {
     try {
       const user = await User.findOne({
+        include: [
+          {
+            model: AgentAnalytic,
+          },
+        ],
         where: {
           id: userId,
         },
@@ -116,6 +123,11 @@ class UserRepo implements IUserRepo {
   async getUserByEmail(userEmail: string): Promise<User> {
     try {
       const user = await User.findOne({
+        include: [
+          {
+            model: AgentAnalytic,
+          },
+        ],
         where: {
           email: userEmail,
         },

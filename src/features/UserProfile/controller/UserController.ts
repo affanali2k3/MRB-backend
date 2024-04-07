@@ -3,11 +3,13 @@ import { User } from "../model/User";
 import fs from "fs";
 import path from "path";
 import UserRepo from "../repository/UserRepo";
+import AgentAnalyticsRepo from "../../AgentAnalytics/repository/AgentAnalyticsRepo";
 
 export interface UpdateUserData {
   id: number;
+  name: string;
   photo: string;
-  coverPhoto: string;
+  address: string;
   licenseNumber: string;
   licenseState: string;
   licenseYear: number;
@@ -42,7 +44,7 @@ class UserController {
       const userId: string = req.query.userId as string;
       const avatarName: string = req.query.avatarName as string;
 
-      res.sendFile(path.join("C:/Users/Affan Ali/Desktop/MRB/backend-new/master/storage/", userId, "photo", avatarName), (err) => {
+      res.sendFile(path.join("/home/affan/Desktop/MRB/MRB-backend/storage", userId, "avatar", avatarName), (err) => {
         if (!err) return;
 
         res.status(200).json({
@@ -58,45 +60,22 @@ class UserController {
     }
   }
 
-  async getUserCoverPhoto(req: Request, res: Response) {
-    try {
-      const userId: string = req.query.userId as string;
-      const coverPhotoName: string = req.query.coverPhotoName as string;
-
-      res.sendFile(path.join("C:/Users/Affan Ali/Desktop/MRB/backend-new/master/storage/", userId, "coverPhoto", coverPhotoName), (err) => {
-        if (!err) return;
-
-        res.status(200).json({
-          message: "Cannot get user cover photo",
-          error: "No cover photo exists for user",
-        });
-      });
-    } catch (err: any) {
-      res.status(500).json({
-        message: "Cannot get user cover photo",
-        error: err.toString(),
-      });
-    }
-  }
-
   // Endpoint to update user information
   async update(req: Request, res: Response) {
     try {
       const reqBody: UpdateUserData = req.body;
 
-      if (req.files !== undefined) {
-        if ("photo" in req.files) {
-          reqBody.photo = req.files["photo"][0].filename;
-        }
-        if ("coverPhoto" in req.files) {
-          reqBody.coverPhoto = req.files["coverPhoto"][0].filename;
-        }
+      console.log(req.file);
+
+      if (req.file !== undefined) {
+        reqBody.photo = req.file.filename;
       }
 
-      await UserRepo.update(reqBody);
+      const user: User = await UserRepo.update(reqBody);
 
       res.status(200).json({
         message: "User updated successfully",
+        data: user,
       });
     } catch (err) {
       res.status(500).json({
@@ -127,6 +106,7 @@ class UserController {
       });
     }
   }
+
   async getUserByEmail(req: Request, res: Response) {
     try {
       const userEmail: string = req.query.userEmail as string;

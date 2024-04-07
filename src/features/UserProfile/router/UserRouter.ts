@@ -11,13 +11,8 @@ import UserValidator from "../helper/validate";
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     const userId: number = req.body.id; // Get the value of 'email' from req.body
-    let folder;
-    if (file.fieldname === "photo") {
-      folder = "photo";
-    } else {
-      folder = "coverPhoto";
-    }
-    const destinationPath = `./storage/${userId}/${folder}`;
+
+    const destinationPath = `./storage/${userId}/avatar`;
 
     // Create the destination directory if it doesn't exist
     if (!fs.existsSync(destinationPath)) {
@@ -40,19 +35,11 @@ class UserRoutes extends BaseRoutes {
   public routes(): void {
     // Define routes and associate them with corresponding controller methods
     this.router.post("", UserController.create); // Create a new user
-    this.router.patch(
-      "/update",
-      upload.fields([
-        { name: "photo", maxCount: 1 },
-        { name: "coverPhoto", maxCount: 1 },
-      ]),
-      UserController.update
-    ); // Update user with email
+    this.router.patch("/update", upload.single("avatar"), UserController.update); // Update user with email
     this.router.get("/get-all", UserController.getAllUsers); // Get all users
     this.router.get("/get", UserController.getUser); // Get user by email
     this.router.get("/get/email", UserController.getUserByEmail); // Get user by email
     this.router.get("/avatar", UserController.getUserAvatar); // Get user avatar by userEmail
-    this.router.get("/cover-photo", UserController.getUserCoverPhoto); // Get user avatar by userEmail
   }
 }
 

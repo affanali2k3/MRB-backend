@@ -11,7 +11,11 @@ export interface UpdateAccountData {
 export interface CreateUserData {
   email: string;
   name: string;
-  code: string;
+  referralCode: string;
+  licenseNumber: string;
+  licenseState: string;
+  licenseYear: number;
+  phone: string;
 }
 
 class RegistrationController {
@@ -34,6 +38,7 @@ class RegistrationController {
   async createUser(req: Request, res: Response) {
     try {
       const reqBody = req.body as CreateUserData;
+      console.log(reqBody);
 
       await RegistrationRepo.createUser(reqBody);
 

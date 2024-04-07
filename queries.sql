@@ -14,6 +14,7 @@ SELECT * FROM agent_analytics;
 SELECT * FROM posts;
 SELECT * FROM post_images;
 SELECT * FROM comments;
+SELECT * FROM likes;
 
 -- DROP TABLES
 DROP TABLE agreements CASCADE;
@@ -31,6 +32,14 @@ DROP TABLE sender_agent_direct_forms CASCADE;
 DROP TABLE agent_analytics CASCADE;
 DROP TABLE comments CASCADE;
 DROP TABLE posts CASCADE;
+
+-- DELETE ROWS
+DELETE FROM users WHERE email='e@gmail.com'
+DELETE FROM posts WHERE user_id = 1;
+
+
+-- TRUNCATE TABLES
+TRUNCATE TABLE likes;
 
 -- ALTER TABLES
 ALTER TABLE user_associates DROP CONSTRAINT user_associates_associate_id_fkey CASCADE;

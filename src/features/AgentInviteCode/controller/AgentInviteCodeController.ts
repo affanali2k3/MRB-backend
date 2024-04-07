@@ -31,14 +31,12 @@ class AgentInviteCodeController {
         codeId: codeId,
       }); // Call the LikeRepository to save the like
 
-      const res2 = await resend.emails.send({
-        from: "affan.khan@rempower.com",
-        to: "affanalikhanxx@gmail.com",
-        subject: "Hello World",
-        html: "<p>Congrats on sending your <strong>first email</strong>!</p>",
-      });
-
-      console.log(res2);
+      // const res2 = await resend.emails.send({
+      //   from: "affan.khan@rempower.com",
+      //   to: "affanalikhanxx@gmail.com",
+      //   subject: "Hello World",
+      //   html: "<p>Congrats on sending your <strong>first email</strong>!</p>",
+      // });
 
       // Respond with success message
       res.status(200).json({

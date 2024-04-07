@@ -1,3 +1,4 @@
+import { AgentAnalytic } from "../../AgentAnalytics/model/AgentAnalyticsModel";
 import { User } from "../../UserProfile/model/User";
 import { AssociationStatus } from "../controller/UserAssociatesController";
 import { UserAssociates } from "../model/UserAssociates";
@@ -113,6 +114,11 @@ export class UserAssociatesRepo implements IUserAssociatesRepo {
   async getAllAssociates({ userId }: { userId: number }) {
     try {
       const usersWithAcceptedAssociates = await User.findAll({
+        include: [
+          {
+            model: AgentAnalytic,
+          },
+        ],
         where: {
           id: {
             [Op.in]: literal(`(

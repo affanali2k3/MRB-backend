@@ -138,9 +138,7 @@ class PostController {
       const postName: string = req.query.postName as string;
       const imageName: string = req.query.imageName as string;
 
-      res.sendFile(
-        path.join("C:/Users/Affan Ali/Desktop/MRB/backend-new/master/storage/", userId.toString(), "postImages", postName, imageName)
-      );
+      res.sendFile(path.join("/home/affan/Desktop/MRB/MRB-backend/storage", userId.toString(), "postImages", postName, imageName));
     } catch (err) {
       res.status(500).json({
         message: `Failed to get post image ${err}`,
