@@ -76,7 +76,7 @@ export class UserAssociateController {
   }
 
   @Get('get-all')
-  async getAllAssociates(@Query('id') id: string) {
+  async getAllAssociates(@Query('userId') id: string) {
     try {
       const associates = await this.userAssociatesService.getAllAssociates(+id);
       return {

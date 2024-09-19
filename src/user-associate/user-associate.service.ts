@@ -104,20 +104,20 @@ export class UserAssociateService {
             model: this.agentAnalyticModel,
           },
         ],
-        // where: {
-        //   id: {
-        //     [Op.in]: literal(`(
-        //               SELECT ${UserAssociates.ASSOCIATE_ID}
-        //               FROM ${UserAssociates.TABLE_NAME}
-        //               WHERE ${UserAssociates.USER_ID} = '${userId}' AND ${UserAssociates.ASSOCIATION_STATUS} = 'Accepted'
-        //               UNION
-        //               SELECT ${UserAssociates.USER_ID}
-        //               FROM ${UserAssociates.TABLE_NAME}
-        //               WHERE ${UserAssociates.ASSOCIATE_ID} = '${userId}' AND ${UserAssociates.ASSOCIATION_STATUS} = 'Accepted'
-        //               )
-        //             `),
-        //   },
-        // },
+        where: {
+          id: {
+            [Op.in]: literal(`(
+                      SELECT "associateId"
+                      FROM "UserAssociates"
+                      WHERE "userId" = '${userId}' AND status = 'Accepted'
+                      UNION
+                      SELECT "userId"
+                      FROM "UserAssociates"
+                      WHERE "associateId" = '${userId}' AND status = 'Accepted'
+                      )
+                    `),
+          },
+        },
       });
 
       return usersWithAcceptedAssociates;
